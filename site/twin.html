@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="AeroYield airline booking-process digital twin." />
+  <title>Digital Twin | AeroYield</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">AY</span><span>AeroYield</span></a>
+  <nav aria-label="Primary navigation">
+    <a href="index.html">Home</a><a href="market.html">Market focus</a><a href="data.html">Data</a><a class="active" href="twin.html">Digital twin</a><a class="nav-cta" href="optimizer.html">Optimizer</a>
+  </nav>
+</header>
+<main>
+  <section class="page-hero">
+    <div class="eyebrow">DIGITAL TWIN PREVIEW</div>
+    <h1>Generate the booking history the public data cannot show us.</h1>
+    <p class="lead">DB1C can anchor the market. The twin will generate the missing operational process: when requests arrive, which fare segment they belong to, whether capacity is still available, and how a revenue-management policy changes the outcome.</p>
+  </section>
+
+  <section class="section compact">
+    <div class="architecture">
+      <div class="arch-node"><span>INPUT</span><strong>Observed market</strong><p>Fare level, volume, seasonality, purchase-window evidence.</p></div>
+      <div class="arch-node"><span>CALIBRATE</span><strong>Arrival model</strong><p>Segment demand intensity across days-to-departure.</p></div>
+      <div class="arch-node"><span>GENERATE</span><strong>Requests</strong><p>Customer arrivals with fare class and willingness to pay.</p></div>
+      <div class="arch-node"><span>DECIDE</span><strong>RM policy</strong><p>Accept the request or protect the remaining seat.</p></div>
+      <div class="arch-node"><span>MEASURE</span><strong>Outcome</strong><p>Revenue, load factor, spill, spoilage, and displacement.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div><div class="eyebrow">SYNTHETIC FLIGHT</div><h2>Watch a booking horizon evolve.</h2></div>
+      <div class="status-badge"><i></i> illustrative twin, not calibrated yet</div>
+    </div>
+    <div class="twin-layout">
+      <aside class="twin-controls">
+        <label class="field-label" for="twinRoute">Route scenario</label>
+        <select id="twinRoute" class="select"></select>
+        <label class="field-label" for="policySelect">Control policy</label>
+        <select id="policySelect" class="select">
+          <option value="open">Open all inventory</option>
+          <option value="protect">Protect premium capacity</option>
+        </select>
+        <label class="field-label" for="premiumProtect">Premium protection</label>
+        <div class="range-row"><input id="premiumProtect" type="range" min="0" max="60" step="1" value="25" /><strong id="protectValue">25</strong></div>
+        <p class="fine-print">In the protection policy, Saver requests are rejected once remaining capacity reaches this threshold. Main and Flex remain open.</p>
+        <div class="twin-actions">
+          <button id="runTwin" class="button primary" type="button">Run preview</button>
+          <button id="resetTwin" class="button light" type="button">Reset</button>
+        </div>
+      </aside>
+
+      <div class="twin-main">
+        <section class="twin-console" aria-live="polite">
+          <div class="twin-top"><div><div class="panel-label">SIMULATED DEPARTURE</div><div id="twinRouteLabel" class="twin-route">—</div></div><div id="twinDay" class="twin-day">D-180</div></div>
+          <div class="twin-kpis">
+            <div><span>Bookings</span><strong id="twinBookings">0</strong></div>
+            <div><span>Remaining seats</span><strong id="twinRemaining">—</strong></div>
+            <div><span>Revenue</span><strong id="twinRevenue">$0</strong></div>
+            <div><span>Rejected requests</span><strong id="twinRejected">0</strong></div>
+          </div>
+          <div class="capacity-meter"><div class="capacity-label"><span>Aircraft utilization</span><span id="twinLoad">0%</span></div><div class="capacity-track"><div id="capacityUsed" class="capacity-used"></div></div></div>
+          <div id="eventStrip" class="event-strip"><div><div class="event-label">Latest request</div><div id="eventMain" class="event-main">Run the preview to generate bookings.</div></div><div id="eventDecision" class="event-decision">WAITING</div></div>
+        </section>
+
+        <section class="booking-chart">
+          <div class="chart-title"><div><strong>Booking curve</strong><br><span>Cumulative bookings and scaled revenue through the horizon</span></div><span id="simulationStatus">Ready</span></div>
+          <svg id="bookingChart" class="booking-svg" viewBox="0 0 760 260" role="img" aria-label="Simulated cumulative bookings across days to departure"></svg>
+          <div class="legend-row"><span class="legend-chip">Bookings</span><span class="legend-chip revenue">Revenue index</span></div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="section compact">
+    <div class="callout"><strong>What changes next:</strong> this preview currently uses a transparent synthetic arrival curve. The real research step is to estimate those arrival intensities and segment shares from observed market evidence, document every assumption, and then run many seeded replications so policies are compared on identical demand streams.</div>
+  </section>
+</main>
+<footer><div><strong>AeroYield</strong> · Digital Twin</div><div>Synthetic preview today; calibrated stochastic simulator next.</div></footer>
+<script src="twin.js"></script>
+</body>
+</html>

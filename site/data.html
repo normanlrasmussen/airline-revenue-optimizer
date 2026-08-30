@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Explore the current AeroYield route data." />
+  <title>Data Explorer | AeroYield</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">AY</span><span>AeroYield</span></a>
+  <nav aria-label="Primary navigation">
+    <a href="index.html">Home</a><a href="market.html">Market focus</a><a class="active" href="data.html">Data</a><a href="twin.html">Digital twin</a><a class="nav-cta" href="optimizer.html">Optimizer</a>
+  </nav>
+</header>
+<main>
+  <section class="page-hero">
+    <div class="eyebrow">CURRENT DATA</div>
+    <h1>See exactly what the repository knows today.</h1>
+    <p class="lead">The committed site currently contains four transparent demo markets. The DB1C ingestion pipeline exists, but no large DB1C extract is committed yet. This page makes that boundary explicit rather than presenting synthetic scenarios as observed airline data.</p>
+  </section>
+
+  <section class="section compact">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">DATA STATUS</div>
+        <h2>Demo now. Public observations next.</h2>
+      </div>
+      <div class="status-badge"><i></i> 4 synthetic route scenarios</div>
+    </div>
+    <div class="kpi-grid">
+      <article class="kpi-card"><span>Committed markets</span><strong id="marketCount">—</strong><small>demo scenarios</small></article>
+      <article class="kpi-card"><span>Total monthly passengers</span><strong id="totalPassengers">—</strong><small>scenario values</small></article>
+      <article class="kpi-card"><span>Mean route fare</span><strong id="meanFare">—</strong><small>scenario values</small></article>
+      <article class="kpi-card"><span>DB1C ingestion</span><strong>Ready</strong><small>not yet materialized in site data</small></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="data-layout">
+      <aside class="sidebar-card">
+        <label class="field-label" for="routeSelect">Inspect route</label>
+        <select id="routeSelect" class="select"></select>
+        <div class="data-summary">
+          <div><span>Route</span><strong id="selectedRoute">—</strong></div>
+          <div><span>Average fare</span><strong id="selectedFare">—</strong></div>
+          <div><span>Monthly passengers</span><strong id="selectedPassengers">—</strong></div>
+          <div><span>Aircraft capacity</span><strong id="selectedCapacity">—</strong></div>
+          <div><span>Modeled total demand</span><strong id="selectedDemand">—</strong></div>
+        </div>
+        <p class="fine-print">Fare-class demand and capacity are synthetic assumptions for the current MVP, not observed DB1C fields.</p>
+      </aside>
+
+      <div class="chart-stack">
+        <article class="chart-card">
+          <div class="chart-title"><div><strong>Monthly passenger volume</strong><br><span>Current demo routes</span></div><span>Passengers</span></div>
+          <div id="passengerBars" class="bar-chart"></div>
+        </article>
+        <article class="chart-card">
+          <div class="chart-title"><div><strong>Average fare vs. passenger volume</strong><br><span>Current demo routes</span></div><span>Click a point to inspect</span></div>
+          <div class="scatter-wrap"><svg id="fareScatter" class="scatter-svg" viewBox="0 0 720 290" role="img" aria-label="Average fare versus monthly passengers for demo markets"></svg></div>
+        </article>
+        <article class="chart-card">
+          <div class="chart-title"><div><strong>Fare ladder and modeled demand</strong><br><span id="fareChartRoute">Selected route</span></div><span>Fare / demand</span></div>
+          <div id="fareBars" class="bar-chart"></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section compact">
+    <div class="callout"><strong>Next data milestone:</strong> materialize a small, reproducible DB1C-derived market table for the website—real route passenger volume, fare distributions, carrier shares, and purchase-window mix—while keeping the raw multi-gigabyte files outside GitHub.</div>
+  </section>
+</main>
+<footer><div><strong>AeroYield</strong> · Data Explorer</div><div>Current committed data: transparent MVP scenarios.</div></footer>
+<script src="data.js"></script>
+</body>
+</html>

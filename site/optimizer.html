@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="AeroYield deterministic seat allocation optimizer." />
+  <title>Optimizer | AeroYield</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">AY</span><span>AeroYield</span></a>
+  <nav aria-label="Primary navigation">
+    <a href="index.html">Home</a><a href="market.html">Market focus</a><a href="data.html">Data</a><a href="twin.html">Digital twin</a><a class="nav-cta active" href="optimizer.html">Optimizer</a>
+  </nav>
+</header>
+<main>
+  <section class="page-hero">
+    <div class="eyebrow">STARTER OPTIMIZER</div>
+    <h1>A transparent baseline before stochastic revenue management.</h1>
+    <p class="lead">This deterministic model assumes demand is known and allocates finite capacity to the highest-value demand. It is intentionally simple: the digital twin will give us the uncertainty needed for Littlewood and EMSR to become meaningful.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div><div class="eyebrow">SEAT CONTROL</div><h2>Change the assumptions. Re-run the decision.</h2></div>
+      <button id="resetButton" class="text-button" type="button">Reset scenario</button>
+    </div>
+    <div class="optimizer-grid">
+      <div class="controls-card">
+        <label class="field-label" for="routeSelect">Route scenario</label>
+        <select id="routeSelect" class="select" style="margin-bottom:18px"></select>
+        <div class="control-header"><span>Fare class</span><span>Fare</span><span>Forecast demand</span></div>
+        <div id="fareControls"></div>
+        <div class="capacity-control"><label for="capacityInput">Aircraft capacity</label><input id="capacityInput" type="number" min="0" max="400" step="1" /></div>
+        <button id="optimizeButton" class="button primary full" type="button">Optimize seats</button>
+        <p class="fine-print">Deterministic MVP model. Revenue values are modeled, not airline financial results.</p>
+      </div>
+      <div class="result-card">
+        <div class="result-topline"><div><span>Optimized revenue</span><strong id="optimizedRevenue">—</strong></div><div class="lift-pill" id="liftPill">—</div></div>
+        <div class="comparison">
+          <div class="comparison-row"><span>Low-fare-first baseline</span><div class="bar-track"><div id="baselineBar" class="bar baseline"></div></div><strong id="baselineRevenue">—</strong></div>
+          <div class="comparison-row"><span>Optimized allocation</span><div class="bar-track"><div id="optimizedBar" class="bar optimized"></div></div><strong id="optimizedRevenueBar">—</strong></div>
+        </div>
+        <div class="allocation-title">Recommended seat allocation</div>
+        <div id="allocationVisual" class="allocation-visual"></div>
+        <div id="allocationLegend" class="allocation-legend"></div>
+      </div>
+    </div>
+  </section>
+  <section class="section compact"><div class="callout"><strong>Interpretation:</strong> this page answers “what would I allocate if demand were already known?” The digital-twin page creates the sequential uncertainty that makes true revenue management interesting.</div></section>
+</main>
+<footer><div><strong>AeroYield</strong> · Optimizer</div><div>Next algorithm target: Littlewood, then EMSR-b.</div></footer>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="AeroYield market focus and revenue-management problem definition." />
+  <title>Market Focus | AeroYield</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">AY</span><span>AeroYield</span></a>
+  <nav aria-label="Primary navigation">
+    <a href="index.html">Home</a><a class="active" href="market.html">Market focus</a><a href="data.html">Data</a><a href="twin.html">Digital twin</a><a class="nav-cta" href="optimizer.html">Optimizer</a>
+  </nav>
+</header>
+<main>
+  <section class="page-hero">
+    <div class="eyebrow">WHERE WE START</div>
+    <h1>Single-flight inventory control under uncertain demand.</h1>
+    <p class="lead">The first research wedge is intentionally narrower than “airline pricing.” We will model one economy-cabin flight, multiple willingness-to-pay segments, a finite booking horizon, and the decision to sell capacity now or protect it for potentially higher-value demand later.</p>
+  </section>
+
+  <section class="section compact">
+    <div class="callout"><strong>Why this scope?</strong> It contains the core economics of revenue management—perishable capacity, uncertain future demand, heterogeneous willingness to pay, and opportunity cost—without immediately hiding the logic inside a huge network model.</div>
+  </section>
+
+  <section class="section">
+    <div class="two-col">
+      <div>
+        <div class="eyebrow">THE BUSINESS PROBLEM</div>
+        <h2>A seat has a clock attached to it.</h2>
+        <p class="section-copy">A seat on a scheduled departure cannot be stored. If it leaves empty, its value becomes zero. But selling it too early to a low-fare customer can also destroy value if a higher-fare customer arrives later. Revenue management is the discipline of assigning an opportunity cost to remaining capacity and controlling which demand is allowed to consume it.</p>
+        <ul class="list-clean">
+          <li><strong>Capacity is fixed:</strong> the aircraft has a finite number of seats.</li>
+          <li><strong>Inventory is perishable:</strong> unsold departure capacity disappears.</li>
+          <li><strong>Demand is stochastic:</strong> future booking volume and mix are unknown.</li>
+          <li><strong>Customers differ:</strong> willingness to pay and booking timing vary.</li>
+          <li><strong>The decision is sequential:</strong> every acceptance changes future options.</li>
+        </ul>
+      </div>
+      <div class="card feature">
+        <div class="number">CORE DECISION</div>
+        <h3>Do we sell this seat now?</h3>
+        <p>For a request with fare <strong>f</strong>, compare the immediate revenue to the expected future opportunity cost of consuming one unit of capacity.</p>
+        <div style="margin-top:18px;padding:18px;border-radius:12px;background:#0b1f33;color:white;font-family:ui-monospace,monospace;font-size:14px;line-height:1.8">
+          accept if<br>
+          <strong style="color:#9fd9e2">fare ≥ marginal value of capacity</strong>
+        </div>
+        <p style="margin-top:15px">Littlewood's rule, EMSR, dynamic programming, and bid-price control are increasingly sophisticated ways to estimate that marginal value.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="eyebrow">WHAT WE WILL MODEL</div>
+    <h2>Observed market layer vs. generated booking layer.</h2>
+    <div class="three-col" style="margin-top:28px">
+      <article class="card">
+        <div class="number">OBSERVED</div><h3>Market evidence</h3>
+        <p>Route-level fares, passenger volume, carrier mix, itinerary structure, seasonality, and broad purchase-window behavior from public data.</p>
+      </article>
+      <article class="card feature">
+        <div class="number">GENERATED</div><h3>Booking process</h3>
+        <p>Day-by-day arrivals, fare-segment demand, cancellations, no-shows, and customer choices that are not directly observable in DB1C.</p>
+      </article>
+      <article class="card">
+        <div class="number">CONTROLLED</div><h3>RM policy</h3>
+        <p>Which requests are accepted, what capacity is protected, and eventually how price or offers change as departure approaches.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="two-col">
+      <div>
+        <div class="eyebrow">FIRST MATHEMATICAL ROADMAP</div>
+        <h2>Build sophistication in layers.</h2>
+        <ul class="list-clean">
+          <li><strong>Baseline:</strong> open all inventory / first-come-first-served.</li>
+          <li><strong>Deterministic allocation:</strong> known demand, maximize fare × seats.</li>
+          <li><strong>Littlewood:</strong> two-fare stochastic protection.</li>
+          <li><strong>EMSR-b:</strong> multiple fare classes with nested protection levels.</li>
+          <li><strong>Finite-horizon DP:</strong> value capacity dynamically over time.</li>
+          <li><strong>Bid-price control:</strong> generalize capacity value toward network RM.</li>
+        </ul>
+      </div>
+      <div>
+        <div class="eyebrow">NOT YET</div>
+        <h2>Problems we should postpone.</h2>
+        <p class="section-copy">Network O&D controls, customer-choice assortment optimization, overbooking, continuous pricing, dynamic bundles, and reinforcement learning are important—but they should come after the single-flight simulator is validated. Otherwise the project becomes complicated before it becomes correct.</p>
+        <div class="callout" style="margin-top:18px"><strong>Portfolio principle:</strong> every algorithm should be testable against the same digital-twin demand stream, so improvement is measured rather than asserted.</div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer><div><strong>AeroYield</strong> · Market Focus</div><div>Initial scope: single-flight revenue management.</div></footer>
+</body>
+</html>
