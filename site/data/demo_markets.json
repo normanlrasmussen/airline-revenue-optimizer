@@ -1,0 +1,6 @@
+[
+  {"route":"ATL → LAX","origin":"ATL","destination":"LAX","avgFare":287,"passengers":18420,"capacity":180,"saverFare":179,"saverDemand":120,"mainFare":319,"mainDemand":70,"flexFare":629,"flexDemand":35},
+  {"route":"JFK → LAX","origin":"JFK","destination":"LAX","avgFare":342,"passengers":16310,"capacity":190,"saverFare":209,"saverDemand":135,"mainFare":369,"mainDemand":78,"flexFare":749,"flexDemand":30},
+  {"route":"ORD → SFO","origin":"ORD","destination":"SFO","avgFare":301,"passengers":14180,"capacity":176,"saverFare":189,"saverDemand":118,"mainFare":339,"mainDemand":66,"flexFare":679,"flexDemand":32},
+  {"route":"DFW → SEA","origin":"DFW","destination":"SEA","avgFare":276,"passengers":11940,"capacity":172,"saverFare":169,"saverDemand":116,"mainFare":309,"mainDemand":64,"flexFare":609,"flexDemand":29}
+]
