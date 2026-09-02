@@ -2,6 +2,15 @@ const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD
 const integer = new Intl.NumberFormat('en-US');
 const state = { markets: [], selectedIndex: 0 };
 
+async function loadMarkets() {
+  const real = await fetch('data/market_summary.json');
+  if (real.ok) return real.json();
+
+  const demo = await fetch('data/demo_markets.json');
+  if (!demo.ok) throw new Error('Could not load market data.');
+  return demo.json();
+}
+
 function totalDemand(m) { return m.saverDemand + m.mainDemand + m.flexDemand; }
 
 function renderPassengerBars() {
@@ -68,9 +77,7 @@ function selectMarket(index) {
 }
 
 async function init() {
-  const response = await fetch('data/demo_markets.json');
-  if (!response.ok) throw new Error('Could not load demo markets.');
-  state.markets = await response.json();
+  state.markets = await loadMarkets();
   document.getElementById('marketCount').textContent = state.markets.length;
   document.getElementById('totalPassengers').textContent = integer.format(state.markets.reduce((s,m) => s + m.passengers, 0));
   document.getElementById('meanFare').textContent = money.format(state.markets.reduce((s,m) => s + m.avgFare, 0) / state.markets.length);

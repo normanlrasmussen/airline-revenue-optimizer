@@ -68,6 +68,18 @@ python data/process_db1c.py \
   --output data/processed/markets.parquet
 ```
 
+Prepare every Market ZIP/CSV in `data/raw/` as one combined website extract:
+
+```bash
+python data/process_db1c.py \
+  --input data/raw \
+  --output data/processed/markets.parquet \
+  --site-summary site/data/market_summary.json \
+  --chunksize 100000
+```
+
+If the processor still uses too much memory, lower `--chunksize` to `50000` or `25000`.
+
 The processor is defensive about column naming because BTS public schemas can evolve. It searches common DB1C field aliases and emits a normalized table with:
 
 - `origin`

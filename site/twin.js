@@ -1,6 +1,15 @@
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 const state = { markets: [], market: null, day: 180, bookings: 0, revenue: 0, rejected: 0, history: [], timer: null, seed: 123456789 };
 
+async function loadMarkets() {
+  const real = await fetch('data/market_summary.json');
+  if (real.ok) return real.json();
+
+  const demo = await fetch('data/demo_markets.json');
+  if (!demo.ok) throw new Error('Could not load market data.');
+  return demo.json();
+}
+
 function rand() {
   state.seed = (1664525 * state.seed + 1013904223) >>> 0;
   return state.seed / 4294967296;
@@ -137,9 +146,7 @@ function setMarket(index) {
 }
 
 async function init() {
-  const response = await fetch('data/demo_markets.json');
-  if (!response.ok) throw new Error('Could not load demo markets.');
-  state.markets = await response.json();
+  state.markets = await loadMarkets();
   const select = document.getElementById('twinRoute');
   select.innerHTML = state.markets.map((m,i)=>`<option value="${i}">${m.route}</option>`).join('');
   select.addEventListener('change',()=>setMarket(Number(select.value)));

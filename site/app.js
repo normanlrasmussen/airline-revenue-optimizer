@@ -1,6 +1,15 @@
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 const state = { markets: [], selected: null };
 
+async function loadMarkets() {
+  const real = await fetch('data/market_summary.json');
+  if (real.ok) return real.json();
+
+  const demo = await fetch('data/demo_markets.json');
+  if (!demo.ok) throw new Error(`Failed to load markets: ${demo.status}`);
+  return demo.json();
+}
+
 function optimizeSeats(capacity, classes) {
   let best = { revenue: -1, allocation: {} };
   const [a, b, c] = classes;
@@ -91,9 +100,7 @@ function runOptimization() {
 }
 
 async function init() {
-  const response = await fetch('data/demo_markets.json');
-  if (!response.ok) throw new Error(`Failed to load markets: ${response.status}`);
-  state.markets = await response.json();
+  state.markets = await loadMarkets();
   const select = document.getElementById('routeSelect');
   select.innerHTML = state.markets.map((m, i) => `<option value="${i}">${m.route}</option>`).join('');
   select.addEventListener('change', () => updateMarket(state.markets[Number(select.value)]));
