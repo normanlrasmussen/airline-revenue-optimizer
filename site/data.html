@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Explore the current AeroYield route data." />
-  <title>Data Explorer | AeroYield</title>
+  <meta name="description" content="Analyze AeroYield network fares, passenger volume, competition, and route-level revenue exposure." />
+  <title>Network Fare Intelligence | AeroYield</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="analyst.css" />
 </head>
 <body>
 <header class="topbar">
@@ -15,65 +16,112 @@
   </nav>
 </header>
 <main>
-  <section class="page-hero">
-    <div class="eyebrow">CURRENT DATA</div>
-    <h1>See exactly what the repository knows today.</h1>
-    <p class="lead">The committed site currently contains four transparent demo markets. The DB1C ingestion pipeline exists, but no large DB1C extract is committed yet. This page makes that boundary explicit rather than presenting synthetic scenarios as observed airline data.</p>
+  <section class="page-hero analyst-hero">
+    <div class="eyebrow">NETWORK FARE INTELLIGENCE</div>
+    <h1>See where traffic, fares, and revenue exposure concentrate.</h1>
+    <p class="lead">Start at the network level: identify the markets that matter most, see which routes sit above or below the network fare benchmark, and then drill into a single route for pricing and revenue-management context.</p>
+    <div class="hero-actions">
+      <a class="button primary" href="route.html">Inspect one route</a>
+      <a class="button secondary" href="#routeTableSection">Browse network routes</a>
+    </div>
   </section>
 
   <section class="section compact">
     <div class="section-heading">
       <div>
-        <div class="eyebrow">DATA STATUS</div>
-        <h2>Demo now. Public observations next.</h2>
+        <div class="eyebrow">NETWORK SNAPSHOT</div>
+        <h2>What matters at a glance?</h2>
       </div>
-      <div class="status-badge"><i></i> 4 synthetic route scenarios</div>
+      <div id="sourceBadge" class="status-badge ready"><i></i> Loading market summary</div>
     </div>
     <div class="kpi-grid">
-      <article class="kpi-card"><span>Committed markets</span><strong id="marketCount">—</strong><small>demo scenarios</small></article>
-      <article class="kpi-card"><span>Total monthly passengers</span><strong id="totalPassengers">—</strong><small>scenario values</small></article>
-      <article class="kpi-card"><span>Mean route fare</span><strong id="meanFare">—</strong><small>scenario values</small></article>
-      <article class="kpi-card"><span>DB1C ingestion</span><strong>Ready</strong><small>not yet materialized in site data</small></article>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="data-layout">
-      <aside class="sidebar-card">
-        <label class="field-label" for="routeSelect">Inspect route</label>
-        <select id="routeSelect" class="select"></select>
-        <div class="data-summary">
-          <div><span>Route</span><strong id="selectedRoute">—</strong></div>
-          <div><span>Average fare</span><strong id="selectedFare">—</strong></div>
-          <div><span>Monthly passengers</span><strong id="selectedPassengers">—</strong></div>
-          <div><span>Aircraft capacity</span><strong id="selectedCapacity">—</strong></div>
-          <div><span>Modeled total demand</span><strong id="selectedDemand">—</strong></div>
-        </div>
-        <p class="fine-print">Fare-class demand and capacity are synthetic assumptions for the current MVP, not observed DB1C fields.</p>
-      </aside>
-
-      <div class="chart-stack">
-        <article class="chart-card">
-          <div class="chart-title"><div><strong>Monthly passenger volume</strong><br><span>Current demo routes</span></div><span>Passengers</span></div>
-          <div id="passengerBars" class="bar-chart"></div>
-        </article>
-        <article class="chart-card">
-          <div class="chart-title"><div><strong>Average fare vs. passenger volume</strong><br><span>Current demo routes</span></div><span>Click a point to inspect</span></div>
-          <div class="scatter-wrap"><svg id="fareScatter" class="scatter-svg" viewBox="0 0 720 290" role="img" aria-label="Average fare versus monthly passengers for demo markets"></svg></div>
-        </article>
-        <article class="chart-card">
-          <div class="chart-title"><div><strong>Fare ladder and modeled demand</strong><br><span id="fareChartRoute">Selected route</span></div><span>Fare / demand</span></div>
-          <div id="fareBars" class="bar-chart"></div>
-        </article>
-      </div>
+      <article class="kpi-card"><span>Routes tracked</span><strong id="routeCount">—</strong><small>directional origin-destination markets</small></article>
+      <article class="kpi-card"><span>Observed passengers</span><strong id="totalPassengers">—</strong><small>DB1C sample passenger weight in committed extract</small></article>
+      <article class="kpi-card"><span>Passenger-weighted fare</span><strong id="weightedFare">—</strong><small>network benchmark, not a simple route average</small></article>
+      <article class="kpi-card"><span>Fare × passenger proxy</span><strong id="revenueProxy">—</strong><small>exposure proxy, not reported airline revenue</small></article>
     </div>
   </section>
 
   <section class="section compact">
-    <div class="callout"><strong>Next data milestone:</strong> materialize a small, reproducible DB1C-derived market table for the website—real route passenger volume, fare distributions, carrier shares, and purchase-window mix—while keeping the raw multi-gigabyte files outside GitHub.</div>
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">ANALYST QUESTIONS</div>
+        <h2>Where should I look first?</h2>
+      </div>
+    </div>
+    <div class="analyst-question-grid">
+      <article class="insight-card">
+        <span class="insight-label">Concentration</span>
+        <strong id="top10Share">—</strong>
+        <p>of observed passenger volume sits in the ten largest routes in this extract.</p>
+      </article>
+      <article class="insight-card">
+        <span class="insight-label">Fare dispersion</span>
+        <strong id="fareIqr">—</strong>
+        <p>is the middle 50% range of route-average fares. Outliers deserve a route-level explanation.</p>
+      </article>
+      <article class="insight-card">
+        <span class="insight-label">Largest market</span>
+        <strong id="largestRoute">—</strong>
+        <p id="largestRouteDetail">Highest observed passenger volume in the current network extract.</p>
+      </article>
+      <article class="insight-card">
+        <span class="insight-label">Largest revenue exposure</span>
+        <strong id="largestRevenueRoute">—</strong>
+        <p id="largestRevenueDetail">Highest fare × passenger proxy; a natural place to test RM improvements.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">NETWORK POSITIONING</div>
+        <h2>Scale versus fare.</h2>
+        <p class="section-copy">The dashed benchmarks split the network at median passenger volume and the passenger-weighted fare. The upper-right quadrant is where both commercial scale and raw fare level are high.</p>
+      </div>
+    </div>
+    <div class="analyst-chart-grid">
+      <article class="chart-card">
+        <div class="chart-title"><div><strong>Fare vs. passenger volume</strong><br><span>Click any point to open route detail</span></div><span>Observed route averages</span></div>
+        <div class="scatter-wrap"><svg id="networkScatter" class="scatter-svg analyst-scatter" viewBox="0 0 760 360" role="img" aria-label="Route average fare versus observed passenger volume"></svg></div>
+      </article>
+      <article class="chart-card">
+        <div class="chart-title"><div><strong>Where the money is concentrated</strong><br><span>Top routes by fare × passenger proxy</span></div><span>Revenue exposure proxy</span></div>
+        <div id="revenueBars" class="bar-chart wide-bars"></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="routeTableSection" class="section">
+    <div class="section-heading route-table-heading">
+      <div>
+        <div class="eyebrow">ROUTE SCREENER</div>
+        <h2>Find the market worth investigating.</h2>
+        <p class="section-copy">Search by airport or route, then rank markets by traffic, fare, revenue exposure, or competition breadth.</p>
+      </div>
+      <div class="table-controls">
+        <label><span>Search</span><input id="routeSearch" class="text-input" type="search" placeholder="LAX, JFK, LAX-JFK…" /></label>
+        <label><span>Rank by</span><select id="routeSort" class="select"><option value="revenue">Revenue proxy</option><option value="passengers">Passengers</option><option value="fare">Average fare</option><option value="carriers">Carrier count</option></select></label>
+      </div>
+    </div>
+    <article class="table-card">
+      <div class="table-scroll">
+        <table class="analyst-table">
+          <thead><tr><th>#</th><th>Route</th><th>Passengers</th><th>Avg fare</th><th>vs network</th><th>Carriers</th><th>Fare × pax</th><th></th></tr></thead>
+          <tbody id="routeTableBody"></tbody>
+        </table>
+      </div>
+      <div id="routeTableNote" class="table-note"></div>
+    </article>
+  </section>
+
+  <section class="section compact">
+    <div class="callout"><strong>Interpretation note:</strong> passenger counts and average fares come from the committed DB1C-derived route summary when available. Fare × passenger is an exposure proxy, not accounting revenue. Raw fare comparisons also do not normalize for distance; yield per mile becomes the better pricing comparison once route distance is materialized into the site extract.</div>
   </section>
 </main>
-<footer><div><strong>AeroYield</strong> · Data Explorer</div><div>Current committed data: transparent MVP scenarios.</div></footer>
+<footer><div><strong>AeroYield</strong> · Network Fare Intelligence</div><div>Observed market context first; modeled pricing scenarios are kept separate.</div></footer>
+<script src="analytics.js"></script>
 <script src="data.js"></script>
 </body>
 </html>
