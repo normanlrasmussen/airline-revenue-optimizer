@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Inspect one AeroYield airline route in detail: fare position, passenger scale, competition, reverse direction, and modeled fare classes." />
+  <title>Route Intelligence | AeroYield</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="analyst.css" />
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html"><span class="brand-mark">AY</span><span>AeroYield</span></a>
+  <nav aria-label="Primary navigation">
+    <a href="index.html">Home</a><a href="market.html">Market focus</a><a class="active" href="data.html">Data</a><a href="twin.html">Digital twin</a><a class="nav-cta" href="optimizer.html">Optimizer</a>
+  </nav>
+</header>
+<main>
+  <section class="page-hero analyst-hero">
+    <div class="eyebrow">ROUTE INTELLIGENCE</div>
+    <h1 id="routeHeroTitle">Inspect one market in context.</h1>
+    <p class="lead">A route is only interesting relative to the network around it. This page shows scale, fare position, competition breadth, directional imbalance, and the markets an analyst would compare before changing revenue-management controls.</p>
+    <div class="hero-actions">
+      <a class="button secondary" href="data.html">← Back to network</a>
+      <a class="button primary" href="optimizer.html">Open optimizer</a>
+    </div>
+  </section>
+
+  <section class="section compact">
+    <div class="route-toolbar">
+      <div class="route-picker">
+        <label class="field-label" for="routeSelect">Choose route</label>
+        <select id="routeSelect" class="select"></select>
+      </div>
+      <div id="routeSourceBadge" class="status-badge ready"><i></i> Loading market data</div>
+    </div>
+  </section>
+
+  <section class="section compact">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">OBSERVED MARKET SIGNALS</div>
+        <h2 id="routeSectionTitle">Route snapshot</h2>
+      </div>
+    </div>
+    <div class="kpi-grid">
+      <article class="kpi-card"><span>Average fare</span><strong id="routeFare">—</strong><small id="routeFareDelta">vs passenger-weighted network fare</small></article>
+      <article class="kpi-card"><span>Observed passengers</span><strong id="routePassengers">—</strong><small id="routePassengerRank">network volume rank</small></article>
+      <article class="kpi-card"><span>Fare × passenger proxy</span><strong id="routeRevenue">—</strong><small id="routeRevenueRank">network exposure rank</small></article>
+      <article class="kpi-card"><span>Reporting carriers</span><strong id="routeCarriers">—</strong><small id="routeCarrierContext">competition breadth</small></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="analyst-chart-grid route-analysis-grid">
+      <article class="chart-card">
+        <div class="chart-title"><div><strong>Where this route sits in the network</strong><br><span>Selected route highlighted against every market</span></div><span>Fare vs passenger volume</span></div>
+        <div class="scatter-wrap"><svg id="routeScatter" class="scatter-svg analyst-scatter" viewBox="0 0 760 360" role="img" aria-label="Selected route positioned against network fare and passenger volume"></svg></div>
+      </article>
+      <article class="chart-card analyst-readout-card">
+        <div class="chart-title"><div><strong>Analyst readout</strong><br><span>What should I infer before changing controls?</span></div><span id="routePriority">—</span></div>
+        <div id="analystReadout" class="readout-list"></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section compact">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">BENCHMARKS</div>
+        <h2>Rank, directionality, and local network share.</h2>
+      </div>
+    </div>
+    <div class="analyst-question-grid">
+      <article class="insight-card"><span class="insight-label">Passenger percentile</span><strong id="volumePercentile">—</strong><p id="volumePercentileText">Share of network routes this market exceeds by observed traffic.</p></article>
+      <article class="insight-card"><span class="insight-label">Fare percentile</span><strong id="farePercentile">—</strong><p>Raw route-average fare position. Distance-normalized yield would be the stronger cross-route pricing metric.</p></article>
+      <article class="insight-card"><span class="insight-label">Origin traffic share</span><strong id="originShare">—</strong><p id="originShareText">Share of observed passengers among routes from this origin in the committed extract.</p></article>
+      <article class="insight-card"><span class="insight-label">Reverse direction</span><strong id="reverseRoute">—</strong><p id="reverseDetail">Directional asymmetry can reveal different demand and pricing conditions.</p></article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">LOCAL PEERS</div>
+        <h2 id="peerHeading">What else leaves this origin?</h2>
+        <p class="section-copy">These are the closest commercial comparisons available in the current extract: other directional routes sharing the same origin.</p>
+      </div>
+    </div>
+    <article class="table-card">
+      <div class="table-scroll">
+        <table class="analyst-table peer-table">
+          <thead><tr><th>Route</th><th>Passengers</th><th>Avg fare</th><th>vs network</th><th>Carriers</th><th>Fare × pax</th><th></th></tr></thead>
+          <tbody id="peerTableBody"></tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div>
+        <div class="eyebrow">MODELED PRICING SCENARIO</div>
+        <h2>Fare ladder inputs—not observed fare classes.</h2>
+        <p class="section-copy">The current processor derives Saver/Main/Flex fares and demand from route-average fare and traffic. They are useful as transparent optimizer inputs, but they should not be interpreted as observed DB1C booking-class demand.</p>
+      </div>
+      <a class="button light" href="optimizer.html">Test in optimizer →</a>
+    </div>
+    <div class="two-col">
+      <article class="chart-card">
+        <div class="chart-title"><div><strong>Modeled fare ladder</strong><br><span id="modeledRouteName">Selected route</span></div><span>Fare</span></div>
+        <div id="modeledFareBars" class="bar-chart wide-bars"></div>
+      </article>
+      <article class="chart-card">
+        <div class="chart-title"><div><strong>Modeled demand mix</strong><br><span>Synthetic demand assumption</span></div><span>Passengers</span></div>
+        <div id="modeledDemandBars" class="bar-chart wide-bars"></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section compact">
+    <div class="callout"><strong>Next decision-grade additions:</strong> passenger-weighted distance/yield, route fare distributions, carrier shares, and monthly fare/volume trends. Those would let an analyst separate a genuinely high-yield market from one that simply has a long stage length or temporary demand spike.</div>
+  </section>
+</main>
+<footer><div><strong>AeroYield</strong> · Route Intelligence</div><div>Observed context separated from modeled revenue-management inputs.</div></footer>
+<script src="analytics.js"></script>
+<script src="route.js"></script>
+</body>
+</html>
