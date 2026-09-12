@@ -134,16 +134,47 @@ def normalize(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def resolve_inputs(paths: list[Path]) -> list[Path]:
+    supported_suffixes = {".csv", ".zip", ".parquet"}
     files: list[Path] = []
+    missing_paths: list[Path] = []
+    empty_directories: list[Path] = []
+
     for path in paths:
-        if path.is_dir():
-            files.extend(sorted(path.glob("*.csv")))
-            files.extend(sorted(path.glob("*.zip")))
+        if not path.exists():
+            missing_paths.append(path)
             continue
+
+        if path.is_dir():
+            found = sorted(
+                candidate
+                for candidate in path.iterdir()
+                if candidate.is_file() and candidate.suffix.lower() in supported_suffixes
+            )
+            if not found:
+                empty_directories.append(path)
+            files.extend(found)
+            continue
+
+        if path.suffix.lower() not in supported_suffixes:
+            raise ValueError(
+                f"Unsupported input file: {path}. Expected a .zip, .csv, or .parquet file."
+            )
         files.append(path)
 
+    if missing_paths:
+        joined = ", ".join(str(path) for path in missing_paths)
+        raise FileNotFoundError(
+            f"Input path does not exist: {joined}. "
+            "Download DB1C files first or point --input at an existing file/directory."
+        )
+
     if not files:
-        raise ValueError("No .zip or .csv input files were found.")
+        directories = ", ".join(str(path) for path in empty_directories) or "the supplied input"
+        raise ValueError(
+            f"No .zip, .csv, or .parquet input files were found in {directories}. "
+            "Download DB1C files first, then rerun the processor."
+        )
+
     return files
 
 
@@ -159,7 +190,7 @@ def build_site_market(row: pd.Series) -> dict[str, int | float | str | None]:
     flex_demand = max(1, scenario_demand - saver_demand - main_demand)
 
     return {
-        "route": f"{row['origin']} \u2192 {row['destination']}",
+        "route": f"{row['origin']} → {row['destination']}",
         "origin": row["origin"],
         "destination": row["destination"],
         "avgFare": round(avg_fare),
