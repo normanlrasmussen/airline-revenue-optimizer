@@ -15,6 +15,11 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 
+try:
+    from data.enrich_summary import enrich_summary
+except ModuleNotFoundError:  # Support direct execution via `python data/process_db1c.py`.
+    from enrich_summary import enrich_summary
+
 ALIASES = {
     "origin": ["Origin", "MktOrigin", "MarketOrigin", "OriginAirport", "OriginAirportID"],
     "destination": ["Dest", "Destination", "MktDest", "MarketDestination", "DestAirport"],
@@ -334,12 +339,13 @@ def main() -> None:
         raise ValueError("No valid rows were found in the input files.")
 
     write_route_summary(stats, args.site_summary, args.top_routes)
+    enrich_summary(args.output, args.site_summary, args.site_summary)
 
     print(f"Files: {len(inputs):,}")
     print(f"Chunks: {chunks:,}")
     print(f"Rows: {rows:,}")
     print(f"Wrote {args.output}")
-    print(f"Wrote {args.site_summary}")
+    print(f"Wrote enriched {args.site_summary}")
 
 
 if __name__ == "__main__":
