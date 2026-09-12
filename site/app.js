@@ -127,11 +127,25 @@ function renderRepresentative(result) {
   const histories = Object.fromEntries(policies.map(key => [key, result.representative[key].history || []]));
   const allRevenue = Object.values(histories).flatMap(rows => rows.map(row => row.revenue));
   const max = Math.max(...allRevenue, 1);
-  const W = 900, H = 330, L = 72, R = 34, T = 26, B = 56;
+  const W = 900, H = 330, L = 72, R = 34, T = 58, B = 56;
   const x = row => L + (SIM.DAYS - row.day) / SIM.DAYS * (W - L - R);
   const y = value => H - B - value / max * (H - T - B);
   const lineStyle = { open: ['#52606d', '0'], emsr: ['#1f7a8c', '0'], dp: ['#c7922b', '0'] };
   let html = '';
+
+  const legendItems = policies.map(key => ({ key, label: policyLabel(key), width: policyLabel(key).length * 6.5 + 32 }));
+  const legendWidth = legendItems.reduce((sum, item) => sum + item.width, 0) + 16;
+  const legendX = Math.max(L, W - R - legendWidth);
+  html += `<g aria-label="Policy legend"><rect class="svg-legend-bg" x="${legendX}" y="10" width="${legendWidth}" height="32" rx="8"></rect>`;
+  let itemX = legendX + 10;
+  legendItems.forEach(item => {
+    const [stroke] = lineStyle[item.key];
+    html += `<line x1="${itemX}" y1="26" x2="${itemX + 18}" y2="26" stroke="${stroke}" stroke-width="4" stroke-linecap="round"></line>`;
+    html += `<text class="svg-legend-text" x="${itemX + 24}" y="30">${item.label}</text>`;
+    itemX += item.width;
+  });
+  html += '</g>';
+
   for (let i = 0; i <= 4; i++) {
     const yy = T + i * (H - T - B) / 4;
     const value = max - i * max / 4;
@@ -142,9 +156,8 @@ function renderRepresentative(result) {
     const rows = histories[key];
     if (!rows.length) return;
     const [stroke, dash] = lineStyle[key];
-    html += `<polyline points="${rows.map(row => `${x(row)},${y(row.revenue)}`).join(' ')}" fill="none" stroke="${stroke}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${dash}"></polyline>`;
-    const last = rows[rows.length - 1];
-    html += `<text x="${W - R - 3}" y="${Math.max(T + 12, y(last.revenue) - 7)}" text-anchor="end" font-size="11" fill="${stroke}">${policyLabel(key)} ${money.format(last.revenue)}</text>`;
+    const finalRevenue = rows[rows.length - 1].revenue;
+    html += `<polyline points="${rows.map(row => `${x(row)},${y(row.revenue)}`).join(' ')}" fill="none" stroke="${stroke}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${dash}"><title>${policyLabel(key)} · final revenue ${money.format(finalRevenue)}</title></polyline>`;
   });
   document.getElementById('optimizerRepresentative').innerHTML = html;
 }
@@ -192,13 +205,8 @@ function defaultIndex(markets) {
     const found = markets.findIndex(m => AY.routeKey(m) === normalized);
     if (found >= 0) return found;
   }
-  let bestIndex = 0;
-  let bestScore = -Infinity;
-  markets.forEach((market, index) => {
-    const score = AY.opportunityScore(markets, market);
-    if (score > bestScore) { bestScore = score; bestIndex = index; }
-  });
-  return bestIndex;
+  if (!markets.length) return 0;
+  return markets.reduce((bestIndex, market, index) => market.revenueProxy > markets[bestIndex].revenueProxy ? index : bestIndex, 0);
 }
 
 async function init() {
