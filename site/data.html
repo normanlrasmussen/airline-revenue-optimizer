@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Analyze AeroYield network fares, passenger volume, competition, and route-level revenue exposure." />
-  <title>Network Fare Intelligence | AeroYield</title>
+  <title>Market Data | AeroYield</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="analyst.css" />
 </head>
@@ -12,17 +12,17 @@
 <header class="topbar">
   <a class="brand" href="index.html"><span class="brand-mark">AY</span><span>AeroYield</span></a>
   <nav aria-label="Primary navigation">
-    <a href="index.html">Home</a><a href="market.html">Market focus</a><a class="active" href="data.html">Data</a><a href="twin.html">Digital twin</a><a class="nav-cta" href="optimizer.html">Optimizer</a>
+    <a href="index.html">Home</a><a href="market.html">The Problem</a><a class="active" href="data.html">Market Data</a><a href="twin.html">Booking Simulator</a><a class="nav-cta" href="optimizer.html">Revenue Optimizer</a>
   </nav>
 </header>
 <main>
   <section class="page-hero analyst-hero">
-    <div class="eyebrow">NETWORK FARE INTELLIGENCE</div>
-    <h1>See where traffic, fares, and revenue exposure concentrate.</h1>
-    <p class="lead">Start at the network level: identify the markets that matter most, see which routes sit above or below the network fare benchmark, and then drill into a single route for pricing and revenue-management context.</p>
+    <div class="eyebrow">U.S. AIRLINE MARKET DATA</div>
+    <h1>Find the routes where revenue decisions matter most.</h1>
+    <p class="lead">Use observed passenger volume and fares to see which markets are large, expensive, competitive, or unusual. Then open a route to understand it before testing revenue-management policies.</p>
     <div class="hero-actions">
       <a class="button primary" href="route.html">Inspect one route</a>
-      <a class="button secondary" href="#routeTableSection">Browse network routes</a>
+      <a class="button secondary" href="#routeTableSection">Browse all routes</a>
     </div>
   </section>
 
@@ -37,8 +37,8 @@
     <div class="kpi-grid">
       <article class="kpi-card"><span>Routes tracked</span><strong id="routeCount">—</strong><small>directional origin-destination markets</small></article>
       <article class="kpi-card"><span>Observed passengers</span><strong id="totalPassengers">—</strong><small>DB1C sample passenger weight in committed extract</small></article>
-      <article class="kpi-card"><span>Passenger-weighted fare</span><strong id="weightedFare">—</strong><small>network benchmark, not a simple route average</small></article>
-      <article class="kpi-card"><span>Fare × passenger proxy</span><strong id="revenueProxy">—</strong><small>exposure proxy, not reported airline revenue</small></article>
+      <article class="kpi-card"><span>Average ticket price</span><strong id="weightedFare">—</strong><small>passenger-weighted network average fare</small></article>
+      <article class="kpi-card"><span>Estimated market value</span><strong id="revenueProxy">—</strong><small>fare × observed passengers, not accounting revenue</small></article>
     </div>
   </section>
 
@@ -56,9 +56,9 @@
         <p>of observed passenger volume sits in the ten largest routes in this extract.</p>
       </article>
       <article class="insight-card">
-        <span class="insight-label">Fare dispersion</span>
+        <span class="insight-label">Fare spread</span>
         <strong id="fareIqr">—</strong>
-        <p>is the middle 50% range of route-average fares. Outliers deserve a route-level explanation.</p>
+        <p>is the middle 50% range of route-average fares. Outliers are worth investigating.</p>
       </article>
       <article class="insight-card">
         <span class="insight-label">Largest market</span>
@@ -66,9 +66,9 @@
         <p id="largestRouteDetail">Highest observed passenger volume in the current network extract.</p>
       </article>
       <article class="insight-card">
-        <span class="insight-label">Largest revenue exposure</span>
+        <span class="insight-label">Largest estimated market value</span>
         <strong id="largestRevenueRoute">—</strong>
-        <p id="largestRevenueDetail">Highest fare × passenger proxy; a natural place to test RM improvements.</p>
+        <p id="largestRevenueDetail">Highest fare × passenger value; a natural place to test revenue improvements.</p>
       </article>
     </div>
   </section>
@@ -77,17 +77,17 @@
     <div class="section-heading">
       <div>
         <div class="eyebrow">NETWORK POSITIONING</div>
-        <h2>Scale versus fare.</h2>
-        <p class="section-copy">The dashed benchmarks split the network at median passenger volume and the passenger-weighted fare. The upper-right quadrant is where both commercial scale and raw fare level are high.</p>
+        <h2>Passenger scale versus average fare.</h2>
+        <p class="section-copy">The dashed benchmarks split the network at median passenger volume and the passenger-weighted average fare. Markets in the upper-right combine both scale and high ticket prices.</p>
       </div>
     </div>
     <div class="analyst-chart-grid">
       <article class="chart-card">
-        <div class="chart-title"><div><strong>Fare vs. passenger volume</strong><br><span>Click any point to open route detail</span></div><span>Observed route averages</span></div>
+        <div class="chart-title"><div><strong>Average fare vs. passenger volume</strong><br><span>Click any point to open route detail</span></div><span>Observed route averages</span></div>
         <div class="scatter-wrap"><svg id="networkScatter" class="scatter-svg analyst-scatter" viewBox="0 0 760 360" role="img" aria-label="Route average fare versus observed passenger volume"></svg></div>
       </article>
       <article class="chart-card">
-        <div class="chart-title"><div><strong>Where the money is concentrated</strong><br><span>Top routes by fare × passenger proxy</span></div><span>Revenue exposure proxy</span></div>
+        <div class="chart-title"><div><strong>Where market value is concentrated</strong><br><span>Top routes by fare × observed passengers</span></div><span>Estimated market value</span></div>
         <div id="revenueBars" class="bar-chart wide-bars"></div>
       </article>
     </div>
@@ -98,11 +98,11 @@
       <div>
         <div class="eyebrow">ROUTE SCREENER</div>
         <h2>Find the market worth investigating.</h2>
-        <p class="section-copy">Search by airport or route, then rank markets by traffic, fare, revenue exposure, or competition breadth.</p>
+        <p class="section-copy">Search by airport or route, then rank markets by traffic, fare, estimated market value, or number of reporting carriers.</p>
       </div>
       <div class="table-controls">
         <label><span>Search</span><input id="routeSearch" class="text-input" type="search" placeholder="LAX, JFK, LAX-JFK…" /></label>
-        <label><span>Rank by</span><select id="routeSort" class="select"><option value="revenue">Revenue proxy</option><option value="passengers">Passengers</option><option value="fare">Average fare</option><option value="carriers">Carrier count</option></select></label>
+        <label><span>Rank by</span><select id="routeSort" class="select"><option value="revenue">Estimated market value</option><option value="passengers">Passengers</option><option value="fare">Average fare</option><option value="carriers">Carrier count</option></select></label>
       </div>
     </div>
     <article class="table-card">
@@ -117,10 +117,10 @@
   </section>
 
   <section class="section compact">
-    <div class="callout"><strong>Interpretation note:</strong> passenger counts and average fares come from the committed DB1C-derived route summary when available. Fare × passenger is an exposure proxy, not accounting revenue. Raw fare comparisons also do not normalize for distance; yield per mile becomes the better pricing comparison once route distance is materialized into the site extract.</div>
+    <div class="callout"><strong>Data note:</strong> passenger counts and average fares come from the committed DB1C-derived route summary. Fare × passenger is a market-value proxy, not reported airline revenue. Later steps add distance-normalized yield and richer route diagnostics.</div>
   </section>
 </main>
-<footer><div><strong>AeroYield</strong> · Network Fare Intelligence</div><div>Observed market context first; modeled pricing scenarios are kept separate.</div></footer>
+<footer><div><strong>AeroYield</strong> · Market Data</div><div>Observed market data is kept separate from modeled booking assumptions.</div></footer>
 <script src="analytics.js"></script>
 <script src="data.js"></script>
 </body>

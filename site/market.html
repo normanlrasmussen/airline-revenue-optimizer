@@ -3,110 +3,83 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="AeroYield market focus and airline revenue-management business problem." />
-  <title>Market Focus | AeroYield</title>
+  <meta name="description" content="The airline seat-inventory problem behind AeroYield." />
+  <title>The Problem | AeroYield</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 <header class="topbar">
   <a class="brand" href="index.html"><span class="brand-mark">AY</span><span>AeroYield</span></a>
   <nav aria-label="Primary navigation">
-    <a href="index.html">Home</a><a class="active" href="market.html">Market focus</a><a href="data.html">Data</a><a href="twin.html">Digital twin</a><a class="nav-cta" href="optimizer.html">Optimizer</a>
+    <a href="index.html">Home</a><a class="active" href="market.html">The Problem</a><a href="data.html">Market Data</a><a href="twin.html">Booking Simulator</a><a class="nav-cta" href="optimizer.html">Revenue Optimizer</a>
   </nav>
 </header>
 <main>
   <section class="page-hero">
     <div class="eyebrow">THE BUSINESS PROBLEM</div>
-    <h1>Every airline seat has a deadline.</h1>
-    <p class="lead">Airlines sell a fixed number of seats on a flight while demand changes across customers, fares, routes, seasons, and the booking horizon. Once the aircraft departs, any empty seat has no remaining value. The challenge is that the airline must make commercial decisions before it knows exactly who will still want to book later or what they will be willing to pay.</p>
+    <h1>A seat can only be sold once.</h1>
+    <p class="lead">An airline has a fixed number of seats and does not know exactly who will book before departure. Selling every early request may fill the plane but leave no room for later customers willing to pay more. Protecting too many seats may leave the aircraft with empty inventory that becomes worthless at departure.</p>
   </section>
 
   <section class="section compact">
-    <div class="callout"><strong>The central trade-off:</strong> leaving too much capacity unsold creates empty seats at departure, while selling too much capacity too early at lower fares can prevent later, higher-value demand from being served.</div>
-  </section>
-
-  <section class="section">
-    <div>
-      <div class="eyebrow">WHY THIS PROBLEM MATTERS</div>
-      <h2>Small inventory decisions can materially change flight revenue.</h2>
-      <p class="section-copy">The aircraft, schedule, and most operating costs are largely committed before the final passenger books. That makes the revenue earned from each remaining seat especially important. Two flights with the same aircraft and the same number of passengers can produce very different revenue depending on when customers booked, what they paid, and which demand was still available as departure approached.</p>
-      <ul class="list-clean">
-        <li><strong>Capacity is fixed:</strong> each departure has a finite number of seats to sell.</li>
-        <li><strong>Inventory is perishable:</strong> an empty seat loses all sale value when the flight departs.</li>
-        <li><strong>Demand is uncertain:</strong> future booking volume, timing, and customer mix are not known in advance.</li>
-        <li><strong>Customers differ:</strong> travelers have different willingness to pay, trip purposes, and booking behavior.</li>
-        <li><strong>Timing matters:</strong> the value of remaining capacity changes as the departure date approaches.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="eyebrow">PARTS TO CONSIDER</div>
-    <h2>The economics of a flight depend on several interacting layers.</h2>
-    <div class="three-col" style="margin-top:28px">
-      <article class="card">
-        <div class="number">DEMAND</div>
-        <h3>Who wants to travel?</h3>
-        <p>Booking volume, purchase timing, willingness to pay, customer mix, cancellations, no-shows, and how demand changes throughout the booking window.</p>
-      </article>
-      <article class="card feature">
-        <div class="number">FLIGHT</div>
-        <h3>What capacity is available?</h3>
-        <p>Aircraft seat count, seats already sold, departure date and time, remaining booking horizon, current load factor, and the amount of inventory still available.</p>
-      </article>
-      <article class="card">
-        <div class="number">MARKET</div>
-        <h3>What environment is the flight competing in?</h3>
-        <p>Route characteristics, distance, carrier mix, competing service, seasonality, day of week, itinerary structure, and observed fare levels in the market.</p>
-      </article>
-    </div>
+    <div class="callout"><strong>The decision:</strong> when a booking request arrives, should the airline accept it now or keep the seat available for possible future demand?</div>
   </section>
 
   <section class="section">
     <div class="two-col">
       <div>
-        <div class="eyebrow">WHY IT IS DIFFICULT</div>
-        <h2>The most important information arrives over time.</h2>
+        <div class="eyebrow">WHY IT IS HARD</div>
+        <h2>The airline must decide before it knows the future.</h2>
         <ul class="list-clean">
-          <li><strong>Future bookings are unknown:</strong> current inventory must be evaluated without seeing the rest of the booking horizon.</li>
-          <li><strong>Demand is time-dependent:</strong> early-booking and late-booking customers can have very different behavior.</li>
-          <li><strong>Demand is not homogeneous:</strong> one passenger is not economically identical to another simply because both occupy one seat.</li>
-          <li><strong>Each sale changes what remains:</strong> capacity consumed today is unavailable to any customer who arrives later.</li>
-          <li><strong>Market conditions vary:</strong> route, season, competition, and schedule can materially change both demand and fare distributions.</li>
-          <li><strong>Observed data is incomplete:</strong> public market data can show realized fares and traffic, but not every rejected request or unobserved customer decision.</li>
+          <li><strong>Capacity is fixed:</strong> each departure has a limited number of seats.</li>
+          <li><strong>Seats expire:</strong> an empty seat has no sale value after departure.</li>
+          <li><strong>Demand is uncertain:</strong> future booking volume, timing, and fares are unknown.</li>
+          <li><strong>Customers are different:</strong> some travelers book early at lower fares while others arrive later and may pay more.</li>
+          <li><strong>Every sale changes the future:</strong> a seat sold now cannot be used for a later request.</li>
         </ul>
       </div>
       <div>
-        <div class="eyebrow">INITIAL SCOPE</div>
-        <h2>Keep the first question narrow enough to understand.</h2>
-        <p class="section-copy">The initial focus is a single economy-cabin flight over a finite booking horizon. The page considers the flight's capacity, booking pace, fare distribution, customer timing, route characteristics, and uncertainty in future demand. More complex network interactions can be considered later, but the first objective is to understand the economics of one departure clearly.</p>
-        <div class="callout" style="margin-top:18px"><strong>Business objective:</strong> generate as much revenue as possible from a fixed, expiring seat inventory while accounting for uncertainty about the demand that has not arrived yet.</div>
+        <div class="eyebrow">WHAT AEROYIELD STUDIES</div>
+        <h2>One flight, one booking horizon, one revenue objective.</h2>
+        <p class="section-copy">AeroYield starts with a single economy cabin. Market data provides route context. A booking model generates uncertain customer requests. Revenue-management policies then decide which requests to accept.</p>
+        <div class="callout" style="margin-top:18px"><strong>Objective:</strong> maximize expected ticket revenue from a fixed seat inventory while accounting for demand that has not arrived yet.</div>
       </div>
     </div>
   </section>
 
   <section class="section">
-    <div class="eyebrow">WHAT SUCCESS LOOKS LIKE</div>
-    <h2>Measure the business outcome, not just how full the aircraft is.</h2>
+    <div class="eyebrow">WHAT MATTERS</div>
+    <h2>Three inputs drive the decision.</h2>
     <div class="three-col" style="margin-top:28px">
       <article class="card">
-        <div class="number">REVENUE</div>
-        <h3>Revenue captured</h3>
-        <p>Total passenger revenue and average realized fare show how much economic value the flight ultimately generated.</p>
+        <div class="number">DEMAND</div>
+        <h3>Who may still book?</h3>
+        <p>How many customers may arrive, when they arrive, and the fares they are willing to pay.</p>
       </article>
       <article class="card feature">
-        <div class="number">UTILIZATION</div>
-        <h3>Capacity used</h3>
-        <p>Load factor and empty seats at departure show how much of the flight's perishable capacity was ultimately consumed.</p>
+        <div class="number">CAPACITY</div>
+        <h3>How many seats remain?</h3>
+        <p>Aircraft capacity, seats already sold, and time remaining before departure.</p>
       </article>
       <article class="card">
-        <div class="number">MIX</div>
-        <h3>Quality of demand served</h3>
-        <p>The distribution of fares and booking times shows whether revenue came from a strong mix of customers rather than occupancy alone.</p>
+        <div class="number">MARKET</div>
+        <h3>What route are we selling?</h3>
+        <p>Passenger volume, observed fares, competition, distance, seasonality, and recent market trends.</p>
       </article>
     </div>
   </section>
+
+  <section class="section">
+    <div class="eyebrow">HOW SUCCESS IS MEASURED</div>
+    <h2>A full plane is not automatically the best outcome.</h2>
+    <div class="three-col" style="margin-top:28px">
+      <article class="card"><div class="number">REVENUE</div><h3>Ticket revenue</h3><p>How much revenue the flight earns under each policy.</p></article>
+      <article class="card feature"><div class="number">LOAD</div><h3>Seats filled</h3><p>Load factor and empty seats show whether capacity was used or spoiled.</p></article>
+      <article class="card"><div class="number">SPILL</div><h3>Demand rejected</h3><p>Rejected requests show the trade-off created by protecting capacity for later demand.</p></article>
+    </div>
+    <div class="hero-actions" style="margin-top:28px"><a class="button primary" href="data.html">Explore the market data</a><a class="button secondary" href="twin.html">Simulate bookings</a></div>
+  </section>
 </main>
-<footer><div><strong>AeroYield</strong> · Market Focus</div><div>Business problem: single-flight airline revenue management.</div></footer>
+<footer><div><strong>AeroYield</strong> · The Problem</div><div>Single-flight airline seat-inventory control under uncertain demand.</div></footer>
 </body>
 </html>

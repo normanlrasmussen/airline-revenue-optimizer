@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="AeroYield — an airline revenue management laboratory." />
-  <title>AeroYield | Airline Revenue Management Lab</title>
+  <meta name="description" content="AeroYield uses airline market data, booking simulation, and optimization to test seat-control policies." />
+  <title>AeroYield | Airline Revenue Optimizer</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -12,33 +12,33 @@
   <a class="brand" href="index.html"><span class="brand-mark">AY</span><span>AeroYield</span></a>
   <nav aria-label="Primary navigation">
     <a class="active" href="index.html">Home</a>
-    <a href="market.html">Market focus</a>
-    <a href="data.html">Data</a>
-    <a href="twin.html">Digital twin</a>
-    <a class="nav-cta" href="optimizer.html">Optimizer</a>
+    <a href="market.html">The Problem</a>
+    <a href="data.html">Market Data</a>
+    <a href="twin.html">Booking Simulator</a>
+    <a class="nav-cta" href="optimizer.html">Revenue Optimizer</a>
   </nav>
 </header>
 
 <main>
   <section class="page-hero home">
     <div>
-      <div class="eyebrow">AIRLINE REVENUE MANAGEMENT LAB</div>
-      <h1>From market data to<br><span>capacity decisions.</span></h1>
-      <p class="lead">AeroYield is becoming an interactive research environment for airline revenue management: observe a market, create a calibrated booking-process digital twin, and compare decision policies under the same simulated demand.</p>
+      <div class="eyebrow">AIRLINE REVENUE MANAGEMENT</div>
+      <h1>Which bookings should an airline accept?</h1>
+      <p class="lead">AeroYield uses U.S. airline market data, simulated booking demand, and optimization to test how seat-control decisions change flight revenue. The core trade-off is simple: sell a seat now, or save it for a customer who may pay more later.</p>
       <div class="hero-actions">
-        <a class="button primary" href="market.html">Understand the problem</a>
-        <a class="button secondary" href="twin.html">Open digital twin</a>
+        <a class="button primary" href="market.html">See the business problem</a>
+        <a class="button secondary" href="optimizer.html">Run the optimizer</a>
       </div>
     </div>
     <div class="hero-panel">
-      <div class="panel-label">PROJECT SCOPE</div>
-      <div class="big-number">1 flight</div>
-      <div class="panel-sub">Start narrow enough to understand the economics and mathematics rigorously.</div>
+      <div class="panel-label">THE DECISION</div>
+      <div class="big-number">1 seat</div>
+      <div class="panel-sub">Every booking consumes inventory that cannot be sold again.</div>
       <div class="mini-grid">
-        <div><span>Observed layer</span><strong>Market fares + volume</strong></div>
-        <div><span>Generated layer</span><strong>Booking arrivals</strong></div>
-        <div><span>Decision</span><strong>Accept / protect</strong></div>
-        <div><span>Objective</span><strong>Expected revenue</strong></div>
+        <div><span>Data</span><strong>Fares + passengers</strong></div>
+        <div><span>Uncertainty</span><strong>Future bookings</strong></div>
+        <div><span>Decision</span><strong>Accept or protect</strong></div>
+        <div><span>Goal</span><strong>Increase revenue</strong></div>
       </div>
     </div>
   </section>
@@ -46,41 +46,41 @@
   <section class="section compact">
     <div class="section-heading">
       <div>
-        <div class="eyebrow">PRODUCT ARCHITECTURE</div>
-        <h2>Four separate views, one research story.</h2>
+        <div class="eyebrow">HOW THE PROJECT WORKS</div>
+        <h2>Data → simulation → decision → revenue.</h2>
       </div>
-      <div class="status-badge"><i></i> MVP data is still synthetic</div>
+      <div class="status-badge ready"><i></i> DB1C market data + modeled booking demand</div>
     </div>
     <div class="card-grid">
       <article class="card feature">
-        <div class="number">01</div><h3>Market focus</h3>
-        <p>Understand the commercial problem we are solving, the decision boundary, what is observable, and what must be modeled.</p>
-        <a class="card-link" href="market.html">Read the market thesis →</a>
+        <div class="number">01</div><h3>Understand the problem</h3>
+        <p>See why an airline cannot judge a booking only by the fare offered today.</p>
+        <a class="card-link" href="market.html">Read the problem →</a>
       </article>
       <article class="card">
-        <div class="number">02</div><h3>Data explorer</h3>
-        <p>Inspect the route scenarios currently committed to the repository and clearly separate current demo data from future DB1C observations.</p>
-        <a class="card-link" href="data.html">Explore current data →</a>
+        <div class="number">02</div><h3>Explore the market</h3>
+        <p>Use observed fares, passenger volume, route trends, and competition context to choose where to focus.</p>
+        <a class="card-link" href="data.html">Explore market data →</a>
       </article>
       <article class="card">
-        <div class="number">03</div><h3>Digital twin</h3>
-        <p>Visualize the synthetic booking process we will calibrate to observed market data before testing Littlewood, EMSR, and bid-price policies.</p>
-        <a class="card-link" href="twin.html">Run the preview →</a>
+        <div class="number">03</div><h3>Test decisions</h3>
+        <p>Simulate uncertain booking requests and compare seat-control policies on the same demand.</p>
+        <a class="card-link" href="twin.html">Open booking simulator →</a>
       </article>
     </div>
   </section>
 
   <section class="section">
-    <div class="eyebrow">RESEARCH LOOP</div>
-    <h2>Observe what exists. Generate what is missing. Optimize the decision.</h2>
+    <div class="eyebrow">DECISION PIPELINE</div>
+    <h2>One clear path from public data to an operations-research decision.</h2>
     <div class="flow">
-      <div class="flow-step"><span>01 · OBSERVE</span><strong>Market evidence</strong><p>DB1C fares, passenger volume, carriers, itinerary structure, purchase-window mix.</p></div>
-      <div class="flow-step"><span>02 · CALIBRATE</span><strong>Demand model</strong><p>Translate market evidence into a transparent booking-arrival process.</p></div>
-      <div class="flow-step"><span>03 · SIMULATE</span><strong>Digital twin</strong><p>Replay thousands of possible booking histories under identical random demand.</p></div>
-      <div class="flow-step"><span>04 · CONTROL</span><strong>RM policy</strong><p>Compare open sales, protection levels, EMSR, dynamic programming, and later network controls.</p></div>
+      <div class="flow-step"><span>01 · OBSERVE</span><strong>Market data</strong><p>Measure fares, passenger volume, route trends, and competition from BTS DB1C.</p></div>
+      <div class="flow-step"><span>02 · MODEL</span><strong>Booking demand</strong><p>Turn market observations into explicit assumptions about when customers arrive and what they pay.</p></div>
+      <div class="flow-step"><span>03 · SIMULATE</span><strong>Possible futures</strong><p>Generate repeatable booking streams so every policy faces the same uncertainty.</p></div>
+      <div class="flow-step"><span>04 · OPTIMIZE</span><strong>Seat control</strong><p>Compare simple selling rules with revenue-management policies and measure the revenue difference.</p></div>
     </div>
   </section>
 </main>
-<footer><div><strong>AeroYield</strong> · Operations Research Portfolio Project</div><div>Market data layer designed for U.S. DOT / BTS DB1C.</div></footer>
+<footer><div><strong>AeroYield</strong> · Operations Research Portfolio Project</div><div>Observed U.S. airline market data is kept separate from modeled booking assumptions.</div></footer>
 </body>
 </html>
