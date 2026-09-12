@@ -1,160 +1,165 @@
+const AY = window.AeroYieldData;
+const SIM = window.AeroYieldSimulation;
+
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
-const state = { markets: [], market: null, day: 180, bookings: 0, revenue: 0, rejected: 0, history: [], timer: null, seed: 123456789 };
+const percent = new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 1 });
+const number = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
+const state = { markets: [], market: null, result: null };
 
 async function loadMarkets() {
-  const real = await fetch('data/market_summary.json');
-  if (real.ok) return real.json();
-
-  const demo = await fetch('data/demo_markets.json');
-  if (!demo.ok) throw new Error('Could not load market data.');
-  return demo.json();
+  const loaded = await AY.loadMarkets();
+  return loaded.markets;
 }
 
-function rand() {
-  state.seed = (1664525 * state.seed + 1013904223) >>> 0;
-  return state.seed / 4294967296;
+function policyLabel(key) {
+  return { open: 'Open Sales', emsr: 'EMSR-b', dp: 'Dynamic Programming', clairvoyant: 'Clairvoyant' }[key] || key;
 }
 
-function poisson(lambda) {
-  if (lambda <= 0) return 0;
-  const L = Math.exp(-lambda);
-  let k = 0, p = 1;
-  do { k += 1; p *= rand(); } while (p > L && k < 40);
-  return k - 1;
+function averageLift(summary, baseline) {
+  return baseline.averageRevenue ? summary.averageRevenue / baseline.averageRevenue - 1 : 0;
 }
 
-function classMix(day, m) {
-  const progress = 1 - day / 180;
-  const saverWeight = Math.max(.10, .70 - .55 * progress);
-  const mainWeight = .23 + .17 * progress;
-  const flexWeight = .07 + .38 * progress;
-  const total = saverWeight + mainWeight + flexWeight;
-  const r = rand() * total;
-  if (r < saverWeight) return { name:'Saver', fare:m.saverFare };
-  if (r < saverWeight + mainWeight) return { name:'Main', fare:m.mainFare };
-  return { name:'Flex', fare:m.flexFare };
-}
-
-function dailyLambda(day, m) {
-  const totalDemand = m.saverDemand + m.mainDemand + m.flexDemand;
-  const progress = 1 - day / 180;
-  const shape = .35 + 1.7 * Math.pow(progress, 2.2);
-  return Math.min(4.5, totalDemand / 180 * shape);
-}
-
-function shouldAccept(fc) {
-  const remaining = Math.max(0, state.market.capacity - state.bookings);
-  if (remaining <= 0) return false;
-  const policy = document.getElementById('policySelect').value;
-  if (policy === 'open') return true;
-  const protect = Number(document.getElementById('premiumProtect').value || 0);
-  if (fc.name === 'Saver' && remaining <= protect) return false;
-  return true;
-}
-
-function updateEvent(fc, accepted) {
-  const strip = document.getElementById('eventStrip');
-  strip.classList.remove('accept','reject');
-  strip.classList.add(accepted ? 'accept' : 'reject');
-  document.getElementById('eventMain').textContent = `${fc.name} request at ${money.format(fc.fare)}`;
-  document.getElementById('eventDecision').textContent = accepted ? 'ACCEPTED' : 'PROTECTED';
-}
-
-function stepDay() {
-  if (state.day < 0) { stopSimulation('Departure reached'); return; }
-  const arrivals = poisson(dailyLambda(state.day, state.market));
-  let latest = null;
-  for (let i = 0; i < arrivals; i++) {
-    const fc = classMix(state.day, state.market);
-    const accepted = shouldAccept(fc);
-    if (accepted) { state.bookings += 1; state.revenue += fc.fare; }
-    else { state.rejected += 1; }
-    latest = { fc, accepted };
+function setRevenueBars(result) {
+  const summaries = result.summaries;
+  const max = Math.max(...Object.values(summaries).map(s => s.averageRevenue), 1);
+  for (const key of ['open', 'emsr', 'dp', 'clairvoyant']) {
+    const prefix = key === 'clairvoyant' ? 'clair' : key;
+    document.getElementById(`${prefix}Revenue`).textContent = money.format(summaries[key].averageRevenue);
+    document.getElementById(`${prefix}RevenueBar`).style.width = `${100 * summaries[key].averageRevenue / max}%`;
   }
-  if (latest) updateEvent(latest.fc, latest.accepted);
-  state.history.push({ day: state.day, bookings: state.bookings, revenue: state.revenue });
-  render();
-  state.day -= 1;
+
+  const deployable = ['open', 'emsr', 'dp'].sort((a, b) => summaries[b].averageRevenue - summaries[a].averageRevenue);
+  const best = deployable[0];
+  const lift = averageLift(summaries[best], summaries.open);
+  document.getElementById('bestPolicy').textContent = policyLabel(best);
+  document.getElementById('bestLift').textContent = best === 'open' ? 'Baseline is best' : `${lift >= 0 ? '+' : ''}${percent.format(lift)} vs Open`;
 }
 
-function renderChart() {
-  const svg = document.getElementById('bookingChart');
-  const W=760,H=260,L=44,R=20,T=18,B=34;
-  let html='';
-  for(let i=0;i<=4;i++){
-    const yy=T+i*(H-T-B)/4;
-    html += `<line class="line-grid" x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}"></line>`;
+function renderPolicyTable(result) {
+  const summaries = result.summaries;
+  const rows = ['open', 'emsr', 'dp', 'clairvoyant'];
+  document.getElementById('policyTableBody').innerHTML = rows.map(key => {
+    const s = summaries[key];
+    const lift = averageLift(s, summaries.open);
+    const liftText = key === 'open' ? 'Baseline' : `${lift >= 0 ? '+' : ''}${percent.format(lift)}`;
+    return `<tr>
+      <td><strong>${policyLabel(key)}</strong></td>
+      <td>${money.format(s.averageRevenue)}</td>
+      <td>${liftText}</td>
+      <td>${percent.format(s.averageLoadFactor)}</td>
+      <td>${number.format(s.averageRejected)}</td>
+      <td>${number.format(s.averageEmptySeats)}</td>
+      <td>${money.format(s.averageAcceptedFare)}</td>
+      <td>${key === 'clairvoyant' ? '—' : money.format(s.averageRegret)}</td>
+    </tr>`;
+  }).join('');
+}
+
+function renderDistribution(result) {
+  const svg = document.getElementById('distributionChart');
+  const rows = ['open', 'emsr', 'dp', 'clairvoyant'];
+  const summaries = result.summaries;
+  const min = Math.min(...rows.map(key => summaries[key].p10));
+  const max = Math.max(...rows.map(key => summaries[key].p90));
+  const W = 900, H = 330, L = 155, R = 35, T = 30, B = 54;
+  const x = value => L + (value - min) / Math.max(max - min, 1) * (W - L - R);
+  let html = '';
+
+  for (let i = 0; i <= 4; i++) {
+    const value = min + i * (max - min) / 4;
+    const xx = x(value);
+    html += `<line class="scatter-grid" x1="${xx}" y1="${T}" x2="${xx}" y2="${H - B}"></line><text class="scatter-label" x="${xx}" y="${H - 22}" text-anchor="middle">${money.format(value)}</text>`;
   }
-  html += `<text class="line-label" x="${L}" y="${H-10}">D-180</text><text class="line-label" x="${W-R}" y="${H-10}" text-anchor="end">Departure</text>`;
-  if (state.history.length > 1) {
-    const maxBookings = Math.max(state.market.capacity, ...state.history.map(h=>h.bookings),1);
-    const maxRevenue = Math.max(...state.history.map(h=>h.revenue),1);
-    const x = d => L + (180-d)/180*(W-L-R);
-    const yB = v => H-B - v/maxBookings*(H-T-B);
-    const yR = v => H-B - v/maxRevenue*(H-T-B);
-    const bookingsPath = state.history.map((h,i)=>`${i?'L':'M'}${x(h.day).toFixed(1)},${yB(h.bookings).toFixed(1)}`).join(' ');
-    const revenuePath = state.history.map((h,i)=>`${i?'L':'M'}${x(h.day).toFixed(1)},${yR(h.revenue).toFixed(1)}`).join(' ');
-    html += `<path class="line-path" d="${bookingsPath}"></path><path class="line-path revenue" d="${revenuePath}"></path>`;
+
+  rows.forEach((key, i) => {
+    const y = T + 35 + i * 56;
+    const s = summaries[key];
+    const dash = key === 'clairvoyant' ? '6 5' : '0';
+    html += `<text class="scatter-label" x="8" y="${y + 4}">${policyLabel(key)}</text>`;
+    html += `<line x1="${x(s.p10)}" y1="${y}" x2="${x(s.p90)}" y2="${y}" stroke="#1f7a8c" stroke-width="7" stroke-linecap="round" stroke-dasharray="${dash}"></line>`;
+    html += `<circle cx="${x(s.averageRevenue)}" cy="${y}" r="7" fill="#c7922b" stroke="white" stroke-width="2"><title>Mean ${money.format(s.averageRevenue)} · P10 ${money.format(s.p10)} · P90 ${money.format(s.p90)}</title></circle>`;
+  });
+  svg.innerHTML = html;
+}
+
+function renderRepresentative(result) {
+  const svg = document.getElementById('representativeChart');
+  const histories = {
+    open: result.representative.open.history || [],
+    emsr: result.representative.emsr.history || [],
+    dp: result.representative.dp.history || [],
+  };
+  const all = Object.values(histories).flatMap(rows => rows.map(row => row.revenue));
+  const max = Math.max(...all, 1);
+  const W = 900, H = 330, L = 72, R = 34, T = 26, B = 56;
+  const x = row => L + (SIM.DAYS - row.day) / SIM.DAYS * (W - L - R);
+  const y = value => H - B - value / max * (H - T - B);
+  let html = '';
+
+  for (let i = 0; i <= 4; i++) {
+    const yy = T + i * (H - T - B) / 4;
+    const value = max - i * max / 4;
+    html += `<line class="scatter-grid" x1="${L}" y1="${yy}" x2="${W - R}" y2="${yy}"></line><text class="scatter-label" x="5" y="${yy + 4}">${money.format(value)}</text>`;
+  }
+  html += `<text class="scatter-label" x="${L}" y="${H - 20}">D-180</text><text class="scatter-label" x="${W - R}" y="${H - 20}" text-anchor="end">Departure</text>`;
+  const styles = { open: ['#52606d', '0'], emsr: ['#1f7a8c', '0'], dp: ['#c7922b', '0'] };
+  for (const key of ['open', 'emsr', 'dp']) {
+    const rows = histories[key];
+    if (!rows.length) continue;
+    const [stroke, dash] = styles[key];
+    const points = rows.map(row => `${x(row)},${y(row.revenue)}`).join(' ');
+    html += `<polyline points="${points}" fill="none" stroke="${stroke}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${dash}"></polyline>`;
+    const last = rows[rows.length - 1];
+    html += `<text x="${W - R - 4}" y="${Math.max(T + 12, y(last.revenue) - 8)}" text-anchor="end" font-size="11" fill="${stroke}">${policyLabel(key)} ${money.format(last.revenue)}</text>`;
   }
   svg.innerHTML = html;
 }
 
-function render() {
-  const remaining = Math.max(0, state.market.capacity - state.bookings);
-  const load = state.market.capacity ? 100*state.bookings/state.market.capacity : 0;
-  document.getElementById('twinRouteLabel').textContent = state.market.route;
-  document.getElementById('twinDay').textContent = state.day >= 0 ? `D-${state.day}` : 'Departure';
-  document.getElementById('twinBookings').textContent = state.bookings;
-  document.getElementById('twinRemaining').textContent = remaining;
-  document.getElementById('twinRevenue').textContent = money.format(state.revenue);
-  document.getElementById('twinRejected').textContent = state.rejected;
-  document.getElementById('twinLoad').textContent = `${load.toFixed(1)}%`;
-  document.getElementById('capacityUsed').style.width = `${Math.min(100,load)}%`;
-  renderChart();
-}
+function runExperiment() {
+  const button = document.getElementById('runExperiment');
+  const status = document.getElementById('simStatus');
+  button.disabled = true;
+  status.innerHTML = '<i></i> Running';
 
-function stopSimulation(label='Paused') {
-  if (state.timer) clearInterval(state.timer);
-  state.timer = null;
-  document.getElementById('runTwin').textContent = state.day < 0 ? 'Run again' : 'Run preview';
-  document.getElementById('simulationStatus').textContent = label;
-}
-
-function startSimulation() {
-  if (state.day < 0) resetSimulation();
-  if (state.timer) return;
-  document.getElementById('runTwin').textContent = 'Running…';
-  document.getElementById('simulationStatus').textContent = 'Simulating';
-  state.timer = setInterval(() => {
-    for (let i=0;i<3;i++) stepDay();
-    if (state.day < 0) stopSimulation('Complete');
-  }, 70);
-}
-
-function resetSimulation() {
-  stopSimulation('Ready');
-  state.day = 180; state.bookings = 0; state.revenue = 0; state.rejected = 0; state.history = []; state.seed = 123456789;
-  document.getElementById('eventStrip').classList.remove('accept','reject');
-  document.getElementById('eventMain').textContent = 'Run the preview to generate bookings.';
-  document.getElementById('eventDecision').textContent = 'WAITING';
-  render();
+  try {
+    const capacity = Math.max(1, Math.floor(Number(document.getElementById('simCapacity').value || state.market.capacity || 180)));
+    const replications = Math.min(5000, Math.max(10, Math.floor(Number(document.getElementById('simReplications').value || 500))));
+    const seed = Math.max(1, Math.floor(Number(document.getElementById('simSeed').value || 20260912)));
+    const result = SIM.runExperiment({ market: state.market, capacity, replications, seed });
+    state.result = result;
+    setRevenueBars(result);
+    renderPolicyTable(result);
+    renderDistribution(result);
+    renderRepresentative(result);
+    status.classList.add('ready');
+    status.innerHTML = `<i></i> ${replications.toLocaleString()} seeded replications complete`;
+  } catch (error) {
+    console.error(error);
+    status.classList.remove('ready');
+    status.innerHTML = `<i></i> ${error.message}`;
+  } finally {
+    button.disabled = false;
+  }
 }
 
 function setMarket(index) {
   state.market = state.markets[index];
-  resetSimulation();
+  document.getElementById('simCapacity').value = state.market.capacity || 180;
 }
 
 async function init() {
   state.markets = await loadMarkets();
-  const select = document.getElementById('twinRoute');
-  select.innerHTML = state.markets.map((m,i)=>`<option value="${i}">${m.route}</option>`).join('');
-  select.addEventListener('change',()=>setMarket(Number(select.value)));
-  document.getElementById('premiumProtect').addEventListener('input',e=>document.getElementById('protectValue').textContent=e.target.value);
-  document.getElementById('runTwin').addEventListener('click',startSimulation);
-  document.getElementById('resetTwin').addEventListener('click',resetSimulation);
-  document.getElementById('policySelect').addEventListener('change',resetSimulation);
+  const select = document.getElementById('simRoute');
+  select.innerHTML = state.markets.map((m, i) => `<option value="${i}">${m.route || `${m.origin} → ${m.destination}`}</option>`).join('');
+  select.addEventListener('change', () => setMarket(Number(select.value)));
+  document.getElementById('runExperiment').addEventListener('click', runExperiment);
   setMarket(0);
+  runExperiment();
 }
 
-init().catch(console.error);
+init().catch(error => {
+  console.error(error);
+  const status = document.getElementById('simStatus');
+  status.classList.remove('ready');
+  status.innerHTML = '<i></i> Could not initialize simulator';
+});

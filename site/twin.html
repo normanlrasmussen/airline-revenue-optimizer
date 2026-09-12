@@ -3,82 +3,71 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Simulate an airline booking horizon and compare seat-control policies." />
+  <meta name="description" content="Run seeded airline booking simulations and compare revenue-management policies on identical demand streams." />
   <title>Booking Simulator | AeroYield</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="analyst.css" />
 </head>
 <body>
 <header class="topbar">
   <a class="brand" href="index.html"><span class="brand-mark">AY</span><span>AeroYield</span></a>
-  <nav aria-label="Primary navigation">
-    <a href="index.html">Home</a><a href="market.html">The Problem</a><a href="data.html">Market Data</a><a class="active" href="twin.html">Booking Simulator</a><a class="nav-cta" href="optimizer.html">Revenue Optimizer</a>
-  </nav>
+  <nav aria-label="Primary navigation"><a href="index.html">Home</a><a href="market.html">The Problem</a><a href="data.html">Market Data</a><a class="active" href="twin.html">Booking Simulator</a><a class="nav-cta" href="optimizer.html">Revenue Optimizer</a></nav>
 </header>
 <main>
   <section class="page-hero">
     <div class="eyebrow">BOOKING SIMULATOR</div>
-    <h1>See uncertain demand arrive one request at a time.</h1>
-    <p class="lead">Public market data shows what travelers paid, but not the requests an airline never accepted. This simulator creates a repeatable booking stream so seat-control policies can be tested on the same possible future.</p>
+    <h1>Compare seat-control policies on the same uncertain demand.</h1>
+    <p class="lead">Each replication generates one booking stream and gives that exact stream to every policy. Repeating the experiment isolates policy quality from random luck and shows the revenue distribution, not just one outcome.</p>
   </section>
 
   <section class="section compact">
-    <div class="architecture">
-      <div class="arch-node"><span>INPUT</span><strong>Route data</strong><p>Observed fare and passenger context.</p></div>
-      <div class="arch-node"><span>MODEL</span><strong>Booking demand</strong><p>Assumptions about request timing and fare mix.</p></div>
-      <div class="arch-node"><span>GENERATE</span><strong>Requests</strong><p>Customer arrivals through the booking horizon.</p></div>
-      <div class="arch-node"><span>DECIDE</span><strong>Seat control</strong><p>Accept the request or save capacity.</p></div>
-      <div class="arch-node"><span>MEASURE</span><strong>Result</strong><p>Revenue, load factor, rejected demand, and empty seats.</p></div>
-    </div>
+    <div class="callout"><strong>Common random numbers:</strong> Open Sales, EMSR-b, Dynamic Programming, and the clairvoyant benchmark all see identical requests within each replication. Differences in results therefore come from the policy, not different simulated customers.</div>
   </section>
 
   <section class="section">
-    <div class="section-heading">
-      <div><div class="eyebrow">ONE SIMULATED FLIGHT</div><h2>Watch the booking horizon evolve.</h2></div>
-      <div class="status-badge"><i></i> modeled demand, not observed bookings</div>
-    </div>
-    <div class="twin-layout">
-      <aside class="twin-controls">
-        <label class="field-label" for="twinRoute">Route scenario</label>
-        <select id="twinRoute" class="select"></select>
-        <label class="field-label" for="policySelect">Seat-control policy</label>
-        <select id="policySelect" class="select">
-          <option value="open">Accept until full</option>
-          <option value="protect">Save seats for higher fares</option>
-        </select>
-        <label class="field-label" for="premiumProtect">Seats protected for higher fares</label>
-        <div class="range-row"><input id="premiumProtect" type="range" min="0" max="60" step="1" value="25" /><strong id="protectValue">25</strong></div>
-        <p class="fine-print">Under the protection policy, Saver requests are rejected once remaining capacity reaches this number. Main and Flex requests stay open.</p>
-        <div class="twin-actions">
-          <button id="runTwin" class="button primary" type="button">Run simulation</button>
-          <button id="resetTwin" class="button light" type="button">Reset</button>
+    <div class="section-heading"><div><div class="eyebrow">EXPERIMENT SETUP</div><h2>Choose a route and run repeated possible futures.</h2></div><div id="simStatus" class="status-badge ready"><i></i> Ready</div></div>
+    <div class="optimizer-grid">
+      <div class="controls-card">
+        <label class="field-label" for="simRoute">Route scenario</label><select id="simRoute" class="select"></select>
+        <div class="capacity-control"><label for="simCapacity">Aircraft seats</label><input id="simCapacity" type="number" min="1" max="400" step="1" /></div>
+        <div class="capacity-control"><label for="simReplications">Replications</label><input id="simReplications" type="number" min="10" max="5000" step="10" value="500" /></div>
+        <div class="capacity-control"><label for="simSeed">Base random seed</label><input id="simSeed" type="number" min="1" step="1" value="20260912" /></div>
+        <button id="runExperiment" class="button primary full" type="button" style="margin-top:20px">Run policy experiment</button>
+        <p class="fine-print">The booking horizon is split into four request opportunities per day. Class-specific arrival probabilities are calibrated so expected total Saver/Main/Flex demand matches the modeled route inputs.</p>
+      </div>
+      <div class="result-card">
+        <div class="result-topline"><div><span>Best non-clairvoyant policy</span><strong id="bestPolicy">—</strong></div><div class="lift-pill" id="bestLift">—</div></div>
+        <div class="comparison">
+          <div class="comparison-row"><span>Open Sales</span><div class="bar-track"><div id="openRevenueBar" class="bar baseline"></div></div><strong id="openRevenue">—</strong></div>
+          <div class="comparison-row"><span>EMSR-b</span><div class="bar-track"><div id="emsrRevenueBar" class="bar optimized"></div></div><strong id="emsrRevenue">—</strong></div>
+          <div class="comparison-row"><span>Dynamic Programming</span><div class="bar-track"><div id="dpRevenueBar" class="bar optimized"></div></div><strong id="dpRevenue">—</strong></div>
+          <div class="comparison-row"><span>Clairvoyant upper bound</span><div class="bar-track"><div id="clairRevenueBar" class="bar optimized"></div></div><strong id="clairRevenue">—</strong></div>
         </div>
-      </aside>
-
-      <div class="twin-main">
-        <section class="twin-console" aria-live="polite">
-          <div class="twin-top"><div><div class="panel-label">SIMULATED DEPARTURE</div><div id="twinRouteLabel" class="twin-route">—</div></div><div id="twinDay" class="twin-day">D-180</div></div>
-          <div class="twin-kpis">
-            <div><span>Bookings accepted</span><strong id="twinBookings">0</strong></div>
-            <div><span>Seats remaining</span><strong id="twinRemaining">—</strong></div>
-            <div><span>Ticket revenue</span><strong id="twinRevenue">$0</strong></div>
-            <div><span>Requests rejected</span><strong id="twinRejected">0</strong></div>
-          </div>
-          <div class="capacity-meter"><div class="capacity-label"><span>Aircraft load factor</span><span id="twinLoad">0%</span></div><div class="capacity-track"><div id="capacityUsed" class="capacity-used"></div></div></div>
-          <div id="eventStrip" class="event-strip"><div><div class="event-label">Latest request</div><div id="eventMain" class="event-main">Run the simulation to generate bookings.</div></div><div id="eventDecision" class="event-decision">WAITING</div></div>
-        </section>
-
-        <section class="booking-chart">
-          <div class="chart-title"><div><strong>Booking curve</strong><br><span>Cumulative accepted bookings and scaled revenue through the horizon</span></div><span id="simulationStatus">Ready</span></div>
-          <svg id="bookingChart" class="booking-svg" viewBox="0 0 760 260" role="img" aria-label="Simulated cumulative bookings across days to departure"></svg>
-          <div class="legend-row"><span class="legend-chip">Bookings</span><span class="legend-chip revenue">Revenue index</span></div>
-        </section>
+        <div class="fine-print">Average revenue across all replications. Clairvoyant knows the realized future and is not deployable.</div>
       </div>
     </div>
   </section>
 
-  <section class="section compact"><div class="callout"><strong>Why simulate?</strong> Revenue-management policies should be compared on the same random booking streams. Later steps on this page turn this single-flight preview into repeated policy experiments with common random numbers.</div></section>
+  <section class="section">
+    <div class="section-heading"><div><div class="eyebrow">POLICY SCORECARD</div><h2>Revenue is only one part of the outcome.</h2><p class="section-copy">Compare how each policy uses capacity, rejects demand, and approaches the perfect-information upper bound.</p></div></div>
+    <article class="table-card"><div class="table-scroll"><table class="analyst-table"><thead><tr><th>Policy</th><th>Avg revenue</th><th>vs Open</th><th>Load factor</th><th>Rejected requests</th><th>Empty seats</th><th>Avg accepted fare</th><th>Regret vs clairvoyant</th></tr></thead><tbody id="policyTableBody"></tbody></table></div></article>
+  </section>
+
+  <section class="section">
+    <div class="section-heading"><div><div class="eyebrow">UNCERTAINTY</div><h2>How variable is revenue across possible futures?</h2></div></div>
+    <article class="chart-card"><div class="chart-title"><div><strong>Revenue distribution by policy</strong><br><span>10th–90th percentile range with mean marker</span></div><span>Simulated revenue</span></div><div class="trend-wrap"><svg id="distributionChart" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Revenue distributions by policy"></svg></div></article>
+  </section>
+
+  <section class="section">
+    <div class="section-heading"><div><div class="eyebrow">ONE REPRESENTATIVE FUTURE</div><h2>See how revenue accumulates through the booking horizon.</h2><p class="section-copy">This uses the first seeded demand stream from the experiment. All three deployable policies face exactly the same requests.</p></div></div>
+    <article class="chart-card"><div class="chart-title"><div><strong>Cumulative ticket revenue</strong><br><span>Open Sales vs EMSR-b vs Dynamic Programming</span></div><span>D-180 → departure</span></div><div class="trend-wrap"><svg id="representativeChart" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Representative cumulative revenue by policy"></svg></div></article>
+  </section>
+
+  <section class="section compact"><div class="callout"><strong>Model boundary:</strong> these are synthetic booking requests calibrated to route-level demand assumptions, not observed airline reservation records. The DP is exact for the discretized one-request-per-opportunity model used by this simulator; EMSR-b uses its standard normal approximation to aggregated higher-fare demand.</div></section>
 </main>
-<footer><div><strong>AeroYield</strong> · Booking Simulator</div><div>Modeled booking demand anchored to observed market context.</div></footer>
+<footer><div><strong>AeroYield</strong> · Booking Simulator</div><div>Seeded common-random-number policy experiments.</div></footer>
+<script src="analytics.js"></script>
+<script src="rm.js"></script>
 <script src="twin.js"></script>
 </body>
 </html>
