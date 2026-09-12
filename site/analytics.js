@@ -1,6 +1,7 @@
 (() => {
   const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
   const integer = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+  const decimal = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
   const compactMoney = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', notation: 'compact', maximumFractionDigits: 1 });
   const percent = new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 1 });
 
@@ -13,6 +14,24 @@
     const passengers = numberOrNull(m.passengers) ?? 0;
     const avgFare = numberOrNull(m.avgFare) ?? 0;
     const avgDistance = numberOrNull(m.avgDistance);
+    const topCarriers = Array.isArray(m.topCarriers) ? m.topCarriers.map(row => ({
+      carrier: String(row.carrier || 'Unknown'),
+      passengers: numberOrNull(row.passengers) ?? 0,
+      share: numberOrNull(row.share) ?? 0,
+    })) : [];
+    const monthly = Array.isArray(m.monthly) ? m.monthly.map(point => {
+      const pointFare = numberOrNull(point.avgFare) ?? 0;
+      const pointDistance = numberOrNull(point.avgDistance) ?? avgDistance;
+      return {
+        ...point,
+        passengers: numberOrNull(point.passengers) ?? 0,
+        avgFare: pointFare,
+        avgDistance: pointDistance,
+        yieldPerMile: pointDistance && pointDistance > 0 ? pointFare / pointDistance : null,
+        records: numberOrNull(point.records) ?? 0,
+        carriers: numberOrNull(point.carriers) ?? 0,
+      };
+    }) : [];
     return {
       ...m,
       passengers,
@@ -22,14 +41,12 @@
       monthsObserved: numberOrNull(m.monthsObserved),
       revenueProxy: passengers * avgFare,
       avgDistance,
+      distanceCoverage: numberOrNull(m.distanceCoverage) ?? 0,
       yieldPerMile: avgDistance && avgDistance > 0 ? avgFare / avgDistance : null,
-      monthly: Array.isArray(m.monthly) ? m.monthly.map(point => ({
-        ...point,
-        passengers: numberOrNull(point.passengers) ?? 0,
-        avgFare: numberOrNull(point.avgFare) ?? 0,
-        records: numberOrNull(point.records) ?? 0,
-        carriers: numberOrNull(point.carriers) ?? 0,
-      })) : [],
+      topCarriers,
+      topCarrierShare: topCarriers[0]?.share ?? null,
+      carrierCoverage: numberOrNull(m.carrierCoverage) ?? 0,
+      monthly,
     };
   }
 
@@ -38,7 +55,6 @@
       { path: 'data/market_summary.json', source: 'DB1C-derived market summary' },
       { path: 'data/demo_markets.json', source: 'demo scenarios' },
     ];
-
     for (const candidate of candidates) {
       try {
         const response = await fetch(candidate.path);
@@ -71,7 +87,7 @@
 
   function percentileRank(values, value) {
     const clean = values.filter(Number.isFinite);
-    if (!clean.length) return 0;
+    if (!clean.length || !Number.isFinite(value)) return 0;
     return clean.filter(v => v <= value).length / clean.length;
   }
 
@@ -88,17 +104,69 @@
     return `route.html?route=${encodeURIComponent(routeKey(m))}`;
   }
 
+  function standardDeviation(values) {
+    const clean = values.filter(Number.isFinite);
+    if (clean.length < 2) return 0;
+    const mean = clean.reduce((sum, value) => sum + value, 0) / clean.length;
+    return Math.sqrt(clean.reduce((sum, value) => sum + (value - mean) ** 2, 0) / clean.length);
+  }
+
+  function fareVolatility(market) {
+    const fares = (market.monthly || []).map(point => point.avgFare).filter(value => Number.isFinite(value) && value > 0);
+    if (fares.length < 2) return 0;
+    const mean = fares.reduce((sum, value) => sum + value, 0) / fares.length;
+    return mean ? standardDeviation(fares) / mean : 0;
+  }
+
+  function opportunityScore(markets, market) {
+    const values = markets.map(m => m.revenueProxy);
+    const volumes = markets.map(m => m.passengers);
+    const volatilities = markets.map(fareVolatility);
+    const carrierCounts = markets.map(m => m.carriers);
+    const valuePct = percentileRank(values, market.revenueProxy);
+    const volumePct = percentileRank(volumes, market.passengers);
+    const volatilityPct = percentileRank(volatilities, fareVolatility(market));
+    const carrierPct = percentileRank(carrierCounts, market.carriers);
+    return Math.round(100 * (0.50 * valuePct + 0.25 * volumePct + 0.15 * volatilityPct + 0.10 * carrierPct));
+  }
+
+  function networkMonthly(markets) {
+    const periods = new Map();
+    markets.forEach(market => {
+      (market.monthly || []).forEach(point => {
+        if (!point.month) return;
+        const row = periods.get(point.month) || { month: point.month, passengers: 0, farePassengers: 0, passengerMiles: 0 };
+        row.passengers += point.passengers;
+        row.farePassengers += point.passengers * point.avgFare;
+        const distance = point.avgDistance || market.avgDistance;
+        if (distance && distance > 0) row.passengerMiles += point.passengers * distance;
+        periods.set(point.month, row);
+      });
+    });
+    return [...periods.values()].sort((a, b) => a.month.localeCompare(b.month)).map(row => ({
+      month: row.month,
+      passengers: row.passengers,
+      avgFare: row.passengers ? row.farePassengers / row.passengers : 0,
+      yieldPerMile: row.passengerMiles ? row.farePassengers / row.passengerMiles : null,
+    }));
+  }
+
   function networkSummary(markets) {
     const totalPassengers = markets.reduce((sum, m) => sum + m.passengers, 0);
     const totalRevenueProxy = markets.reduce((sum, m) => sum + m.revenueProxy, 0);
+    const passengerMiles = markets.reduce((sum, m) => sum + (m.avgDistance ? m.passengers * m.avgDistance : 0), 0);
+    const distancePassengers = markets.reduce((sum, m) => sum + (m.avgDistance ? m.passengers : 0), 0);
     const sortedByPassengers = markets.slice().sort((a, b) => b.passengers - a.passengers);
     const sortedByRevenue = markets.slice().sort((a, b) => b.revenueProxy - a.revenueProxy);
+    const sortedByOpportunity = markets.slice().sort((a, b) => opportunityScore(markets, b) - opportunityScore(markets, a));
     const top10Passengers = sortedByPassengers.slice(0, 10).reduce((sum, m) => sum + m.passengers, 0);
     return {
       routeCount: markets.length,
       totalPassengers,
       totalRevenueProxy,
       weightedFare: totalPassengers ? totalRevenueProxy / totalPassengers : 0,
+      weightedDistance: distancePassengers ? passengerMiles / distancePassengers : null,
+      networkYield: passengerMiles ? totalRevenueProxy / passengerMiles : null,
       medianFare: median(markets.map(m => m.avgFare)),
       fareQ1: quantile(markets.map(m => m.avgFare), 0.25),
       fareQ3: quantile(markets.map(m => m.avgFare), 0.75),
@@ -107,6 +175,7 @@
       top10PassengerShare: totalPassengers ? top10Passengers / totalPassengers : 0,
       topVolume: sortedByPassengers[0] || null,
       topRevenue: sortedByRevenue[0] || null,
+      topOpportunity: sortedByOpportunity[0] || null,
       monthsObserved: Math.max(...markets.map(m => m.monthsObserved || 0), 0),
     };
   }
@@ -125,8 +194,12 @@
     rankBy,
     routeKey,
     routeHref,
+    standardDeviation,
+    fareVolatility,
+    opportunityScore,
+    networkMonthly,
     networkSummary,
     signedPercent,
-    format: { money, integer, compactMoney, percent },
+    format: { money, integer, decimal, compactMoney, percent },
   };
 })();

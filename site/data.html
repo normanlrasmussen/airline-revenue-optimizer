@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Analyze AeroYield network fares, passenger volume, competition, and route-level revenue exposure." />
+  <meta name="description" content="Analyze AeroYield network fares, passengers, yield, competition, trends, and route-level opportunity." />
   <title>Market Data | AeroYield</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="analyst.css" />
@@ -18,8 +18,8 @@
 <main>
   <section class="page-hero analyst-hero">
     <div class="eyebrow">U.S. AIRLINE MARKET DATA</div>
-    <h1>Find the routes where revenue decisions matter most.</h1>
-    <p class="lead">Use observed passenger volume and fares to see which markets are large, expensive, competitive, or unusual. Then open a route to understand it before testing revenue-management policies.</p>
+    <h1>Find the routes where better seat decisions could matter most.</h1>
+    <p class="lead">Screen markets by passenger scale, ticket price, trend, competition, and distance-normalized yield when available. Then open a route to understand the commercial context before changing a revenue-management policy.</p>
     <div class="hero-actions">
       <a class="button primary" href="route.html">Inspect one route</a>
       <a class="button secondary" href="#routeTableSection">Browse all routes</a>
@@ -28,58 +28,47 @@
 
   <section class="section compact">
     <div class="section-heading">
-      <div>
-        <div class="eyebrow">NETWORK SNAPSHOT</div>
-        <h2>What matters at a glance?</h2>
-      </div>
+      <div><div class="eyebrow">NETWORK SNAPSHOT</div><h2>What matters at a glance?</h2></div>
       <div id="sourceBadge" class="status-badge ready"><i></i> Loading market summary</div>
     </div>
     <div class="kpi-grid">
       <article class="kpi-card"><span>Routes tracked</span><strong id="routeCount">—</strong><small>directional origin-destination markets</small></article>
-      <article class="kpi-card"><span>Observed passengers</span><strong id="totalPassengers">—</strong><small>DB1C sample passenger weight in committed extract</small></article>
-      <article class="kpi-card"><span>Average ticket price</span><strong id="weightedFare">—</strong><small>passenger-weighted network average fare</small></article>
-      <article class="kpi-card"><span>Estimated market value</span><strong id="revenueProxy">—</strong><small>fare × observed passengers, not accounting revenue</small></article>
+      <article class="kpi-card"><span>Observed passengers</span><strong id="totalPassengers">—</strong><small>passenger weight in the committed DB1C extract</small></article>
+      <article class="kpi-card"><span>Average ticket price</span><strong id="weightedFare">—</strong><small>passenger-weighted network average</small></article>
+      <article class="kpi-card"><span>Average yield</span><strong id="networkYield">—</strong><small id="networkYieldNote">fare per passenger-mile when distance is available</small></article>
     </div>
   </section>
 
   <section class="section compact">
-    <div class="section-heading">
-      <div>
-        <div class="eyebrow">ANALYST QUESTIONS</div>
-        <h2>Where should I look first?</h2>
-      </div>
-    </div>
+    <div class="section-heading"><div><div class="eyebrow">WHERE TO INVESTIGATE</div><h2>Prioritize commercially meaningful markets.</h2></div></div>
     <div class="analyst-question-grid">
-      <article class="insight-card">
-        <span class="insight-label">Concentration</span>
-        <strong id="top10Share">—</strong>
-        <p>of observed passenger volume sits in the ten largest routes in this extract.</p>
+      <article class="insight-card"><span class="insight-label">Largest market</span><strong id="largestRoute">—</strong><p id="largestRouteDetail">Highest observed passenger volume.</p></article>
+      <article class="insight-card"><span class="insight-label">Largest estimated market value</span><strong id="largestRevenueRoute">—</strong><p id="largestRevenueDetail">Average fare × observed passengers.</p></article>
+      <article class="insight-card"><span class="insight-label">Highest opportunity score</span><strong id="topOpportunityRoute">—</strong><p id="topOpportunityDetail">Prioritization score for where deeper analysis is most worthwhile.</p></article>
+      <article class="insight-card"><span class="insight-label">Top-10 traffic concentration</span><strong id="top10Share">—</strong><p>Share of observed network passengers in the ten largest routes.</p></article>
+    </div>
+    <div class="callout" style="margin-top:18px"><strong>Opportunity score:</strong> a screening score, not a revenue forecast. It weights estimated market value (50%), passenger scale (25%), monthly fare variability (15%), and reporting-carrier breadth (10%).</div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">
+      <div><div class="eyebrow">NETWORK TREND</div><h2>How has the observed market changed over time?</h2><p class="section-copy">Monthly DB1C aggregates reveal whether traffic and average ticket prices are stable, rising, or falling across the routes in the current extract.</p></div>
+    </div>
+    <div class="analyst-chart-grid">
+      <article class="chart-card">
+        <div class="chart-title"><div><strong>Observed passengers by month</strong><br><span>Sum across routes in the committed extract</span></div><span>Passengers</span></div>
+        <div class="trend-wrap"><svg id="networkPassengerTrend" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Network passengers by month"></svg></div>
       </article>
-      <article class="insight-card">
-        <span class="insight-label">Fare spread</span>
-        <strong id="fareIqr">—</strong>
-        <p>is the middle 50% range of route-average fares. Outliers are worth investigating.</p>
-      </article>
-      <article class="insight-card">
-        <span class="insight-label">Largest market</span>
-        <strong id="largestRoute">—</strong>
-        <p id="largestRouteDetail">Highest observed passenger volume in the current network extract.</p>
-      </article>
-      <article class="insight-card">
-        <span class="insight-label">Largest estimated market value</span>
-        <strong id="largestRevenueRoute">—</strong>
-        <p id="largestRevenueDetail">Highest fare × passenger value; a natural place to test revenue improvements.</p>
+      <article class="chart-card">
+        <div class="chart-title"><div><strong>Average ticket price by month</strong><br><span>Passenger-weighted average across routes</span></div><span>Fare</span></div>
+        <div class="trend-wrap"><svg id="networkFareTrend" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Network average fare by month"></svg></div>
       </article>
     </div>
   </section>
 
   <section class="section">
     <div class="section-heading">
-      <div>
-        <div class="eyebrow">NETWORK POSITIONING</div>
-        <h2>Passenger scale versus average fare.</h2>
-        <p class="section-copy">The dashed benchmarks split the network at median passenger volume and the passenger-weighted average fare. Markets in the upper-right combine both scale and high ticket prices.</p>
-      </div>
+      <div><div class="eyebrow">NETWORK POSITIONING</div><h2>Passenger scale versus average fare.</h2><p class="section-copy">The dashed benchmarks split the network at median passenger volume and the passenger-weighted average fare. Markets in the upper-right combine both scale and high ticket prices.</p></div>
     </div>
     <div class="analyst-chart-grid">
       <article class="chart-card">
@@ -87,7 +76,7 @@
         <div class="scatter-wrap"><svg id="networkScatter" class="scatter-svg analyst-scatter" viewBox="0 0 760 360" role="img" aria-label="Route average fare versus observed passenger volume"></svg></div>
       </article>
       <article class="chart-card">
-        <div class="chart-title"><div><strong>Where market value is concentrated</strong><br><span>Top routes by fare × observed passengers</span></div><span>Estimated market value</span></div>
+        <div class="chart-title"><div><strong>Where market value is concentrated</strong><br><span>Top routes by average fare × observed passengers</span></div><span>Estimated market value</span></div>
         <div id="revenueBars" class="bar-chart wide-bars"></div>
       </article>
     </div>
@@ -95,20 +84,16 @@
 
   <section id="routeTableSection" class="section">
     <div class="section-heading route-table-heading">
-      <div>
-        <div class="eyebrow">ROUTE SCREENER</div>
-        <h2>Find the market worth investigating.</h2>
-        <p class="section-copy">Search by airport or route, then rank markets by traffic, fare, estimated market value, or number of reporting carriers.</p>
-      </div>
+      <div><div class="eyebrow">ROUTE SCREENER</div><h2>Find the market worth investigating.</h2><p class="section-copy">Search by airport or route, then rank markets by commercial scale, yield, competition, or the combined opportunity score.</p></div>
       <div class="table-controls">
         <label><span>Search</span><input id="routeSearch" class="text-input" type="search" placeholder="LAX, JFK, LAX-JFK…" /></label>
-        <label><span>Rank by</span><select id="routeSort" class="select"><option value="revenue">Estimated market value</option><option value="passengers">Passengers</option><option value="fare">Average fare</option><option value="carriers">Carrier count</option></select></label>
+        <label><span>Rank by</span><select id="routeSort" class="select"><option value="opportunity">Opportunity score</option><option value="revenue">Estimated market value</option><option value="passengers">Passengers</option><option value="fare">Average fare</option><option value="yield">Yield</option><option value="carriers">Carrier count</option></select></label>
       </div>
     </div>
     <article class="table-card">
       <div class="table-scroll">
         <table class="analyst-table">
-          <thead><tr><th>#</th><th>Route</th><th>Passengers</th><th>Avg fare</th><th>vs network</th><th>Carriers</th><th>Fare × pax</th><th></th></tr></thead>
+          <thead><tr><th>#</th><th>Route</th><th>Passengers</th><th>Avg fare</th><th>Yield</th><th>Top carrier</th><th>Market value</th><th>Opportunity</th><th></th></tr></thead>
           <tbody id="routeTableBody"></tbody>
         </table>
       </div>
@@ -117,7 +102,7 @@
   </section>
 
   <section class="section compact">
-    <div class="callout"><strong>Data note:</strong> passenger counts and average fares come from the committed DB1C-derived route summary. Fare × passenger is a market-value proxy, not reported airline revenue. Later steps add distance-normalized yield and richer route diagnostics.</div>
+    <div class="callout"><strong>Observed vs. derived:</strong> fares, passengers, distance, and carrier identifiers come from the normalized DB1C extract when those fields are present. Yield, market value, carrier share, and opportunity score are derived analytics. Missing distance or carrier detail is shown as unavailable rather than estimated.</div>
   </section>
 </main>
 <footer><div><strong>AeroYield</strong> · Market Data</div><div>Observed market data is kept separate from modeled booking assumptions.</div></footer>

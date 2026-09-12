@@ -1,11 +1,22 @@
 const AY = window.AeroYieldData;
-const state = { markets: [], summary: null, source: '', isDemo: false, filter: '', sort: 'revenue' };
+const state = { markets: [], summary: null, source: '', isDemo: false, filter: '', sort: 'opportunity' };
 
 function metricValue(m, sort) {
   if (sort === 'passengers') return m.passengers;
   if (sort === 'fare') return m.avgFare;
+  if (sort === 'yield') return m.yieldPerMile ?? -1;
   if (sort === 'carriers') return m.carriers;
+  if (sort === 'opportunity') return AY.opportunityScore(state.markets, m);
   return m.revenueProxy;
+}
+
+function formatYield(value) {
+  return Number.isFinite(value) ? `$${value.toFixed(3)}` : '—';
+}
+
+function formatMonth(period) {
+  const [year, month] = String(period).split('-');
+  return new Date(Number(year), Number(month) - 1, 1).toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
 }
 
 function renderSnapshot() {
@@ -13,17 +24,22 @@ function renderSnapshot() {
   document.getElementById('routeCount').textContent = AY.format.integer.format(s.routeCount);
   document.getElementById('totalPassengers').textContent = AY.format.integer.format(s.totalPassengers);
   document.getElementById('weightedFare').textContent = AY.format.money.format(s.weightedFare);
-  document.getElementById('revenueProxy').textContent = AY.format.compactMoney.format(s.totalRevenueProxy);
+  document.getElementById('networkYield').textContent = formatYield(s.networkYield);
+  document.getElementById('networkYieldNote').textContent = Number.isFinite(s.networkYield)
+    ? `${AY.format.integer.format(s.weightedDistance)} passenger-weighted average miles`
+    : 'distance is not present in the committed summary; run the enrichment step';
+
   const badge = document.getElementById('sourceBadge');
   badge.classList.toggle('ready', !state.isDemo);
   badge.innerHTML = `<i></i> ${state.source}${s.monthsObserved ? ` · up to ${s.monthsObserved} months` : ''}`;
 
   document.getElementById('top10Share').textContent = AY.format.percent.format(s.top10PassengerShare);
-  document.getElementById('fareIqr').textContent = `${AY.format.money.format(s.fareQ1)}–${AY.format.money.format(s.fareQ3)}`;
   document.getElementById('largestRoute').textContent = s.topVolume ? `${s.topVolume.origin} → ${s.topVolume.destination}` : '—';
   document.getElementById('largestRouteDetail').textContent = s.topVolume ? `${AY.format.integer.format(s.topVolume.passengers)} observed passengers at an average fare of ${AY.format.money.format(s.topVolume.avgFare)}.` : '';
   document.getElementById('largestRevenueRoute').textContent = s.topRevenue ? `${s.topRevenue.origin} → ${s.topRevenue.destination}` : '—';
-  document.getElementById('largestRevenueDetail').textContent = s.topRevenue ? `${AY.format.compactMoney.format(s.topRevenue.revenueProxy)} estimated market value (average fare × observed passengers).` : '';
+  document.getElementById('largestRevenueDetail').textContent = s.topRevenue ? `${AY.format.compactMoney.format(s.topRevenue.revenueProxy)} average-fare × passenger value.` : '';
+  document.getElementById('topOpportunityRoute').textContent = s.topOpportunity ? `${s.topOpportunity.origin} → ${s.topOpportunity.destination}` : '—';
+  document.getElementById('topOpportunityDetail').textContent = s.topOpportunity ? `Score ${AY.opportunityScore(state.markets, s.topOpportunity)}/100. High score means commercially material and worth deeper analysis; it is not a predicted revenue lift.` : '';
 }
 
 function renderRevenueBars() {
@@ -45,10 +61,9 @@ function renderScatter() {
   const pax = markets.map(m => m.passengers);
   const minX = Math.max(0, Math.min(...fares) * 0.9);
   const maxX = Math.max(...fares) * 1.08;
-  const minY = 0;
   const maxY = Math.max(...pax) * 1.08;
   const x = value => L + (value - minX) / Math.max(maxX - minX, 1) * (W - L - R);
-  const y = value => H - B - (value - minY) / Math.max(maxY - minY, 1) * (H - T - B);
+  const y = value => H - B - value / Math.max(maxY, 1) * (H - T - B);
   let html = '';
 
   for (let i = 0; i <= 4; i++) {
@@ -72,12 +87,43 @@ function renderScatter() {
 
   const labelRoutes = new Set(markets.slice().sort((a, b) => b.revenueProxy - a.revenueProxy).slice(0, 8).map(AY.routeKey));
   markets.forEach(m => {
-    const href = AY.routeHref(m);
-    html += `<a href="${href}" aria-label="Open ${m.origin} to ${m.destination}: ${AY.format.money.format(m.avgFare)} average fare, ${AY.format.integer.format(m.passengers)} passengers"><circle class="scatter-point" cx="${x(m.avgFare)}" cy="${y(m.passengers)}" r="6"><title>${m.origin} → ${m.destination} · ${AY.format.money.format(m.avgFare)} average fare · ${AY.format.integer.format(m.passengers)} passengers</title></circle></a>`;
+    html += `<a href="${AY.routeHref(m)}" aria-label="Open ${m.origin} to ${m.destination}: ${AY.format.money.format(m.avgFare)} average fare, ${AY.format.integer.format(m.passengers)} passengers"><circle class="scatter-point" cx="${x(m.avgFare)}" cy="${y(m.passengers)}" r="6"><title>${m.origin} → ${m.destination} · ${AY.format.money.format(m.avgFare)} average fare · ${AY.format.integer.format(m.passengers)} passengers</title></circle></a>`;
     if (labelRoutes.has(AY.routeKey(m))) html += `<text class="scatter-label point-label" x="${x(m.avgFare) + 8}" y="${y(m.passengers) - 8}">${m.origin}–${m.destination}</text>`;
   });
-
   svg.innerHTML = html;
+}
+
+function renderTrend(svgId, rows, valueFn, formatter) {
+  const svg = document.getElementById(svgId);
+  if (!rows.length) {
+    svg.innerHTML = '<text class="trend-empty" x="450" y="165" text-anchor="middle">Monthly data is not available.</text>';
+    return;
+  }
+  const values = rows.map(valueFn);
+  const W = 900, H = 330, L = 78, R = 28, T = 28, B = 62;
+  const max = Math.max(...values, 1);
+  const min = Math.min(...values, 0);
+  const x = i => L + (rows.length === 1 ? (W - L - R) / 2 : i * (W - L - R) / (rows.length - 1));
+  const y = value => H - B - (value - min) / Math.max(max - min, 1) * (H - T - B);
+  let html = '';
+  for (let i = 0; i <= 4; i++) {
+    const value = max - i * (max - min) / 4;
+    const yy = y(value);
+    html += `<line class="scatter-grid" x1="${L}" y1="${yy}" x2="${W - R}" y2="${yy}"></line><text class="scatter-label" x="8" y="${yy + 4}">${formatter(value)}</text>`;
+  }
+  rows.forEach((row, i) => {
+    html += `<text class="scatter-label" x="${x(i)}" y="${H - 26}" text-anchor="middle">${formatMonth(row.month)}</text>`;
+  });
+  html += `<line class="scatter-axis" x1="${L}" y1="${H - B}" x2="${W - R}" y2="${H - B}"></line><line class="scatter-axis" x1="${L}" y1="${T}" x2="${L}" y2="${H - B}"></line>`;
+  html += `<polyline class="trend-line" points="${values.map((value, i) => `${x(i)},${y(value)}`).join(' ')}"></polyline>`;
+  rows.forEach((row, i) => html += `<circle class="trend-point" cx="${x(i)}" cy="${y(values[i])}" r="5"><title>${formatMonth(row.month)} · ${formatter(values[i])}</title></circle>`);
+  svg.innerHTML = html;
+}
+
+function renderNetworkTrends() {
+  const monthly = AY.networkMonthly(state.markets);
+  renderTrend('networkPassengerTrend', monthly, row => row.passengers, value => AY.format.integer.format(value));
+  renderTrend('networkFareTrend', monthly, row => row.avgFare, value => AY.format.money.format(value));
 }
 
 function renderTable() {
@@ -86,20 +132,21 @@ function renderTable() {
   filtered.sort((a, b) => metricValue(b, state.sort) - metricValue(a, state.sort));
   const body = document.getElementById('routeTableBody');
   body.innerHTML = filtered.map((m, index) => {
-    const fareDelta = state.summary.weightedFare ? m.avgFare / state.summary.weightedFare - 1 : 0;
-    const deltaClass = fareDelta > 0.02 ? 'metric-up' : fareDelta < -0.02 ? 'metric-down' : 'metric-flat';
+    const topCarrier = m.topCarriers?.[0];
+    const opportunity = AY.opportunityScore(state.markets, m);
     return `<tr>
       <td class="rank-cell">${index + 1}</td>
       <td><a class="route-name-link" href="${AY.routeHref(m)}"><strong>${m.origin} → ${m.destination}</strong><span>${m.monthsObserved ? `${m.monthsObserved} months observed` : 'coverage not reported'}</span></a></td>
       <td>${AY.format.integer.format(m.passengers)}</td>
       <td>${AY.format.money.format(m.avgFare)}</td>
-      <td><span class="metric-pill ${deltaClass}">${AY.signedPercent(fareDelta)}</span></td>
-      <td>${AY.format.integer.format(m.carriers)}</td>
+      <td>${formatYield(m.yieldPerMile)}</td>
+      <td>${topCarrier ? `${topCarrier.carrier} · ${AY.format.percent.format(topCarrier.share)}` : '—'}</td>
       <td title="Average fare × observed passengers">${AY.format.compactMoney.format(m.revenueProxy)}</td>
-      <td><a class="table-action" href="${AY.routeHref(m)}">Open route →</a></td>
+      <td><span class="metric-pill ${opportunity >= 75 ? 'metric-up' : opportunity >= 50 ? 'metric-flat' : 'metric-down'}">${opportunity}</span></td>
+      <td><a class="table-action" href="${AY.routeHref(m)}">Open →</a></td>
     </tr>`;
   }).join('');
-  document.getElementById('routeTableNote').textContent = `${AY.format.integer.format(filtered.length)} of ${AY.format.integer.format(state.markets.length)} routes shown. Fare × passengers is used only as a market-size proxy.`;
+  document.getElementById('routeTableNote').textContent = `${AY.format.integer.format(filtered.length)} of ${AY.format.integer.format(state.markets.length)} routes shown. Yield and carrier share appear only when the source extract includes the required fields.`;
 }
 
 async function init() {
@@ -110,6 +157,7 @@ async function init() {
   state.summary = AY.networkSummary(state.markets);
 
   renderSnapshot();
+  renderNetworkTrends();
   renderRevenueBars();
   renderScatter();
   renderTable();
