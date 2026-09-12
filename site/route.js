@@ -57,17 +57,17 @@ function renderSnapshot(m) {
   const fareDelta = s.weightedFare ? m.avgFare / s.weightedFare - 1 : 0;
   const volumeRank = AY.rankBy(state.viewMarkets, route => route.passengers, m);
   const revenueRank = AY.rankBy(state.viewMarkets, route => route.revenueProxy, m);
-  document.title = `${m.origin} → ${m.destination} Route Intelligence | AeroYield`;
-  document.getElementById('routeHeroTitle').textContent = `${m.origin} → ${m.destination}: market intelligence.`;
-  document.getElementById('routeSectionTitle').textContent = `${m.origin} → ${m.destination} snapshot · ${state.selectedMonth === 'all' ? 'all observed months' : formatMonth(state.selectedMonth)}`;
+  document.title = `${m.origin} → ${m.destination} Route Detail | AeroYield`;
+  document.getElementById('routeHeroTitle').textContent = `${m.origin} → ${m.destination}: route detail.`;
+  document.getElementById('routeSectionTitle').textContent = `${m.origin} → ${m.destination} · ${state.selectedMonth === 'all' ? 'all observed months' : formatMonth(state.selectedMonth)}`;
   document.getElementById('routeFare').textContent = AY.format.money.format(m.avgFare);
-  document.getElementById('routeFareDelta').textContent = `${AY.signedPercent(fareDelta)} vs ${AY.format.money.format(s.weightedFare)} network benchmark`;
+  document.getElementById('routeFareDelta').textContent = `${AY.signedPercent(fareDelta)} vs ${AY.format.money.format(s.weightedFare)} network average`;
   document.getElementById('routePassengers').textContent = AY.format.integer.format(m.passengers);
-  document.getElementById('routePassengerRank').textContent = `${rankLabel(volumeRank, state.markets.length)} by passenger volume`;
+  document.getElementById('routePassengerRank').textContent = `${rankLabel(volumeRank, state.viewMarkets.length)} by passengers`;
   document.getElementById('routeRevenue').textContent = AY.format.compactMoney.format(m.revenueProxy);
-  document.getElementById('routeRevenueRank').textContent = `${rankLabel(revenueRank, state.markets.length)} by fare × passenger proxy`;
+  document.getElementById('routeRevenueRank').textContent = `${rankLabel(revenueRank, state.viewMarkets.length)} by estimated market value`;
   document.getElementById('routeCarriers').textContent = AY.format.integer.format(m.carriers);
-  document.getElementById('routeCarrierContext').textContent = `network median ${AY.format.integer.format(s.medianCarriers)} carriers`;
+  document.getElementById('routeCarrierContext').textContent = `network median: ${AY.format.integer.format(s.medianCarriers)} reporting carriers`;
   document.getElementById('modeledRouteName').textContent = `${m.origin} → ${m.destination}`;
 }
 
@@ -75,65 +75,65 @@ function renderBenchmarks(m) {
   const volumePct = AY.percentileRank(state.viewMarkets.map(route => route.passengers), m.passengers);
   const farePct = AY.percentileRank(state.viewMarkets.map(route => route.avgFare), m.avgFare);
   document.getElementById('volumePercentile').textContent = `${Math.round(volumePct * 100)}th`;
-  document.getElementById('volumePercentileText').textContent = `${topPercentLabel(volumePct)} by observed passenger volume in the committed extract.`;
+  document.getElementById('volumePercentileText').textContent = `${topPercentLabel(volumePct)} by observed passengers among routes shown.`;
   document.getElementById('farePercentile').textContent = `${Math.round(farePct * 100)}th`;
 
   const originMarkets = state.viewMarkets.filter(route => route.origin === m.origin);
   const originPassengers = originMarkets.reduce((sum, route) => sum + route.passengers, 0);
   const share = originPassengers ? m.passengers / originPassengers : 0;
   document.getElementById('originShare').textContent = AY.format.percent.format(share);
-  document.getElementById('originShareText').textContent = `${AY.format.integer.format(m.passengers)} of ${AY.format.integer.format(originPassengers)} observed passengers among ${originMarkets.length} routes from ${m.origin}.`;
+  document.getElementById('originShareText').textContent = `${AY.format.integer.format(m.passengers)} of ${AY.format.integer.format(originPassengers)} observed passengers across ${originMarkets.length} routes from ${m.origin}.`;
 
   const reverse = state.viewMarkets.find(route => route.origin === m.destination && route.destination === m.origin);
-  document.getElementById('reverseRoute').textContent = reverse ? `${reverse.origin} → ${reverse.destination}` : 'Not in extract';
+  document.getElementById('reverseRoute').textContent = reverse ? `${reverse.origin} → ${reverse.destination}` : 'Not shown';
   if (reverse) {
     const fareDiff = reverse.avgFare ? m.avgFare / reverse.avgFare - 1 : 0;
     const paxDiff = reverse.passengers ? m.passengers / reverse.passengers - 1 : 0;
-    document.getElementById('reverseDetail').textContent = `This direction is ${AY.signedPercent(fareDiff)} on average fare and ${AY.signedPercent(paxDiff)} on observed passengers versus the reverse market.`;
+    document.getElementById('reverseDetail').textContent = `Compared with the reverse route, average fare is ${AY.signedPercent(fareDiff)} and observed passengers are ${AY.signedPercent(paxDiff)}.`;
   } else {
-    document.getElementById('reverseDetail').textContent = 'The reverse directional market is not present in the committed top-route extract.';
+    document.getElementById('reverseDetail').textContent = 'The reverse direction is not present in the current route summary.';
   }
 }
 
 function renderReadout(m) {
   const s = state.summary;
   const volumePct = AY.percentileRank(state.viewMarkets.map(route => route.passengers), m.passengers);
-  const revenuePct = AY.percentileRank(state.viewMarkets.map(route => route.revenueProxy), m.revenueProxy);
+  const valuePct = AY.percentileRank(state.viewMarkets.map(route => route.revenueProxy), m.revenueProxy);
   const fareDelta = s.weightedFare ? m.avgFare / s.weightedFare - 1 : 0;
   const reverse = state.viewMarkets.find(route => route.origin === m.destination && route.destination === m.origin);
   const items = [];
 
   items.push({
-    label: 'Scale',
+    label: 'Passenger scale',
     value: `${Math.round(volumePct * 100)}th percentile`,
-    text: `${topPercentLabel(volumePct)} by passenger volume. ${volumePct >= 0.75 ? 'Large enough that small revenue-management improvements can matter materially.' : 'This is not one of the network’s largest traffic pools, so prioritize only if economics or strategic value justify it.'}`,
+    text: `${topPercentLabel(volumePct)} by passenger volume. ${volumePct >= 0.75 ? 'A small improvement per passenger could matter because this is a large market.' : 'This is not one of the largest traffic pools, so expected revenue impact is likely smaller.'}`,
   });
 
   items.push({
-    label: 'Fare level',
+    label: 'Average fare',
     value: `${AY.signedPercent(fareDelta)} vs network`,
-    text: `${Math.abs(fareDelta) < 0.05 ? 'Raw fare is close to the network benchmark.' : fareDelta > 0 ? 'Raw fare is above the network benchmark.' : 'Raw fare is below the network benchmark.'} Treat this as a pricing signal, not yield, because route distance is not yet in the site summary.`,
+    text: `${Math.abs(fareDelta) < 0.05 ? 'Average fare is close to the network average.' : fareDelta > 0 ? 'Average fare is above the network average.' : 'Average fare is below the network average.'} Compare yield per mile before treating a high fare as unusually strong pricing.`,
   });
 
   items.push({
-    label: 'Revenue exposure',
-    value: `${Math.round(revenuePct * 100)}th percentile`,
-    text: `${revenuePct >= 0.8 ? 'This route is a high-priority candidate for protection-level, booking-limit, or bid-price experiments.' : 'The route has less network-wide revenue exposure, so expected lift should be weighed against implementation effort.'}`,
+    label: 'Estimated market value',
+    value: `${Math.round(valuePct * 100)}th percentile`,
+    text: `${valuePct >= 0.8 ? 'This route combines enough traffic and fare value to make it a strong candidate for seat-control experiments.' : 'This route has less total fare × passenger value, so optimization gains may have less network-wide impact.'}`,
   });
 
   items.push({
-    label: 'Competition breadth',
-    value: `${m.carriers} carriers`,
-    text: `${m.carriers > s.medianCarriers ? 'More reporting carriers than the network median may indicate a broader competitive set.' : m.carriers < s.medianCarriers ? 'Fewer reporting carriers than the network median may mean a narrower competitive set.' : 'Carrier count is near the network median.'} Carrier count alone is not market share or concentration.`,
+    label: 'Competition',
+    value: `${m.carriers} reporting carriers`,
+    text: `${m.carriers > s.medianCarriers ? 'More carriers than the network median suggests a broader competitive set.' : m.carriers < s.medianCarriers ? 'Fewer carriers than the network median suggests a narrower competitive set.' : 'Carrier count is near the network median.'} This is a count, not carrier market share.`,
   });
 
   if (reverse) {
     const fareDiff = reverse.avgFare ? Math.abs(m.avgFare / reverse.avgFare - 1) : 0;
     const paxDiff = reverse.passengers ? Math.abs(m.passengers / reverse.passengers - 1) : 0;
     items.push({
-      label: 'Directionality',
-      value: `${AY.format.money.format(reverse.avgFare)} reverse fare`,
-      text: `${fareDiff > 0.08 || paxDiff > 0.08 ? 'The two directions are meaningfully asymmetric; investigate directional demand mix before using one control policy for both.' : 'The reverse market is broadly similar on fare and traffic, so a symmetric starting assumption is more defensible.'}`,
+      label: 'Direction difference',
+      value: `${AY.format.money.format(reverse.avgFare)} reverse average fare`,
+      text: `${fareDiff > 0.08 || paxDiff > 0.08 ? 'The two directions differ enough that using one identical demand assumption for both would be questionable.' : 'The reverse market is similar enough to support a symmetric starting assumption.'}`,
     });
   }
 
@@ -141,8 +141,8 @@ function renderReadout(m) {
     <div class="readout-item"><div><span>${item.label}</span><strong>${item.value}</strong></div><p>${item.text}</p></div>`).join('');
 
   let priority = 'Monitor';
-  if (volumePct >= 0.75 && revenuePct >= 0.75) priority = 'High-priority RM market';
-  else if (revenuePct >= 0.6) priority = 'Worth scenario testing';
+  if (volumePct >= 0.75 && valuePct >= 0.75) priority = 'High-value test market';
+  else if (valuePct >= 0.6) priority = 'Worth testing';
   document.getElementById('routePriority').textContent = priority;
 }
 
@@ -173,7 +173,7 @@ function renderScatter(m) {
 
   markets.forEach(route => {
     const selected = AY.routeKey(route) === AY.routeKey(m);
-    html += `<circle class="scatter-point ${selected ? 'active selected-route-point' : 'network-context-point'}" cx="${x(route.avgFare)}" cy="${y(route.passengers)}" r="${selected ? 10 : 4}"><title>${route.origin} → ${route.destination} · ${AY.format.money.format(route.avgFare)} · ${AY.format.integer.format(route.passengers)} passengers</title></circle>`;
+    html += `<circle class="scatter-point ${selected ? 'active selected-route-point' : 'network-context-point'}" cx="${x(route.avgFare)}" cy="${y(route.passengers)}" r="${selected ? 10 : 4}"><title>${route.origin} → ${route.destination} · ${AY.format.money.format(route.avgFare)} average fare · ${AY.format.integer.format(route.passengers)} passengers</title></circle>`;
   });
   html += `<text class="selected-route-label" x="${Math.min(x(m.avgFare) + 13, W - 110)}" y="${Math.max(y(m.passengers) - 13, T + 15)}">${m.origin} → ${m.destination}</text>`;
   svg.innerHTML = html;
@@ -191,10 +191,10 @@ function renderPeers(m) {
       <td>${AY.format.money.format(route.avgFare)}</td>
       <td><span class="metric-pill ${deltaClass}">${AY.signedPercent(delta)}</span></td>
       <td>${AY.format.integer.format(route.carriers)}</td>
-      <td>${AY.format.compactMoney.format(route.revenueProxy)}</td>
-      <td><a class="table-action" href="${AY.routeHref(route)}">Analyze →</a></td>
+      <td title="Average fare × observed passengers">${AY.format.compactMoney.format(route.revenueProxy)}</td>
+      <td><a class="table-action" href="${AY.routeHref(route)}">Open →</a></td>
     </tr>`;
-  }).join('') || '<tr><td colspan="7" class="empty-table">No other routes from this origin are present in the committed extract.</td></tr>';
+  }).join('') || '<tr><td colspan="7" class="empty-table">No other routes from this origin are present in the current summary.</td></tr>';
 }
 
 function renderModeledScenario(m) {
@@ -224,15 +224,15 @@ function renderTrend() {
   const svg = document.getElementById('routeTrend');
   const points = (state.selected?.monthly || []).slice().sort((a, b) => a.month.localeCompare(b.month));
   const labels = {
-    passengers: ['Passengers', 'Passengers', AY.format.integer],
-    revenue: ['Revenue proxy', 'Fare × passenger proxy', AY.format.compactMoney],
-    avgFare: ['Mean fare', 'Passenger-weighted mean fare', AY.format.money],
-    saverFare: ['Saver fare', 'Modeled fare', AY.format.money],
-    mainFare: ['Main fare', 'Modeled fare', AY.format.money],
-    flexFare: ['Flex fare', 'Modeled fare', AY.format.money],
-    saverDemand: ['Saver demand', 'Modeled demand', AY.format.integer],
-    mainDemand: ['Main demand', 'Modeled demand', AY.format.integer],
-    flexDemand: ['Flex demand', 'Modeled demand', AY.format.integer],
+    passengers: ['Passengers', 'Observed passengers', AY.format.integer],
+    revenue: ['Estimated market value', 'Average fare × observed passengers', AY.format.compactMoney],
+    avgFare: ['Average fare', 'Passenger-weighted average ticket price', AY.format.money],
+    saverFare: ['Saver fare', 'Modeled fare input', AY.format.money],
+    mainFare: ['Main fare', 'Modeled fare input', AY.format.money],
+    flexFare: ['Flex fare', 'Modeled fare input', AY.format.money],
+    saverDemand: ['Saver demand', 'Modeled demand input', AY.format.integer],
+    mainDemand: ['Main demand', 'Modeled demand input', AY.format.integer],
+    flexDemand: ['Flex demand', 'Modeled demand input', AY.format.integer],
   };
   const [title, subtitle, formatter] = labels[state.trendMetric];
   document.getElementById('trendTitle').textContent = `${title} by month`;

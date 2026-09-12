@@ -21,9 +21,9 @@ function renderSnapshot() {
   document.getElementById('top10Share').textContent = AY.format.percent.format(s.top10PassengerShare);
   document.getElementById('fareIqr').textContent = `${AY.format.money.format(s.fareQ1)}–${AY.format.money.format(s.fareQ3)}`;
   document.getElementById('largestRoute').textContent = s.topVolume ? `${s.topVolume.origin} → ${s.topVolume.destination}` : '—';
-  document.getElementById('largestRouteDetail').textContent = s.topVolume ? `${AY.format.integer.format(s.topVolume.passengers)} observed passengers; ${AY.format.money.format(s.topVolume.avgFare)} average fare.` : '';
+  document.getElementById('largestRouteDetail').textContent = s.topVolume ? `${AY.format.integer.format(s.topVolume.passengers)} observed passengers at an average fare of ${AY.format.money.format(s.topVolume.avgFare)}.` : '';
   document.getElementById('largestRevenueRoute').textContent = s.topRevenue ? `${s.topRevenue.origin} → ${s.topRevenue.destination}` : '—';
-  document.getElementById('largestRevenueDetail').textContent = s.topRevenue ? `${AY.format.compactMoney.format(s.topRevenue.revenueProxy)} fare × passenger proxy.` : '';
+  document.getElementById('largestRevenueDetail').textContent = s.topRevenue ? `${AY.format.compactMoney.format(s.topRevenue.revenueProxy)} estimated market value (average fare × observed passengers).` : '';
 }
 
 function renderRevenueBars() {
@@ -67,13 +67,13 @@ function renderScatter() {
   const benchmarkY = y(state.summary.medianPassengers);
   html += `<line class="benchmark-line" x1="${benchmarkX}" y1="${T}" x2="${benchmarkX}" y2="${H - B}"></line>`;
   html += `<line class="benchmark-line" x1="${L}" y1="${benchmarkY}" x2="${W - R}" y2="${benchmarkY}"></line>`;
-  html += `<text class="benchmark-label" x="${Math.min(benchmarkX + 6, W - 150)}" y="${T + 14}">weighted fare ${AY.format.money.format(state.summary.weightedFare)}</text>`;
-  html += `<text class="benchmark-label" x="${L + 6}" y="${Math.max(benchmarkY - 7, T + 14)}">median volume</text>`;
+  html += `<text class="benchmark-label" x="${Math.min(benchmarkX + 6, W - 150)}" y="${T + 14}">avg ticket ${AY.format.money.format(state.summary.weightedFare)}</text>`;
+  html += `<text class="benchmark-label" x="${L + 6}" y="${Math.max(benchmarkY - 7, T + 14)}">median passengers</text>`;
 
   const labelRoutes = new Set(markets.slice().sort((a, b) => b.revenueProxy - a.revenueProxy).slice(0, 8).map(AY.routeKey));
   markets.forEach(m => {
     const href = AY.routeHref(m);
-    html += `<a href="${href}" aria-label="Open ${m.origin} to ${m.destination}: ${AY.format.money.format(m.avgFare)} average fare, ${AY.format.integer.format(m.passengers)} passengers"><circle class="scatter-point" cx="${x(m.avgFare)}" cy="${y(m.passengers)}" r="6"><title>${m.origin} → ${m.destination} · ${AY.format.money.format(m.avgFare)} · ${AY.format.integer.format(m.passengers)} passengers</title></circle></a>`;
+    html += `<a href="${href}" aria-label="Open ${m.origin} to ${m.destination}: ${AY.format.money.format(m.avgFare)} average fare, ${AY.format.integer.format(m.passengers)} passengers"><circle class="scatter-point" cx="${x(m.avgFare)}" cy="${y(m.passengers)}" r="6"><title>${m.origin} → ${m.destination} · ${AY.format.money.format(m.avgFare)} average fare · ${AY.format.integer.format(m.passengers)} passengers</title></circle></a>`;
     if (labelRoutes.has(AY.routeKey(m))) html += `<text class="scatter-label point-label" x="${x(m.avgFare) + 8}" y="${y(m.passengers) - 8}">${m.origin}–${m.destination}</text>`;
   });
 
@@ -95,11 +95,11 @@ function renderTable() {
       <td>${AY.format.money.format(m.avgFare)}</td>
       <td><span class="metric-pill ${deltaClass}">${AY.signedPercent(fareDelta)}</span></td>
       <td>${AY.format.integer.format(m.carriers)}</td>
-      <td>${AY.format.compactMoney.format(m.revenueProxy)}</td>
-      <td><a class="table-action" href="${AY.routeHref(m)}">Analyze →</a></td>
+      <td title="Average fare × observed passengers">${AY.format.compactMoney.format(m.revenueProxy)}</td>
+      <td><a class="table-action" href="${AY.routeHref(m)}">Open route →</a></td>
     </tr>`;
   }).join('');
-  document.getElementById('routeTableNote').textContent = `${AY.format.integer.format(filtered.length)} of ${AY.format.integer.format(state.markets.length)} routes shown · ranking is within the committed site extract.`;
+  document.getElementById('routeTableNote').textContent = `${AY.format.integer.format(filtered.length)} of ${AY.format.integer.format(state.markets.length)} routes shown. Fare × passengers is used only as a market-size proxy.`;
 }
 
 async function init() {
