@@ -23,11 +23,21 @@ The pipeline normalizes BTS DB1C Market files into:
 - year
 - month
 
-Route-level average fare is passenger-weighted. When distance is available, route distance is also passenger-weighted and yield is
+Route-level average fare is passenger-weighted. When distance is available, AeroYield computes passenger-weighted route distance and average yield directly from the same distance-covered observations. For observation `i` with fare `f_i`, passenger weight `p_i`, and market distance `d_i`,
 
 \[
-\text{yield} = \frac{\text{average fare}}{\text{average distance}}.
+\text{average distance}
+=\frac{\sum_i d_i p_i}{\sum_i p_i},
 \]
+
+and
+
+\[
+\text{yield per passenger-mile}
+=\frac{\sum_i f_i p_i}{\sum_i d_i p_i}.
+\]
+
+Rows without a valid positive distance are excluded from both the yield numerator and denominator. The dashboard reports distance coverage so a yield based on partial distance data is not presented as complete coverage. The same calculation is performed at both route and route-month level during enrichment.
 
 Carrier share is computed from passenger weights among observations with a reporting-carrier identifier. The dashboard surfaces carrier-data coverage so a partial carrier field is not presented as complete market share.
 
@@ -212,7 +222,7 @@ The Python and browser implementations deliberately mirror the same policy and s
 - exact DP behavior on analytically solvable toy problems
 - seeded request-stream reproducibility
 - clairvoyant upper-bound dominance
-- passenger-weighted distance and carrier-share calculations
+- passenger-weighted distance, yield, distance coverage, and carrier-share calculations
 - local site assets, navigation, and required optimizer/simulator wiring
 - Python compilation and JavaScript syntax
 

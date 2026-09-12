@@ -13,7 +13,7 @@ function findInitialRoute(markets) {
 
 function rankLabel(rank, total) { return rank ? `#${rank} of ${total}` : '—'; }
 function topPercentLabel(percentile) { return `Top ${Math.max(1, Math.round((1 - percentile) * 100))}%`; }
-function formatYield(value) { return Number.isFinite(value) ? `$${value.toFixed(3)}` : '—'; }
+function formatYield(value) { return AY.format.yieldPerMile(value); }
 
 function modeledValues(m) {
   const dailyDemand = m.passengers / 30;
@@ -39,7 +39,10 @@ function viewMarket(m) {
     ...m,
     ...point,
     avgDistance,
-    yieldPerMile: avgDistance && avgDistance > 0 ? point.avgFare / avgDistance : null,
+    distanceCoverage: Number.isFinite(point.distanceCoverage) ? point.distanceCoverage : m.distanceCoverage,
+    yieldPerMile: Number.isFinite(point.yieldPerMile)
+      ? point.yieldPerMile
+      : avgDistance && avgDistance > 0 ? point.avgFare / avgDistance : null,
     revenueProxy: point.passengers * point.avgFare,
   };
   return { ...current, ...modeledValues(current) };
@@ -68,7 +71,7 @@ function renderSnapshot(m) {
   document.getElementById('routeFareDelta').textContent = `${AY.signedPercent(fareDelta)} vs ${AY.format.money.format(s.weightedFare)} network average`;
   document.getElementById('routeYield').textContent = formatYield(m.yieldPerMile);
   document.getElementById('routeYieldNote').textContent = Number.isFinite(m.yieldPerMile)
-    ? `${AY.format.integer.format(m.avgDistance)} passenger-weighted route miles`
+    ? `${AY.format.integer.format(m.avgDistance)} passenger-weighted route miles · ${AY.format.percent.format(m.distanceCoverage || 0)} distance coverage`
     : 'distance is not available in the committed summary';
   document.getElementById('routeRevenue').textContent = AY.format.compactMoney.format(m.revenueProxy);
   document.getElementById('routeRevenueRank').textContent = `${rankLabel(valueRank, state.viewMarkets.length)} by average-fare × passenger value`;
@@ -120,7 +123,7 @@ function renderReadout(m) {
     {
       label: 'Average fare',
       value: `${AY.signedPercent(fareDelta)} vs network`,
-      text: `${Math.abs(fareDelta) < 0.05 ? 'Average fare is close to the network average.' : fareDelta > 0 ? 'Average fare is above the network average.' : 'Average fare is below the network average.'} ${Number.isFinite(m.yieldPerMile) ? `Yield is ${formatYield(m.yieldPerMile)} per passenger-mile.` : 'Distance enrichment is needed before comparing yield.'}`,
+      text: `${Math.abs(fareDelta) < 0.05 ? 'Average fare is close to the network average.' : fareDelta > 0 ? 'Average fare is above the network average.' : 'Average fare is below the network average.'} ${Number.isFinite(m.yieldPerMile) ? `Yield is ${formatYield(m.yieldPerMile)}.` : 'Distance enrichment is needed before comparing yield.'}`,
     },
     {
       label: 'Estimated market value',
@@ -210,6 +213,7 @@ function trendValue(point, metric) {
   const modeled = modeledValues(point);
   if (metric === 'revenue') return point.passengers * point.avgFare;
   if (metric === 'yield') {
+    if (Number.isFinite(point.yieldPerMile)) return point.yieldPerMile;
     const distance = point.avgDistance || state.selected?.avgDistance;
     return distance && distance > 0 ? point.avgFare / distance : NaN;
   }
@@ -223,7 +227,7 @@ function renderTrend() {
     passengers: ['Passengers', 'Observed passengers', value => AY.format.integer.format(value)],
     revenue: ['Estimated market value', 'Average fare × observed passengers', value => AY.format.compactMoney.format(value)],
     avgFare: ['Average fare', 'Passenger-weighted average ticket price', value => AY.format.money.format(value)],
-    yield: ['Yield per mile', 'Average fare divided by route distance', value => formatYield(value)],
+    yield: ['Yield per mile', 'Passenger-weighted fare revenue per passenger-mile', value => formatYield(value)],
     saverFare: ['Saver fare', 'Modeled fare input', value => AY.format.money.format(value)],
     mainFare: ['Main fare', 'Modeled fare input', value => AY.format.money.format(value)],
     flexFare: ['Flex fare', 'Modeled fare input', value => AY.format.money.format(value)],
