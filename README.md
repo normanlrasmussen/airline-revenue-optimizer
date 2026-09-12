@@ -15,8 +15,9 @@ The product includes:
 - **The Problem** — plain-language explanation of single-flight revenue management.
 - **Market Data** — route screening, passenger/fare trends, optional distance-normalized yield, carrier-share context, and an opportunity score for prioritizing analysis.
 - **Route Detail** — commercial drill-down for one directional market before changing controls.
-- **Booking Simulator** — common-random-number Monte Carlo experiments that put every policy against identical booking streams.
-- **Revenue Optimizer** — the main decision view: expected revenue lift, load factor, rejected demand, empty seats, average accepted fare, regret, EMSR protection levels, and DP bid prices.
+- **Revenue Optimizer** — the single experiment and decision workbench. It runs common-random-number Monte Carlo simulation, compares Open Sales / EMSR-b / dynamic programming on identical booking streams, and reports expected revenue lift, load factor, rejected demand, empty seats, average accepted fare, regret, EMSR protection levels, and DP bid prices.
+
+The old `twin.html` Booking Simulator URL is retained only as a compatibility redirect to `optimizer.html`; there is no separate simulator product surface.
 
 ## Revenue-management methods
 
@@ -82,7 +83,7 @@ The booking horizon contains four request opportunities per day over D-180 throu
 
 Every replication uses a deterministic seed. Within that replication, Open Sales, EMSR-b, DP, and the clairvoyant benchmark all receive the **same booking stream**. This common-random-number design reduces comparison noise: policy differences are not caused by one policy receiving luckier simulated customers.
 
-The dashboard reports:
+The Revenue Optimizer reports:
 
 - average revenue and revenue lift vs. Open Sales
 - 10th / 50th / 90th percentile revenue
@@ -117,7 +118,15 @@ Download the newest BTS Market file:
 python data/download_db1c.py --dataset market --latest
 ```
 
-Normalize all downloaded Market files and create the route summary:
+Or download the saved monthly market-file list used by this project:
+
+```bash
+python data/download_db1c.py \
+  --url-file data/zips/zip_links.txt \
+  --output-dir data/raw
+```
+
+Normalize all downloaded Market files, create the route summary, and automatically add distance/yield and carrier-share enrichment:
 
 ```bash
 python data/process_db1c.py \
@@ -127,16 +136,7 @@ python data/process_db1c.py \
   --chunksize 100000
 ```
 
-Add passenger-weighted distance and carrier-share metrics when the normalized fields are available:
-
-```bash
-python data/enrich_summary.py \
-  --markets data/processed/markets.parquet \
-  --summary site/data/market_summary.json \
-  --output site/data/market_summary.json
-```
-
-The site gracefully displays unavailable values when distance or carrier detail is absent rather than inventing estimates.
+The processor writes the normalized parquet, generates the site summary, and automatically enriches it when distance and carrier fields are available. The site gracefully displays unavailable values rather than inventing estimates.
 
 ## Repository layout
 
@@ -155,14 +155,15 @@ The site gracefully displays unavailable values when distance or carrier detail 
 │   ├── test_revenue_management.py
 │   ├── test_simulation.py
 │   ├── test_enrich_summary.py
+│   ├── test_process_db1c_pipeline.py
 │   └── test_site_integrity.py
 ├── site/
 │   ├── index.html
 │   ├── market.html
 │   ├── data.html / data.js
 │   ├── route.html / route.js
-│   ├── twin.html / twin.js
-│   ├── optimizer.html / app.js
+│   ├── optimizer.html / app.js        # simulation + optimization workbench
+│   ├── twin.html                      # legacy redirect to optimizer.html
 │   ├── analytics.js
 │   ├── rm.js
 │   ├── simulation.js
@@ -184,7 +185,7 @@ python -m compileall -q data optimization tests
 for file in site/*.js; do node --check "$file"; done
 ```
 
-Tests cover optimizer feasibility, EMSR protection behavior, DP Bellman decisions on exact toy cases, seeded simulation reproducibility, clairvoyant upper-bound behavior, enrichment calculations, and static-site wiring.
+Tests cover optimizer feasibility, EMSR protection behavior, DP Bellman decisions on exact toy cases, seeded simulation reproducibility, clairvoyant upper-bound behavior, enrichment calculations, the data-build pipeline, and static-site wiring.
 
 ## Current scope
 
