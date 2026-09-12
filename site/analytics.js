@@ -23,6 +23,13 @@
       revenueProxy: passengers * avgFare,
       avgDistance,
       yieldPerMile: avgDistance && avgDistance > 0 ? avgFare / avgDistance : null,
+      monthly: Array.isArray(m.monthly) ? m.monthly.map(point => ({
+        ...point,
+        passengers: numberOrNull(point.passengers) ?? 0,
+        avgFare: numberOrNull(point.avgFare) ?? 0,
+        records: numberOrNull(point.records) ?? 0,
+        carriers: numberOrNull(point.carriers) ?? 0,
+      })) : [],
     };
   }
 

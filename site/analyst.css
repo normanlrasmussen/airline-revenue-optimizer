@@ -143,11 +143,20 @@
 
 .route-toolbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: end;
   gap: 20px;
+  flex-wrap: wrap;
 }
 .route-picker { width: min(420px, 100%); }
+.period-picker { width: min(220px, 100%); }
+.metric-picker { width: min(220px, 100%); display: grid; gap: 7px; }
+.metric-picker > span { color: var(--muted); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.trend-wrap { width: 100%; overflow-x: auto; }
+.trend-svg { display: block; width: 100%; min-width: 680px; height: auto; }
+.trend-line { fill: none; stroke: var(--teal); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.trend-point { fill: white; stroke: var(--teal); stroke-width: 3; }
+.trend-empty { fill: var(--muted); font-size: 15px; }
 
 .analyst-readout-card { min-height: 100%; }
 .readout-list { display: grid; gap: 0; }
@@ -191,6 +200,7 @@
 @media (max-width: 760px) {
   .analyst-question-grid { grid-template-columns: 1fr; }
   .route-toolbar { align-items: stretch; flex-direction: column; }
+  .route-picker, .period-picker, .metric-picker { width: 100%; }
   .table-controls { grid-template-columns: 1fr; width: 100%; min-width: 0; }
   .route-table-heading { align-items: stretch; }
   .wide-bars .bar-row { grid-template-columns: 76px 1fr 78px; }

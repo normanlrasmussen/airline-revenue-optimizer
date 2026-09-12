@@ -169,6 +169,7 @@ def build_site_market(row: pd.Series) -> dict[str, int | float | str | None]:
         "records": int(row["records"]),
         "carriers": int(row["carriers"]),
         "monthsObserved": int(row["monthsObserved"]) if pd.notna(row["monthsObserved"]) else None,
+        "monthly": row.get("monthly", []),
     }
 
 
@@ -195,9 +196,32 @@ def update_route_stats(stats: dict, df: pd.DataFrame) -> None:
         route["fare_passengers"] += float(row.fare_passengers)
         route["records"] += int(row.records)
 
+    monthly = chunk.dropna(subset=["year", "month"])
+    if not monthly.empty:
+        monthly["period"] = monthly["year"].astype(int).astype(str) + "-" + monthly["month"].astype(int).astype(str).str.zfill(2)
+        monthly["fare_passengers"] = monthly["fare"] * monthly["passengers"]
+        monthly_grouped = (
+            monthly.groupby(["origin", "destination", "period"], dropna=False)
+            .agg(
+                passengers=("passengers", "sum"),
+                fare_passengers=("fare_passengers", "sum"),
+                records=("passengers", "size"),
+            )
+            .reset_index()
+        )
+        for row in monthly_grouped.itertuples(index=False):
+            period = stats[(row.origin, row.destination)]["monthly"][row.period]
+            period["passengers"] += float(row.passengers)
+            period["fare_passengers"] += float(row.fare_passengers)
+            period["records"] += int(row.records)
+
     carrier_rows = chunk[["origin", "destination", "carrier"]].dropna().drop_duplicates()
     for row in carrier_rows.itertuples(index=False):
         stats[(row.origin, row.destination)]["carriers"].add(row.carrier)
+
+    monthly_carrier_rows = monthly[["origin", "destination", "period", "carrier"]].dropna().drop_duplicates() if not monthly.empty else monthly
+    for row in monthly_carrier_rows.itertuples(index=False):
+        stats[(row.origin, row.destination)]["monthly"][row.period]["carriers"].add(row.carrier)
 
     month_rows = chunk[["origin", "destination", "year", "month"]].dropna().drop_duplicates()
     for row in month_rows.itertuples(index=False):
@@ -210,6 +234,19 @@ def write_route_summary(stats: dict, path: Path, top_n: int = 100) -> None:
         passengers = route["passengers"]
         if passengers <= 0:
             continue
+        monthly = []
+        for period, values in sorted(route["monthly"].items()):
+            if values["passengers"] <= 0:
+                continue
+            monthly.append(
+                {
+                    "month": period,
+                    "passengers": round(values["passengers"]),
+                    "avgFare": round(values["fare_passengers"] / values["passengers"], 2),
+                    "records": values["records"],
+                    "carriers": len(values["carriers"]),
+                }
+            )
         rows.append(
             {
                 "origin": origin,
@@ -219,6 +256,7 @@ def write_route_summary(stats: dict, path: Path, top_n: int = 100) -> None:
                 "records": route["records"],
                 "carriers": len(route["carriers"]),
                 "monthsObserved": len(route["months"]),
+                "monthly": monthly,
             }
         )
 
@@ -235,6 +273,14 @@ def route_stats_factory() -> dict:
         "records": 0,
         "carriers": set(),
         "months": set(),
+        "monthly": defaultdict(
+            lambda: {
+                "passengers": 0.0,
+                "fare_passengers": 0.0,
+                "records": 0,
+                "carriers": set(),
+            }
+        ),
     }
 
 

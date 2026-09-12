@@ -32,6 +32,10 @@
         <label class="field-label" for="routeSelect">Choose route</label>
         <select id="routeSelect" class="select"></select>
       </div>
+      <div class="route-picker period-picker">
+        <label class="field-label" for="monthSelect">Data period</label>
+        <select id="monthSelect" class="select" aria-label="Choose month of route data"></select>
+      </div>
       <div id="routeSourceBadge" class="status-badge ready"><i></i> Loading market data</div>
     </div>
   </section>
@@ -118,8 +122,33 @@
     </div>
   </section>
 
+  <section class="section">
+    <div class="section-heading trend-heading">
+      <div>
+        <div class="eyebrow">ROUTE TREND</div>
+        <h2>How this market changed over time.</h2>
+        <p class="section-copy">Monthly values are aggregated from the observed DB1C market records for the selected route.</p>
+      </div>
+      <label class="metric-picker" for="trendMetric"><span>Measure</span><select id="trendMetric" class="select">
+        <option value="passengers">Passengers</option>
+        <option value="revenue">Revenue proxy</option>
+        <option value="avgFare">Mean fare</option>
+        <option value="saverFare">Saver fare</option>
+        <option value="mainFare">Main fare</option>
+        <option value="flexFare">Flex fare</option>
+        <option value="saverDemand">Saver demand</option>
+        <option value="mainDemand">Main demand</option>
+        <option value="flexDemand">Flex demand</option>
+      </select></label>
+    </div>
+    <article class="chart-card trend-card">
+      <div class="chart-title"><div><strong id="trendTitle">Monthly route trend</strong><br><span id="trendSubtitle">Observed monthly values</span></div><span id="trendUnit">Passengers</span></div>
+      <div class="trend-wrap"><svg id="routeTrend" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Selected route values over time"></svg></div>
+    </article>
+  </section>
+
   <section class="section compact">
-    <div class="callout"><strong>Next decision-grade additions:</strong> passenger-weighted distance/yield, route fare distributions, carrier shares, and monthly fare/volume trends. Those would let an analyst separate a genuinely high-yield market from one that simply has a long stage length or temporary demand spike.</div>
+    <div class="callout"><strong>Interpretation note:</strong> monthly passengers and fares are observed DB1C aggregates; revenue is still a fare × passenger exposure proxy, and Saver/Main/Flex values remain modeled assumptions. Distance-normalized yield, fare distributions, and carrier shares would provide the next layer of decision-grade context.</div>
   </section>
 </main>
 <footer><div><strong>AeroYield</strong> · Route Intelligence</div><div>Observed context separated from modeled revenue-management inputs.</div></footer>

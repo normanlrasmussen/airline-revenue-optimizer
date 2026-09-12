@@ -14,7 +14,86 @@
     "flexDemand": 34,
     "records": 472836,
     "carriers": 20,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 41428,
+        "avgFare": 403.84,
+        "records": 41428,
+        "carriers": 17
+      },
+      {
+        "month": "2025-08",
+        "passengers": 43781,
+        "avgFare": 413.87,
+        "records": 43781,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 41468,
+        "avgFare": 489.37,
+        "records": 41468,
+        "carriers": 14
+      },
+      {
+        "month": "2025-10",
+        "passengers": 45741,
+        "avgFare": 485.09,
+        "records": 45741,
+        "carriers": 12
+      },
+      {
+        "month": "2025-11",
+        "passengers": 43318,
+        "avgFare": 496.16,
+        "records": 43318,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 46193,
+        "avgFare": 476.85,
+        "records": 46193,
+        "carriers": 15
+      },
+      {
+        "month": "2026-01",
+        "passengers": 37654,
+        "avgFare": 421.72,
+        "records": 37654,
+        "carriers": 14
+      },
+      {
+        "month": "2026-02",
+        "passengers": 33619,
+        "avgFare": 471.37,
+        "records": 33619,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 44575,
+        "avgFare": 491.59,
+        "records": 44575,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 46476,
+        "avgFare": 485.34,
+        "records": 46476,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 48583,
+        "avgFare": 529.69,
+        "records": 48583,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "JFK \u2192 LAX",
@@ -31,7 +110,86 @@
     "flexDemand": 34,
     "records": 469535,
     "carriers": 19,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 41740,
+        "avgFare": 409.59,
+        "records": 41740,
+        "carriers": 15
+      },
+      {
+        "month": "2025-08",
+        "passengers": 42920,
+        "avgFare": 403.82,
+        "records": 42920,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 40897,
+        "avgFare": 484.23,
+        "records": 40897,
+        "carriers": 13
+      },
+      {
+        "month": "2025-10",
+        "passengers": 45177,
+        "avgFare": 485.51,
+        "records": 45177,
+        "carriers": 13
+      },
+      {
+        "month": "2025-11",
+        "passengers": 43904,
+        "avgFare": 485.62,
+        "records": 43904,
+        "carriers": 14
+      },
+      {
+        "month": "2025-12",
+        "passengers": 46829,
+        "avgFare": 499.94,
+        "records": 46829,
+        "carriers": 15
+      },
+      {
+        "month": "2026-01",
+        "passengers": 37493,
+        "avgFare": 411.33,
+        "records": 37493,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 33162,
+        "avgFare": 461.6,
+        "records": 33162,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 44508,
+        "avgFare": 469.7,
+        "records": 44508,
+        "carriers": 13
+      },
+      {
+        "month": "2026-04",
+        "passengers": 45042,
+        "avgFare": 467.79,
+        "records": 45042,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 47863,
+        "avgFare": 513.46,
+        "records": 47863,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "ORD \u2192 LGA",
@@ -48,7 +206,86 @@
     "flexDemand": 34,
     "records": 410956,
     "carriers": 19,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 43426,
+        "avgFare": 191.78,
+        "records": 43426,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 43032,
+        "avgFare": 191.91,
+        "records": 43032,
+        "carriers": 13
+      },
+      {
+        "month": "2025-09",
+        "passengers": 42431,
+        "avgFare": 185.88,
+        "records": 42431,
+        "carriers": 15
+      },
+      {
+        "month": "2025-10",
+        "passengers": 47087,
+        "avgFare": 189.57,
+        "records": 47087,
+        "carriers": 14
+      },
+      {
+        "month": "2025-11",
+        "passengers": 39570,
+        "avgFare": 181.34,
+        "records": 39570,
+        "carriers": 12
+      },
+      {
+        "month": "2025-12",
+        "passengers": 34214,
+        "avgFare": 187.67,
+        "records": 34214,
+        "carriers": 15
+      },
+      {
+        "month": "2026-01",
+        "passengers": 24552,
+        "avgFare": 159.95,
+        "records": 24552,
+        "carriers": 13
+      },
+      {
+        "month": "2026-02",
+        "passengers": 23380,
+        "avgFare": 171.14,
+        "records": 23380,
+        "carriers": 15
+      },
+      {
+        "month": "2026-03",
+        "passengers": 32516,
+        "avgFare": 193.24,
+        "records": 32516,
+        "carriers": 14
+      },
+      {
+        "month": "2026-04",
+        "passengers": 35967,
+        "avgFare": 186.08,
+        "records": 35967,
+        "carriers": 11
+      },
+      {
+        "month": "2026-05",
+        "passengers": 44781,
+        "avgFare": 204.7,
+        "records": 44781,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "LGA \u2192 ORD",
@@ -65,7 +302,86 @@
     "flexDemand": 34,
     "records": 406449,
     "carriers": 18,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 43846,
+        "avgFare": 194.0,
+        "records": 43846,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 42534,
+        "avgFare": 187.02,
+        "records": 42534,
+        "carriers": 15
+      },
+      {
+        "month": "2025-09",
+        "passengers": 41445,
+        "avgFare": 183.99,
+        "records": 41445,
+        "carriers": 16
+      },
+      {
+        "month": "2025-10",
+        "passengers": 46135,
+        "avgFare": 190.29,
+        "records": 46135,
+        "carriers": 14
+      },
+      {
+        "month": "2025-11",
+        "passengers": 39139,
+        "avgFare": 182.64,
+        "records": 39139,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 33892,
+        "avgFare": 191.94,
+        "records": 33892,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 24417,
+        "avgFare": 161.68,
+        "records": 24417,
+        "carriers": 13
+      },
+      {
+        "month": "2026-02",
+        "passengers": 22974,
+        "avgFare": 169.32,
+        "records": 22974,
+        "carriers": 12
+      },
+      {
+        "month": "2026-03",
+        "passengers": 32824,
+        "avgFare": 191.4,
+        "records": 32824,
+        "carriers": 14
+      },
+      {
+        "month": "2026-04",
+        "passengers": 35732,
+        "avgFare": 187.92,
+        "records": 35732,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 43511,
+        "avgFare": 202.54,
+        "records": 43511,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "SFO \u2192 LAX",
@@ -82,7 +398,86 @@
     "flexDemand": 34,
     "records": 383936,
     "carriers": 18,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 34716,
+        "avgFare": 120.34,
+        "records": 34716,
+        "carriers": 16
+      },
+      {
+        "month": "2025-08",
+        "passengers": 36659,
+        "avgFare": 117.95,
+        "records": 36659,
+        "carriers": 16
+      },
+      {
+        "month": "2025-09",
+        "passengers": 34862,
+        "avgFare": 124.54,
+        "records": 34862,
+        "carriers": 16
+      },
+      {
+        "month": "2025-10",
+        "passengers": 38711,
+        "avgFare": 128.07,
+        "records": 38711,
+        "carriers": 16
+      },
+      {
+        "month": "2025-11",
+        "passengers": 33661,
+        "avgFare": 140.21,
+        "records": 33661,
+        "carriers": 15
+      },
+      {
+        "month": "2025-12",
+        "passengers": 33330,
+        "avgFare": 137.56,
+        "records": 33330,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 29628,
+        "avgFare": 138.48,
+        "records": 29628,
+        "carriers": 14
+      },
+      {
+        "month": "2026-02",
+        "passengers": 32120,
+        "avgFare": 160.58,
+        "records": 32120,
+        "carriers": 16
+      },
+      {
+        "month": "2026-03",
+        "passengers": 36203,
+        "avgFare": 151.7,
+        "records": 36203,
+        "carriers": 14
+      },
+      {
+        "month": "2026-04",
+        "passengers": 35012,
+        "avgFare": 146.86,
+        "records": 35012,
+        "carriers": 15
+      },
+      {
+        "month": "2026-05",
+        "passengers": 39034,
+        "avgFare": 141.6,
+        "records": 39034,
+        "carriers": 14
+      }
+    ]
   },
   {
     "route": "LAX \u2192 SFO",
@@ -99,7 +494,86 @@
     "flexDemand": 34,
     "records": 383146,
     "carriers": 21,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 34355,
+        "avgFare": 122.61,
+        "records": 34355,
+        "carriers": 17
+      },
+      {
+        "month": "2025-08",
+        "passengers": 36675,
+        "avgFare": 118.5,
+        "records": 36675,
+        "carriers": 18
+      },
+      {
+        "month": "2025-09",
+        "passengers": 35055,
+        "avgFare": 125.89,
+        "records": 35055,
+        "carriers": 17
+      },
+      {
+        "month": "2025-10",
+        "passengers": 38110,
+        "avgFare": 128.58,
+        "records": 38110,
+        "carriers": 17
+      },
+      {
+        "month": "2025-11",
+        "passengers": 33821,
+        "avgFare": 141.09,
+        "records": 33821,
+        "carriers": 19
+      },
+      {
+        "month": "2025-12",
+        "passengers": 33246,
+        "avgFare": 134.8,
+        "records": 33246,
+        "carriers": 16
+      },
+      {
+        "month": "2026-01",
+        "passengers": 29413,
+        "avgFare": 144.07,
+        "records": 29413,
+        "carriers": 17
+      },
+      {
+        "month": "2026-02",
+        "passengers": 32575,
+        "avgFare": 158.1,
+        "records": 32575,
+        "carriers": 16
+      },
+      {
+        "month": "2026-03",
+        "passengers": 36498,
+        "avgFare": 151.48,
+        "records": 36498,
+        "carriers": 16
+      },
+      {
+        "month": "2026-04",
+        "passengers": 34778,
+        "avgFare": 148.86,
+        "records": 34778,
+        "carriers": 16
+      },
+      {
+        "month": "2026-05",
+        "passengers": 38620,
+        "avgFare": 144.6,
+        "records": 38620,
+        "carriers": 17
+      }
+    ]
   },
   {
     "route": "EWR \u2192 MCO",
@@ -116,7 +590,86 @@
     "flexDemand": 34,
     "records": 336768,
     "carriers": 18,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 27615,
+        "avgFare": 157.6,
+        "records": 27615,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 29671,
+        "avgFare": 168.56,
+        "records": 29671,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 21885,
+        "avgFare": 129.83,
+        "records": 21885,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 29313,
+        "avgFare": 139.82,
+        "records": 29313,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 32583,
+        "avgFare": 167.07,
+        "records": 32583,
+        "carriers": 8
+      },
+      {
+        "month": "2025-12",
+        "passengers": 37084,
+        "avgFare": 183.32,
+        "records": 37084,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 30521,
+        "avgFare": 133.66,
+        "records": 30521,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 29397,
+        "avgFare": 173.93,
+        "records": 29397,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 37154,
+        "avgFare": 185.54,
+        "records": 37154,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 33731,
+        "avgFare": 185.44,
+        "records": 33731,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 27814,
+        "avgFare": 180.85,
+        "records": 27814,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "MCO \u2192 EWR",
@@ -133,7 +686,86 @@
     "flexDemand": 34,
     "records": 333879,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 27236,
+        "avgFare": 153.51,
+        "records": 27236,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 29535,
+        "avgFare": 171.74,
+        "records": 29535,
+        "carriers": 9
+      },
+      {
+        "month": "2025-09",
+        "passengers": 22470,
+        "avgFare": 132.23,
+        "records": 22470,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 28879,
+        "avgFare": 139.51,
+        "records": 28879,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 31686,
+        "avgFare": 171.13,
+        "records": 31686,
+        "carriers": 8
+      },
+      {
+        "month": "2025-12",
+        "passengers": 35006,
+        "avgFare": 168.66,
+        "records": 35006,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 30467,
+        "avgFare": 146.99,
+        "records": 30467,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 29628,
+        "avgFare": 175.89,
+        "records": 29628,
+        "carriers": 12
+      },
+      {
+        "month": "2026-03",
+        "passengers": 36214,
+        "avgFare": 179.46,
+        "records": 36214,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 34569,
+        "avgFare": 199.75,
+        "records": 34569,
+        "carriers": 8
+      },
+      {
+        "month": "2026-05",
+        "passengers": 28189,
+        "avgFare": 190.94,
+        "records": 28189,
+        "carriers": 9
+      }
+    ]
   },
   {
     "route": "JFK \u2192 SFO",
@@ -150,7 +782,86 @@
     "flexDemand": 34,
     "records": 313811,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 29316,
+        "avgFare": 398.48,
+        "records": 29316,
+        "carriers": 15
+      },
+      {
+        "month": "2025-08",
+        "passengers": 30126,
+        "avgFare": 379.05,
+        "records": 30126,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 29776,
+        "avgFare": 445.56,
+        "records": 29776,
+        "carriers": 14
+      },
+      {
+        "month": "2025-10",
+        "passengers": 32136,
+        "avgFare": 463.63,
+        "records": 32136,
+        "carriers": 15
+      },
+      {
+        "month": "2025-11",
+        "passengers": 29784,
+        "avgFare": 478.46,
+        "records": 29784,
+        "carriers": 12
+      },
+      {
+        "month": "2025-12",
+        "passengers": 29720,
+        "avgFare": 464.07,
+        "records": 29720,
+        "carriers": 15
+      },
+      {
+        "month": "2026-01",
+        "passengers": 22373,
+        "avgFare": 481.32,
+        "records": 22373,
+        "carriers": 14
+      },
+      {
+        "month": "2026-02",
+        "passengers": 21537,
+        "avgFare": 437.25,
+        "records": 21537,
+        "carriers": 13
+      },
+      {
+        "month": "2026-03",
+        "passengers": 27284,
+        "avgFare": 445.8,
+        "records": 27284,
+        "carriers": 13
+      },
+      {
+        "month": "2026-04",
+        "passengers": 29003,
+        "avgFare": 435.66,
+        "records": 29003,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 32756,
+        "avgFare": 493.86,
+        "records": 32756,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "SFO \u2192 JFK",
@@ -167,7 +878,86 @@
     "flexDemand": 34,
     "records": 313633,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 29496,
+        "avgFare": 375.5,
+        "records": 29496,
+        "carriers": 15
+      },
+      {
+        "month": "2025-08",
+        "passengers": 31277,
+        "avgFare": 388.48,
+        "records": 31277,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 30063,
+        "avgFare": 456.25,
+        "records": 30063,
+        "carriers": 13
+      },
+      {
+        "month": "2025-10",
+        "passengers": 32203,
+        "avgFare": 465.6,
+        "records": 32203,
+        "carriers": 14
+      },
+      {
+        "month": "2025-11",
+        "passengers": 29237,
+        "avgFare": 484.5,
+        "records": 29237,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 29146,
+        "avgFare": 454.42,
+        "records": 29146,
+        "carriers": 14
+      },
+      {
+        "month": "2026-01",
+        "passengers": 22889,
+        "avgFare": 484.6,
+        "records": 22889,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 21121,
+        "avgFare": 454.42,
+        "records": 21121,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 27007,
+        "avgFare": 470.76,
+        "records": 27007,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 28670,
+        "avgFare": 440.77,
+        "records": 28670,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 32524,
+        "avgFare": 503.74,
+        "records": 32524,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "MCO \u2192 LGA",
@@ -184,7 +974,86 @@
     "flexDemand": 34,
     "records": 292607,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 24883,
+        "avgFare": 149.43,
+        "records": 24883,
+        "carriers": 14
+      },
+      {
+        "month": "2025-08",
+        "passengers": 28933,
+        "avgFare": 158.61,
+        "records": 28933,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 21573,
+        "avgFare": 125.39,
+        "records": 21573,
+        "carriers": 12
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25542,
+        "avgFare": 132.89,
+        "records": 25542,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 26312,
+        "avgFare": 155.66,
+        "records": 26312,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 28562,
+        "avgFare": 159.25,
+        "records": 28562,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 28728,
+        "avgFare": 138.06,
+        "records": 28728,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 26243,
+        "avgFare": 162.16,
+        "records": 26243,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 28560,
+        "avgFare": 154.02,
+        "records": 28560,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 29291,
+        "avgFare": 182.95,
+        "records": 29291,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 23980,
+        "avgFare": 177.77,
+        "records": 23980,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "MIA \u2192 LGA",
@@ -201,7 +1070,86 @@
     "flexDemand": 34,
     "records": 291427,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22281,
+        "avgFare": 176.17,
+        "records": 22281,
+        "carriers": 14
+      },
+      {
+        "month": "2025-08",
+        "passengers": 24146,
+        "avgFare": 185.72,
+        "records": 24146,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 21551,
+        "avgFare": 172.73,
+        "records": 21551,
+        "carriers": 15
+      },
+      {
+        "month": "2025-10",
+        "passengers": 24470,
+        "avgFare": 190.02,
+        "records": 24470,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 24872,
+        "avgFare": 207.44,
+        "records": 24872,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 30493,
+        "avgFare": 219.04,
+        "records": 30493,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 29906,
+        "avgFare": 221.09,
+        "records": 29906,
+        "carriers": 14
+      },
+      {
+        "month": "2026-02",
+        "passengers": 28265,
+        "avgFare": 237.57,
+        "records": 28265,
+        "carriers": 12
+      },
+      {
+        "month": "2026-03",
+        "passengers": 31322,
+        "avgFare": 231.22,
+        "records": 31322,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 28366,
+        "avgFare": 246.96,
+        "records": 28366,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 25755,
+        "avgFare": 242.45,
+        "records": 25755,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "MCO \u2192 PHL",
@@ -218,7 +1166,86 @@
     "flexDemand": 34,
     "records": 290760,
     "carriers": 12,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 24145,
+        "avgFare": 138.57,
+        "records": 24145,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 27083,
+        "avgFare": 136.73,
+        "records": 27083,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 21659,
+        "avgFare": 120.77,
+        "records": 21659,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25851,
+        "avgFare": 131.9,
+        "records": 25851,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 26116,
+        "avgFare": 177.61,
+        "records": 26116,
+        "carriers": 10
+      },
+      {
+        "month": "2025-12",
+        "passengers": 27116,
+        "avgFare": 163.88,
+        "records": 27116,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 26685,
+        "avgFare": 155.79,
+        "records": 26685,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 25910,
+        "avgFare": 167.16,
+        "records": 25910,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 30249,
+        "avgFare": 198.93,
+        "records": 30249,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 29656,
+        "avgFare": 189.22,
+        "records": 29656,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 26290,
+        "avgFare": 187.03,
+        "records": 26290,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "LGA \u2192 MCO",
@@ -235,7 +1262,86 @@
     "flexDemand": 34,
     "records": 290275,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 25529,
+        "avgFare": 152.98,
+        "records": 25529,
+        "carriers": 13
+      },
+      {
+        "month": "2025-08",
+        "passengers": 28486,
+        "avgFare": 154.53,
+        "records": 28486,
+        "carriers": 13
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20541,
+        "avgFare": 123.24,
+        "records": 20541,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25730,
+        "avgFare": 133.97,
+        "records": 25730,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 25970,
+        "avgFare": 151.49,
+        "records": 25970,
+        "carriers": 10
+      },
+      {
+        "month": "2025-12",
+        "passengers": 29182,
+        "avgFare": 180.01,
+        "records": 29182,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 27789,
+        "avgFare": 123.13,
+        "records": 27789,
+        "carriers": 14
+      },
+      {
+        "month": "2026-02",
+        "passengers": 26273,
+        "avgFare": 160.22,
+        "records": 26273,
+        "carriers": 12
+      },
+      {
+        "month": "2026-03",
+        "passengers": 29433,
+        "avgFare": 163.15,
+        "records": 29433,
+        "carriers": 13
+      },
+      {
+        "month": "2026-04",
+        "passengers": 27806,
+        "avgFare": 163.84,
+        "records": 27806,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 23536,
+        "avgFare": 168.58,
+        "records": 23536,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "LGA \u2192 MIA",
@@ -252,7 +1358,86 @@
     "flexDemand": 34,
     "records": 288950,
     "carriers": 18,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 23182,
+        "avgFare": 179.19,
+        "records": 23182,
+        "carriers": 15
+      },
+      {
+        "month": "2025-08",
+        "passengers": 24539,
+        "avgFare": 180.15,
+        "records": 24539,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 21452,
+        "avgFare": 171.61,
+        "records": 21452,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25139,
+        "avgFare": 193.57,
+        "records": 25139,
+        "carriers": 15
+      },
+      {
+        "month": "2025-11",
+        "passengers": 25014,
+        "avgFare": 208.56,
+        "records": 25014,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 31594,
+        "avgFare": 245.51,
+        "records": 31594,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 28117,
+        "avgFare": 191.17,
+        "records": 28117,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 27522,
+        "avgFare": 233.39,
+        "records": 27522,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 30789,
+        "avgFare": 228.93,
+        "records": 30789,
+        "carriers": 13
+      },
+      {
+        "month": "2026-04",
+        "passengers": 27065,
+        "avgFare": 227.06,
+        "records": 27065,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 24537,
+        "avgFare": 235.59,
+        "records": 24537,
+        "carriers": 15
+      }
+    ]
   },
   {
     "route": "ATL \u2192 LGA",
@@ -269,7 +1454,86 @@
     "flexDemand": 34,
     "records": 286001,
     "carriers": 18,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 28531,
+        "avgFare": 190.64,
+        "records": 28531,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 26510,
+        "avgFare": 193.15,
+        "records": 26510,
+        "carriers": 11
+      },
+      {
+        "month": "2025-09",
+        "passengers": 26281,
+        "avgFare": 188.6,
+        "records": 26281,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 30180,
+        "avgFare": 191.96,
+        "records": 30180,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 27179,
+        "avgFare": 205.34,
+        "records": 27179,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 29909,
+        "avgFare": 218.72,
+        "records": 29909,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 19834,
+        "avgFare": 185.49,
+        "records": 19834,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 19914,
+        "avgFare": 185.98,
+        "records": 19914,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 23072,
+        "avgFare": 198.19,
+        "records": 23072,
+        "carriers": 13
+      },
+      {
+        "month": "2026-04",
+        "passengers": 24635,
+        "avgFare": 217.04,
+        "records": 24635,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 29956,
+        "avgFare": 218.04,
+        "records": 29956,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "DEN \u2192 PHX",
@@ -286,7 +1550,86 @@
     "flexDemand": 34,
     "records": 285820,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22277,
+        "avgFare": 143.71,
+        "records": 22277,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 21808,
+        "avgFare": 135.33,
+        "records": 21808,
+        "carriers": 9
+      },
+      {
+        "month": "2025-09",
+        "passengers": 23159,
+        "avgFare": 136.14,
+        "records": 23159,
+        "carriers": 8
+      },
+      {
+        "month": "2025-10",
+        "passengers": 28759,
+        "avgFare": 135.18,
+        "records": 28759,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 27654,
+        "avgFare": 150.04,
+        "records": 27654,
+        "carriers": 12
+      },
+      {
+        "month": "2025-12",
+        "passengers": 27268,
+        "avgFare": 139.35,
+        "records": 27268,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 24167,
+        "avgFare": 143.26,
+        "records": 24167,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 26089,
+        "avgFare": 152.47,
+        "records": 26089,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 32526,
+        "avgFare": 168.6,
+        "records": 32526,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 25576,
+        "avgFare": 149.05,
+        "records": 25576,
+        "carriers": 8
+      },
+      {
+        "month": "2026-05",
+        "passengers": 26537,
+        "avgFare": 139.64,
+        "records": 26537,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "PHX \u2192 DEN",
@@ -303,7 +1646,86 @@
     "flexDemand": 34,
     "records": 285521,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 21830,
+        "avgFare": 139.52,
+        "records": 21830,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 22017,
+        "avgFare": 132.97,
+        "records": 22017,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 23037,
+        "avgFare": 136.03,
+        "records": 23037,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 28234,
+        "avgFare": 135.07,
+        "records": 28234,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 27714,
+        "avgFare": 152.06,
+        "records": 27714,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 27086,
+        "avgFare": 136.11,
+        "records": 27086,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 23980,
+        "avgFare": 144.32,
+        "records": 23980,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 26306,
+        "avgFare": 153.97,
+        "records": 26306,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 32896,
+        "avgFare": 169.55,
+        "records": 32896,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 25635,
+        "avgFare": 152.31,
+        "records": 25635,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 26786,
+        "avgFare": 143.8,
+        "records": 26786,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "PHL \u2192 MCO",
@@ -320,7 +1742,86 @@
     "flexDemand": 34,
     "records": 282969,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 23569,
+        "avgFare": 136.61,
+        "records": 23569,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 26236,
+        "avgFare": 134.91,
+        "records": 26236,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20818,
+        "avgFare": 120.62,
+        "records": 20818,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25858,
+        "avgFare": 132.45,
+        "records": 25858,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 25631,
+        "avgFare": 172.49,
+        "records": 25631,
+        "carriers": 10
+      },
+      {
+        "month": "2025-12",
+        "passengers": 27340,
+        "avgFare": 170.71,
+        "records": 27340,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 25646,
+        "avgFare": 137.14,
+        "records": 25646,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 25057,
+        "avgFare": 163.87,
+        "records": 25057,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 29940,
+        "avgFare": 198.38,
+        "records": 29940,
+        "carriers": 12
+      },
+      {
+        "month": "2026-04",
+        "passengers": 27974,
+        "avgFare": 174.17,
+        "records": 27974,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 24900,
+        "avgFare": 178.76,
+        "records": 24900,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "LGA \u2192 ATL",
@@ -337,7 +1838,86 @@
     "flexDemand": 34,
     "records": 281721,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 28736,
+        "avgFare": 194.09,
+        "records": 28736,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 25934,
+        "avgFare": 192.99,
+        "records": 25934,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 25817,
+        "avgFare": 193.42,
+        "records": 25817,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 29661,
+        "avgFare": 193.77,
+        "records": 29661,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 27365,
+        "avgFare": 205.5,
+        "records": 27365,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 29274,
+        "avgFare": 230.21,
+        "records": 29274,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 19698,
+        "avgFare": 182.2,
+        "records": 19698,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 19618,
+        "avgFare": 185.82,
+        "records": 19618,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 22920,
+        "avgFare": 198.63,
+        "records": 22920,
+        "carriers": 12
+      },
+      {
+        "month": "2026-04",
+        "passengers": 23964,
+        "avgFare": 217.62,
+        "records": 23964,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 28734,
+        "avgFare": 212.79,
+        "records": 28734,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "LAX \u2192 EWR",
@@ -354,7 +1934,86 @@
     "flexDemand": 34,
     "records": 281621,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 27781,
+        "avgFare": 297.11,
+        "records": 27781,
+        "carriers": 15
+      },
+      {
+        "month": "2025-08",
+        "passengers": 29434,
+        "avgFare": 301.96,
+        "records": 29434,
+        "carriers": 13
+      },
+      {
+        "month": "2025-09",
+        "passengers": 25934,
+        "avgFare": 348.14,
+        "records": 25934,
+        "carriers": 13
+      },
+      {
+        "month": "2025-10",
+        "passengers": 29349,
+        "avgFare": 352.81,
+        "records": 29349,
+        "carriers": 13
+      },
+      {
+        "month": "2025-11",
+        "passengers": 27315,
+        "avgFare": 377.37,
+        "records": 27315,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 31940,
+        "avgFare": 373.17,
+        "records": 31940,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 19474,
+        "avgFare": 349.77,
+        "records": 19474,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 19211,
+        "avgFare": 375.5,
+        "records": 19211,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 25831,
+        "avgFare": 408.94,
+        "records": 25831,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 22971,
+        "avgFare": 405.11,
+        "records": 22971,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22381,
+        "avgFare": 453.89,
+        "records": 22381,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "EWR \u2192 LAX",
@@ -371,7 +2030,86 @@
     "flexDemand": 34,
     "records": 278847,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 27875,
+        "avgFare": 302.33,
+        "records": 27875,
+        "carriers": 14
+      },
+      {
+        "month": "2025-08",
+        "passengers": 28319,
+        "avgFare": 296.51,
+        "records": 28319,
+        "carriers": 13
+      },
+      {
+        "month": "2025-09",
+        "passengers": 25000,
+        "avgFare": 353.86,
+        "records": 25000,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 28501,
+        "avgFare": 355.38,
+        "records": 28501,
+        "carriers": 13
+      },
+      {
+        "month": "2025-11",
+        "passengers": 27033,
+        "avgFare": 369.55,
+        "records": 27033,
+        "carriers": 12
+      },
+      {
+        "month": "2025-12",
+        "passengers": 32130,
+        "avgFare": 395.28,
+        "records": 32130,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 19874,
+        "avgFare": 343.57,
+        "records": 19874,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 18971,
+        "avgFare": 364.44,
+        "records": 18971,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 25317,
+        "avgFare": 393.26,
+        "records": 25317,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 23356,
+        "avgFare": 392.34,
+        "records": 23356,
+        "carriers": 11
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22471,
+        "avgFare": 449.07,
+        "records": 22471,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "HNL \u2192 OGG",
@@ -388,7 +2126,86 @@
     "flexDemand": 34,
     "records": 277007,
     "carriers": 13,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 32178,
+        "avgFare": 79.2,
+        "records": 32178,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 28626,
+        "avgFare": 80.54,
+        "records": 28626,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 23043,
+        "avgFare": 75.27,
+        "records": 23043,
+        "carriers": 8
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25492,
+        "avgFare": 80.29,
+        "records": 25492,
+        "carriers": 9
+      },
+      {
+        "month": "2025-11",
+        "passengers": 22729,
+        "avgFare": 84.8,
+        "records": 22729,
+        "carriers": 7
+      },
+      {
+        "month": "2025-12",
+        "passengers": 27440,
+        "avgFare": 91.03,
+        "records": 27440,
+        "carriers": 8
+      },
+      {
+        "month": "2026-01",
+        "passengers": 22818,
+        "avgFare": 81.96,
+        "records": 22818,
+        "carriers": 7
+      },
+      {
+        "month": "2026-02",
+        "passengers": 23339,
+        "avgFare": 83.34,
+        "records": 23339,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 23568,
+        "avgFare": 83.46,
+        "records": 23568,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 23187,
+        "avgFare": 85.97,
+        "records": 23187,
+        "carriers": 7
+      },
+      {
+        "month": "2026-05",
+        "passengers": 24587,
+        "avgFare": 101.56,
+        "records": 24587,
+        "carriers": 8
+      }
+    ]
   },
   {
     "route": "ORD \u2192 MCO",
@@ -405,7 +2222,86 @@
     "flexDemand": 34,
     "records": 268995,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 25362,
+        "avgFare": 142.44,
+        "records": 25362,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 21851,
+        "avgFare": 135.75,
+        "records": 21851,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 19812,
+        "avgFare": 137.82,
+        "records": 19812,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25730,
+        "avgFare": 150.32,
+        "records": 25730,
+        "carriers": 13
+      },
+      {
+        "month": "2025-11",
+        "passengers": 22953,
+        "avgFare": 177.33,
+        "records": 22953,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 26098,
+        "avgFare": 199.18,
+        "records": 26098,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 22345,
+        "avgFare": 153.21,
+        "records": 22345,
+        "carriers": 14
+      },
+      {
+        "month": "2026-02",
+        "passengers": 26009,
+        "avgFare": 176.33,
+        "records": 26009,
+        "carriers": 12
+      },
+      {
+        "month": "2026-03",
+        "passengers": 32638,
+        "avgFare": 218.53,
+        "records": 32638,
+        "carriers": 13
+      },
+      {
+        "month": "2026-04",
+        "passengers": 23617,
+        "avgFare": 174.62,
+        "records": 23617,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22580,
+        "avgFare": 187.64,
+        "records": 22580,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "MCO \u2192 ORD",
@@ -422,7 +2318,86 @@
     "flexDemand": 34,
     "records": 268689,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 25249,
+        "avgFare": 142.64,
+        "records": 25249,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 22016,
+        "avgFare": 135.24,
+        "records": 22016,
+        "carriers": 13
+      },
+      {
+        "month": "2025-09",
+        "passengers": 19976,
+        "avgFare": 137.74,
+        "records": 19976,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25465,
+        "avgFare": 149.78,
+        "records": 25465,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 22553,
+        "avgFare": 181.34,
+        "records": 22553,
+        "carriers": 12
+      },
+      {
+        "month": "2025-12",
+        "passengers": 24653,
+        "avgFare": 188.31,
+        "records": 24653,
+        "carriers": 15
+      },
+      {
+        "month": "2026-01",
+        "passengers": 23448,
+        "avgFare": 167.08,
+        "records": 23448,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 25812,
+        "avgFare": 175.77,
+        "records": 25812,
+        "carriers": 12
+      },
+      {
+        "month": "2026-03",
+        "passengers": 31848,
+        "avgFare": 215.2,
+        "records": 31848,
+        "carriers": 12
+      },
+      {
+        "month": "2026-04",
+        "passengers": 25000,
+        "avgFare": 195.66,
+        "records": 25000,
+        "carriers": 11
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22669,
+        "avgFare": 192.78,
+        "records": 22669,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "LAS \u2192 LAX",
@@ -439,7 +2414,86 @@
     "flexDemand": 34,
     "records": 262933,
     "carriers": 23,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 27140,
+        "avgFare": 97.85,
+        "records": 27140,
+        "carriers": 16
+      },
+      {
+        "month": "2025-08",
+        "passengers": 28157,
+        "avgFare": 94.63,
+        "records": 28157,
+        "carriers": 15
+      },
+      {
+        "month": "2025-09",
+        "passengers": 25570,
+        "avgFare": 102.33,
+        "records": 25570,
+        "carriers": 15
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25629,
+        "avgFare": 111.73,
+        "records": 25629,
+        "carriers": 16
+      },
+      {
+        "month": "2025-11",
+        "passengers": 22997,
+        "avgFare": 109.22,
+        "records": 22997,
+        "carriers": 15
+      },
+      {
+        "month": "2025-12",
+        "passengers": 24259,
+        "avgFare": 96.54,
+        "records": 24259,
+        "carriers": 14
+      },
+      {
+        "month": "2026-01",
+        "passengers": 23930,
+        "avgFare": 117.79,
+        "records": 23930,
+        "carriers": 15
+      },
+      {
+        "month": "2026-02",
+        "passengers": 21488,
+        "avgFare": 103.76,
+        "records": 21488,
+        "carriers": 14
+      },
+      {
+        "month": "2026-03",
+        "passengers": 23641,
+        "avgFare": 112.71,
+        "records": 23641,
+        "carriers": 14
+      },
+      {
+        "month": "2026-04",
+        "passengers": 19568,
+        "avgFare": 127.62,
+        "records": 19568,
+        "carriers": 15
+      },
+      {
+        "month": "2026-05",
+        "passengers": 20554,
+        "avgFare": 167.29,
+        "records": 20554,
+        "carriers": 14
+      }
+    ]
   },
   {
     "route": "LAX \u2192 ORD",
@@ -456,7 +2510,86 @@
     "flexDemand": 34,
     "records": 261921,
     "carriers": 20,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 31330,
+        "avgFare": 219.14,
+        "records": 31330,
+        "carriers": 14
+      },
+      {
+        "month": "2025-08",
+        "passengers": 29763,
+        "avgFare": 211.15,
+        "records": 29763,
+        "carriers": 15
+      },
+      {
+        "month": "2025-09",
+        "passengers": 23973,
+        "avgFare": 223.21,
+        "records": 23973,
+        "carriers": 15
+      },
+      {
+        "month": "2025-10",
+        "passengers": 26079,
+        "avgFare": 247.19,
+        "records": 26079,
+        "carriers": 15
+      },
+      {
+        "month": "2025-11",
+        "passengers": 24271,
+        "avgFare": 250.5,
+        "records": 24271,
+        "carriers": 14
+      },
+      {
+        "month": "2025-12",
+        "passengers": 25337,
+        "avgFare": 249.3,
+        "records": 25337,
+        "carriers": 15
+      },
+      {
+        "month": "2026-01",
+        "passengers": 14966,
+        "avgFare": 297.21,
+        "records": 14966,
+        "carriers": 15
+      },
+      {
+        "month": "2026-02",
+        "passengers": 14300,
+        "avgFare": 291.15,
+        "records": 14300,
+        "carriers": 15
+      },
+      {
+        "month": "2026-03",
+        "passengers": 23802,
+        "avgFare": 288.8,
+        "records": 23802,
+        "carriers": 13
+      },
+      {
+        "month": "2026-04",
+        "passengers": 22565,
+        "avgFare": 262.04,
+        "records": 22565,
+        "carriers": 14
+      },
+      {
+        "month": "2026-05",
+        "passengers": 25535,
+        "avgFare": 264.38,
+        "records": 25535,
+        "carriers": 14
+      }
+    ]
   },
   {
     "route": "OGG \u2192 HNL",
@@ -473,7 +2606,86 @@
     "flexDemand": 34,
     "records": 260873,
     "carriers": 12,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 29547,
+        "avgFare": 80.12,
+        "records": 29547,
+        "carriers": 7
+      },
+      {
+        "month": "2025-08",
+        "passengers": 27632,
+        "avgFare": 82.2,
+        "records": 27632,
+        "carriers": 7
+      },
+      {
+        "month": "2025-09",
+        "passengers": 21456,
+        "avgFare": 76.85,
+        "records": 21456,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 23854,
+        "avgFare": 82.08,
+        "records": 23854,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 21709,
+        "avgFare": 87.19,
+        "records": 21709,
+        "carriers": 7
+      },
+      {
+        "month": "2025-12",
+        "passengers": 25648,
+        "avgFare": 89.35,
+        "records": 25648,
+        "carriers": 8
+      },
+      {
+        "month": "2026-01",
+        "passengers": 22791,
+        "avgFare": 85.97,
+        "records": 22791,
+        "carriers": 7
+      },
+      {
+        "month": "2026-02",
+        "passengers": 22232,
+        "avgFare": 86.51,
+        "records": 22232,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 21967,
+        "avgFare": 85.14,
+        "records": 21967,
+        "carriers": 7
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21731,
+        "avgFare": 88.84,
+        "records": 21731,
+        "carriers": 7
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22306,
+        "avgFare": 104.99,
+        "records": 22306,
+        "carriers": 8
+      }
+    ]
   },
   {
     "route": "ORD \u2192 LAX",
@@ -490,7 +2702,86 @@
     "flexDemand": 34,
     "records": 260797,
     "carriers": 18,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 30665,
+        "avgFare": 219.99,
+        "records": 30665,
+        "carriers": 16
+      },
+      {
+        "month": "2025-08",
+        "passengers": 29023,
+        "avgFare": 216.35,
+        "records": 29023,
+        "carriers": 15
+      },
+      {
+        "month": "2025-09",
+        "passengers": 24139,
+        "avgFare": 227.17,
+        "records": 24139,
+        "carriers": 15
+      },
+      {
+        "month": "2025-10",
+        "passengers": 26145,
+        "avgFare": 248.07,
+        "records": 26145,
+        "carriers": 15
+      },
+      {
+        "month": "2025-11",
+        "passengers": 24445,
+        "avgFare": 247.41,
+        "records": 24445,
+        "carriers": 16
+      },
+      {
+        "month": "2025-12",
+        "passengers": 26446,
+        "avgFare": 266.41,
+        "records": 26446,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 14098,
+        "avgFare": 279.24,
+        "records": 14098,
+        "carriers": 13
+      },
+      {
+        "month": "2026-02",
+        "passengers": 14020,
+        "avgFare": 287.69,
+        "records": 14020,
+        "carriers": 13
+      },
+      {
+        "month": "2026-03",
+        "passengers": 24097,
+        "avgFare": 283.42,
+        "records": 24097,
+        "carriers": 13
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21870,
+        "avgFare": 253.39,
+        "records": 21870,
+        "carriers": 14
+      },
+      {
+        "month": "2026-05",
+        "passengers": 25849,
+        "avgFare": 264.39,
+        "records": 25849,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "LAX \u2192 LAS",
@@ -507,7 +2798,86 @@
     "flexDemand": 34,
     "records": 259870,
     "carriers": 24,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 26138,
+        "avgFare": 93.64,
+        "records": 26138,
+        "carriers": 17
+      },
+      {
+        "month": "2025-08",
+        "passengers": 27767,
+        "avgFare": 93.03,
+        "records": 27767,
+        "carriers": 17
+      },
+      {
+        "month": "2025-09",
+        "passengers": 24838,
+        "avgFare": 95.1,
+        "records": 24838,
+        "carriers": 16
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25641,
+        "avgFare": 106.51,
+        "records": 25641,
+        "carriers": 18
+      },
+      {
+        "month": "2025-11",
+        "passengers": 23065,
+        "avgFare": 104.2,
+        "records": 23065,
+        "carriers": 17
+      },
+      {
+        "month": "2025-12",
+        "passengers": 24728,
+        "avgFare": 98.52,
+        "records": 24728,
+        "carriers": 14
+      },
+      {
+        "month": "2026-01",
+        "passengers": 22906,
+        "avgFare": 114.38,
+        "records": 22906,
+        "carriers": 19
+      },
+      {
+        "month": "2026-02",
+        "passengers": 21767,
+        "avgFare": 105.38,
+        "records": 21767,
+        "carriers": 14
+      },
+      {
+        "month": "2026-03",
+        "passengers": 23334,
+        "avgFare": 106.12,
+        "records": 23334,
+        "carriers": 18
+      },
+      {
+        "month": "2026-04",
+        "passengers": 19505,
+        "avgFare": 126.43,
+        "records": 19505,
+        "carriers": 15
+      },
+      {
+        "month": "2026-05",
+        "passengers": 20181,
+        "avgFare": 161.1,
+        "records": 20181,
+        "carriers": 15
+      }
+    ]
   },
   {
     "route": "EWR \u2192 SFO",
@@ -524,7 +2894,86 @@
     "flexDemand": 34,
     "records": 254291,
     "carriers": 18,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 24370,
+        "avgFare": 405.72,
+        "records": 24370,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 23873,
+        "avgFare": 403.65,
+        "records": 23873,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 24189,
+        "avgFare": 494.23,
+        "records": 24189,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25602,
+        "avgFare": 507.44,
+        "records": 25602,
+        "carriers": 12
+      },
+      {
+        "month": "2025-11",
+        "passengers": 22478,
+        "avgFare": 551.08,
+        "records": 22478,
+        "carriers": 12
+      },
+      {
+        "month": "2025-12",
+        "passengers": 23554,
+        "avgFare": 528.78,
+        "records": 23554,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16257,
+        "avgFare": 537.44,
+        "records": 16257,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16252,
+        "avgFare": 522.4,
+        "records": 16252,
+        "carriers": 6
+      },
+      {
+        "month": "2026-03",
+        "passengers": 24060,
+        "avgFare": 524.07,
+        "records": 24060,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 25564,
+        "avgFare": 484.05,
+        "records": 25564,
+        "carriers": 8
+      },
+      {
+        "month": "2026-05",
+        "passengers": 28092,
+        "avgFare": 531.78,
+        "records": 28092,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "SFO \u2192 EWR",
@@ -541,7 +2990,86 @@
     "flexDemand": 34,
     "records": 252572,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 23743,
+        "avgFare": 397.51,
+        "records": 23743,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 23758,
+        "avgFare": 407.63,
+        "records": 23758,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 23781,
+        "avgFare": 492.66,
+        "records": 23781,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25907,
+        "avgFare": 497.24,
+        "records": 25907,
+        "carriers": 13
+      },
+      {
+        "month": "2025-11",
+        "passengers": 22060,
+        "avgFare": 557.32,
+        "records": 22060,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 23469,
+        "avgFare": 514.79,
+        "records": 23469,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16580,
+        "avgFare": 535.19,
+        "records": 16580,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16067,
+        "avgFare": 530.24,
+        "records": 16067,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 24220,
+        "avgFare": 536.18,
+        "records": 24220,
+        "carriers": 7
+      },
+      {
+        "month": "2026-04",
+        "passengers": 25290,
+        "avgFare": 486.74,
+        "records": 25290,
+        "carriers": 8
+      },
+      {
+        "month": "2026-05",
+        "passengers": 27697,
+        "avgFare": 532.69,
+        "records": 27697,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "MCO \u2192 SJU",
@@ -558,7 +3086,86 @@
     "flexDemand": 34,
     "records": 251602,
     "carriers": 9,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 30466,
+        "avgFare": 169.5,
+        "records": 30466,
+        "carriers": 7
+      },
+      {
+        "month": "2025-08",
+        "passengers": 22824,
+        "avgFare": 164.57,
+        "records": 22824,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 19601,
+        "avgFare": 157.53,
+        "records": 19601,
+        "carriers": 7
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22509,
+        "avgFare": 158.88,
+        "records": 22509,
+        "carriers": 7
+      },
+      {
+        "month": "2025-11",
+        "passengers": 23554,
+        "avgFare": 169.0,
+        "records": 23554,
+        "carriers": 7
+      },
+      {
+        "month": "2025-12",
+        "passengers": 27090,
+        "avgFare": 197.57,
+        "records": 27090,
+        "carriers": 7
+      },
+      {
+        "month": "2026-01",
+        "passengers": 22708,
+        "avgFare": 154.76,
+        "records": 22708,
+        "carriers": 7
+      },
+      {
+        "month": "2026-02",
+        "passengers": 19308,
+        "avgFare": 134.73,
+        "records": 19308,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 21716,
+        "avgFare": 170.57,
+        "records": 21716,
+        "carriers": 7
+      },
+      {
+        "month": "2026-04",
+        "passengers": 20178,
+        "avgFare": 155.73,
+        "records": 20178,
+        "carriers": 7
+      },
+      {
+        "month": "2026-05",
+        "passengers": 21648,
+        "avgFare": 195.1,
+        "records": 21648,
+        "carriers": 7
+      }
+    ]
   },
   {
     "route": "SJU \u2192 MCO",
@@ -575,7 +3182,86 @@
     "flexDemand": 34,
     "records": 248382,
     "carriers": 8,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 29716,
+        "avgFare": 173.96,
+        "records": 29716,
+        "carriers": 7
+      },
+      {
+        "month": "2025-08",
+        "passengers": 22754,
+        "avgFare": 170.38,
+        "records": 22754,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 19255,
+        "avgFare": 174.98,
+        "records": 19255,
+        "carriers": 7
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22592,
+        "avgFare": 161.71,
+        "records": 22592,
+        "carriers": 7
+      },
+      {
+        "month": "2025-11",
+        "passengers": 23100,
+        "avgFare": 168.03,
+        "records": 23100,
+        "carriers": 7
+      },
+      {
+        "month": "2025-12",
+        "passengers": 25992,
+        "avgFare": 182.69,
+        "records": 25992,
+        "carriers": 7
+      },
+      {
+        "month": "2026-01",
+        "passengers": 22596,
+        "avgFare": 177.72,
+        "records": 22596,
+        "carriers": 7
+      },
+      {
+        "month": "2026-02",
+        "passengers": 19169,
+        "avgFare": 138.75,
+        "records": 19169,
+        "carriers": 7
+      },
+      {
+        "month": "2026-03",
+        "passengers": 21880,
+        "avgFare": 181.84,
+        "records": 21880,
+        "carriers": 7
+      },
+      {
+        "month": "2026-04",
+        "passengers": 19941,
+        "avgFare": 156.07,
+        "records": 19941,
+        "carriers": 7
+      },
+      {
+        "month": "2026-05",
+        "passengers": 21387,
+        "avgFare": 194.81,
+        "records": 21387,
+        "carriers": 7
+      }
+    ]
   },
   {
     "route": "LAX \u2192 HNL",
@@ -592,7 +3278,86 @@
     "flexDemand": 34,
     "records": 244494,
     "carriers": 20,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 31140,
+        "avgFare": 326.15,
+        "records": 31140,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 27093,
+        "avgFare": 275.77,
+        "records": 27093,
+        "carriers": 15
+      },
+      {
+        "month": "2025-09",
+        "passengers": 19891,
+        "avgFare": 241.65,
+        "records": 19891,
+        "carriers": 15
+      },
+      {
+        "month": "2025-10",
+        "passengers": 20847,
+        "avgFare": 272.82,
+        "records": 20847,
+        "carriers": 14
+      },
+      {
+        "month": "2025-11",
+        "passengers": 19988,
+        "avgFare": 300.25,
+        "records": 19988,
+        "carriers": 14
+      },
+      {
+        "month": "2025-12",
+        "passengers": 25514,
+        "avgFare": 351.18,
+        "records": 25514,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16428,
+        "avgFare": 262.82,
+        "records": 16428,
+        "carriers": 13
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16302,
+        "avgFare": 250.25,
+        "records": 16302,
+        "carriers": 13
+      },
+      {
+        "month": "2026-03",
+        "passengers": 22994,
+        "avgFare": 307.01,
+        "records": 22994,
+        "carriers": 12
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21598,
+        "avgFare": 264.39,
+        "records": 21598,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22699,
+        "avgFare": 271.29,
+        "records": 22699,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "ATL \u2192 FLL",
@@ -609,7 +3374,86 @@
     "flexDemand": 34,
     "records": 241088,
     "carriers": 14,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22146,
+        "avgFare": 128.43,
+        "records": 22146,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 17963,
+        "avgFare": 134.86,
+        "records": 17963,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 16324,
+        "avgFare": 133.17,
+        "records": 16324,
+        "carriers": 8
+      },
+      {
+        "month": "2025-10",
+        "passengers": 20660,
+        "avgFare": 132.0,
+        "records": 20660,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 22601,
+        "avgFare": 116.81,
+        "records": 22601,
+        "carriers": 10
+      },
+      {
+        "month": "2025-12",
+        "passengers": 26866,
+        "avgFare": 118.56,
+        "records": 26866,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 19858,
+        "avgFare": 112.75,
+        "records": 19858,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 22019,
+        "avgFare": 110.96,
+        "records": 22019,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 25527,
+        "avgFare": 112.41,
+        "records": 25527,
+        "carriers": 8
+      },
+      {
+        "month": "2026-04",
+        "passengers": 25146,
+        "avgFare": 115.72,
+        "records": 25146,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 21978,
+        "avgFare": 144.22,
+        "records": 21978,
+        "carriers": 9
+      }
+    ]
   },
   {
     "route": "FLL \u2192 ATL",
@@ -626,7 +3470,86 @@
     "flexDemand": 34,
     "records": 239979,
     "carriers": 12,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22221,
+        "avgFare": 129.01,
+        "records": 22221,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 17751,
+        "avgFare": 133.93,
+        "records": 17751,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 16217,
+        "avgFare": 134.2,
+        "records": 16217,
+        "carriers": 7
+      },
+      {
+        "month": "2025-10",
+        "passengers": 20340,
+        "avgFare": 130.0,
+        "records": 20340,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 22641,
+        "avgFare": 119.19,
+        "records": 22641,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 26133,
+        "avgFare": 115.81,
+        "records": 26133,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 20461,
+        "avgFare": 123.14,
+        "records": 20461,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 22015,
+        "avgFare": 111.04,
+        "records": 22015,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 25730,
+        "avgFare": 116.05,
+        "records": 25730,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 24924,
+        "avgFare": 118.32,
+        "records": 24924,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 21546,
+        "avgFare": 144.06,
+        "records": 21546,
+        "carriers": 9
+      }
+    ]
   },
   {
     "route": "HNL \u2192 LAX",
@@ -643,7 +3566,86 @@
     "flexDemand": 34,
     "records": 237726,
     "carriers": 19,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 30176,
+        "avgFare": 318.46,
+        "records": 30176,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 26295,
+        "avgFare": 301.94,
+        "records": 26295,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 19649,
+        "avgFare": 247.92,
+        "records": 19649,
+        "carriers": 13
+      },
+      {
+        "month": "2025-10",
+        "passengers": 20592,
+        "avgFare": 272.91,
+        "records": 20592,
+        "carriers": 14
+      },
+      {
+        "month": "2025-11",
+        "passengers": 19136,
+        "avgFare": 306.93,
+        "records": 19136,
+        "carriers": 12
+      },
+      {
+        "month": "2025-12",
+        "passengers": 24033,
+        "avgFare": 323.69,
+        "records": 24033,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16962,
+        "avgFare": 314.0,
+        "records": 16962,
+        "carriers": 11
+      },
+      {
+        "month": "2026-02",
+        "passengers": 15552,
+        "avgFare": 255.95,
+        "records": 15552,
+        "carriers": 13
+      },
+      {
+        "month": "2026-03",
+        "passengers": 21371,
+        "avgFare": 298.97,
+        "records": 21371,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 22244,
+        "avgFare": 289.68,
+        "records": 22244,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 21716,
+        "avgFare": 269.66,
+        "records": 21716,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "LGA \u2192 DFW",
@@ -660,7 +3662,86 @@
     "flexDemand": 34,
     "records": 236551,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 24190,
+        "avgFare": 213.62,
+        "records": 24190,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 20764,
+        "avgFare": 219.57,
+        "records": 20764,
+        "carriers": 9
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20819,
+        "avgFare": 246.99,
+        "records": 20819,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 25287,
+        "avgFare": 249.95,
+        "records": 25287,
+        "carriers": 7
+      },
+      {
+        "month": "2025-11",
+        "passengers": 23313,
+        "avgFare": 257.12,
+        "records": 23313,
+        "carriers": 8
+      },
+      {
+        "month": "2025-12",
+        "passengers": 25253,
+        "avgFare": 279.71,
+        "records": 25253,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16755,
+        "avgFare": 219.37,
+        "records": 16755,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 15201,
+        "avgFare": 248.82,
+        "records": 15201,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 21768,
+        "avgFare": 262.73,
+        "records": 21768,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 20661,
+        "avgFare": 261.96,
+        "records": 20661,
+        "carriers": 11
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22540,
+        "avgFare": 271.69,
+        "records": 22540,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "FLL \u2192 LGA",
@@ -677,7 +3758,86 @@
     "flexDemand": 34,
     "records": 236451,
     "carriers": 13,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 17950,
+        "avgFare": 151.95,
+        "records": 17950,
+        "carriers": 8
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19746,
+        "avgFare": 160.75,
+        "records": 19746,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 15921,
+        "avgFare": 138.78,
+        "records": 15921,
+        "carriers": 7
+      },
+      {
+        "month": "2025-10",
+        "passengers": 18965,
+        "avgFare": 141.43,
+        "records": 18965,
+        "carriers": 9
+      },
+      {
+        "month": "2025-11",
+        "passengers": 22026,
+        "avgFare": 155.98,
+        "records": 22026,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 24888,
+        "avgFare": 180.36,
+        "records": 24888,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 24054,
+        "avgFare": 175.64,
+        "records": 24054,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 23005,
+        "avgFare": 181.88,
+        "records": 23005,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 26322,
+        "avgFare": 172.75,
+        "records": 26322,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 23339,
+        "avgFare": 193.53,
+        "records": 23339,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 20235,
+        "avgFare": 195.69,
+        "records": 20235,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "ORD \u2192 BOS",
@@ -694,7 +3854,86 @@
     "flexDemand": 34,
     "records": 235105,
     "carriers": 18,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 27197,
+        "avgFare": 168.31,
+        "records": 27197,
+        "carriers": 15
+      },
+      {
+        "month": "2025-08",
+        "passengers": 27096,
+        "avgFare": 167.91,
+        "records": 27096,
+        "carriers": 11
+      },
+      {
+        "month": "2025-09",
+        "passengers": 23427,
+        "avgFare": 158.17,
+        "records": 23427,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 28009,
+        "avgFare": 185.82,
+        "records": 28009,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 21815,
+        "avgFare": 178.95,
+        "records": 21815,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18752,
+        "avgFare": 162.81,
+        "records": 18752,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 12381,
+        "avgFare": 146.96,
+        "records": 12381,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 11896,
+        "avgFare": 158.22,
+        "records": 11896,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 18049,
+        "avgFare": 177.32,
+        "records": 18049,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 20796,
+        "avgFare": 180.44,
+        "records": 20796,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 25687,
+        "avgFare": 169.77,
+        "records": 25687,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "DFW \u2192 LGA",
@@ -711,7 +3950,86 @@
     "flexDemand": 34,
     "records": 234750,
     "carriers": 12,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 23226,
+        "avgFare": 210.65,
+        "records": 23226,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 20072,
+        "avgFare": 218.61,
+        "records": 20072,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20812,
+        "avgFare": 242.76,
+        "records": 20812,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 24685,
+        "avgFare": 250.63,
+        "records": 24685,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 22868,
+        "avgFare": 257.29,
+        "records": 22868,
+        "carriers": 7
+      },
+      {
+        "month": "2025-12",
+        "passengers": 24828,
+        "avgFare": 269.95,
+        "records": 24828,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16789,
+        "avgFare": 222.8,
+        "records": 16789,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 15098,
+        "avgFare": 251.18,
+        "records": 15098,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 21681,
+        "avgFare": 259.39,
+        "records": 21681,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21160,
+        "avgFare": 263.27,
+        "records": 21160,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 23531,
+        "avgFare": 273.93,
+        "records": 23531,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "LGA \u2192 FLL",
@@ -728,7 +4046,86 @@
     "flexDemand": 34,
     "records": 233807,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 17863,
+        "avgFare": 154.27,
+        "records": 17863,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19899,
+        "avgFare": 156.16,
+        "records": 19899,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 15636,
+        "avgFare": 134.6,
+        "records": 15636,
+        "carriers": 7
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19644,
+        "avgFare": 145.29,
+        "records": 19644,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 21924,
+        "avgFare": 155.39,
+        "records": 21924,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 26396,
+        "avgFare": 210.45,
+        "records": 26396,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 22248,
+        "avgFare": 141.75,
+        "records": 22248,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 22372,
+        "avgFare": 178.57,
+        "records": 22372,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 26453,
+        "avgFare": 171.25,
+        "records": 26453,
+        "carriers": 12
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21980,
+        "avgFare": 179.37,
+        "records": 21980,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19392,
+        "avgFare": 186.25,
+        "records": 19392,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "BOS \u2192 ORD",
@@ -745,7 +4142,86 @@
     "flexDemand": 34,
     "records": 233727,
     "carriers": 19,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 26918,
+        "avgFare": 170.8,
+        "records": 26918,
+        "carriers": 14
+      },
+      {
+        "month": "2025-08",
+        "passengers": 26454,
+        "avgFare": 168.61,
+        "records": 26454,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 23388,
+        "avgFare": 158.95,
+        "records": 23388,
+        "carriers": 12
+      },
+      {
+        "month": "2025-10",
+        "passengers": 27891,
+        "avgFare": 194.48,
+        "records": 27891,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 21737,
+        "avgFare": 180.35,
+        "records": 21737,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18741,
+        "avgFare": 166.16,
+        "records": 18741,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 12066,
+        "avgFare": 143.39,
+        "records": 12066,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 11928,
+        "avgFare": 156.66,
+        "records": 11928,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 17824,
+        "avgFare": 166.06,
+        "records": 17824,
+        "carriers": 13
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21045,
+        "avgFare": 181.0,
+        "records": 21045,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 25735,
+        "avgFare": 167.61,
+        "records": 25735,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "BOS \u2192 MCO",
@@ -762,7 +4238,86 @@
     "flexDemand": 34,
     "records": 233610,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 17520,
+        "avgFare": 165.48,
+        "records": 17520,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19190,
+        "avgFare": 169.88,
+        "records": 19190,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 14841,
+        "avgFare": 161.18,
+        "records": 14841,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19384,
+        "avgFare": 192.71,
+        "records": 19384,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 20104,
+        "avgFare": 201.01,
+        "records": 20104,
+        "carriers": 10
+      },
+      {
+        "month": "2025-12",
+        "passengers": 25145,
+        "avgFare": 196.46,
+        "records": 25145,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 20747,
+        "avgFare": 136.55,
+        "records": 20747,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 24656,
+        "avgFare": 194.67,
+        "records": 24656,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 23615,
+        "avgFare": 174.34,
+        "records": 23615,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 29950,
+        "avgFare": 221.66,
+        "records": 29950,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 18458,
+        "avgFare": 181.24,
+        "records": 18458,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "MCO \u2192 BOS",
@@ -779,7 +4334,86 @@
     "flexDemand": 34,
     "records": 233504,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 17566,
+        "avgFare": 164.74,
+        "records": 17566,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19371,
+        "avgFare": 171.12,
+        "records": 19371,
+        "carriers": 11
+      },
+      {
+        "month": "2025-09",
+        "passengers": 14601,
+        "avgFare": 161.78,
+        "records": 14601,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19169,
+        "avgFare": 183.94,
+        "records": 19169,
+        "carriers": 9
+      },
+      {
+        "month": "2025-11",
+        "passengers": 19759,
+        "avgFare": 199.46,
+        "records": 19759,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 24129,
+        "avgFare": 182.34,
+        "records": 24129,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 21586,
+        "avgFare": 159.03,
+        "records": 21586,
+        "carriers": 11
+      },
+      {
+        "month": "2026-02",
+        "passengers": 23619,
+        "avgFare": 201.45,
+        "records": 23619,
+        "carriers": 12
+      },
+      {
+        "month": "2026-03",
+        "passengers": 24968,
+        "avgFare": 186.59,
+        "records": 24968,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 28543,
+        "avgFare": 228.46,
+        "records": 28543,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 20193,
+        "avgFare": 195.73,
+        "records": 20193,
+        "carriers": 9
+      }
+    ]
   },
   {
     "route": "PHX \u2192 SEA",
@@ -796,7 +4430,86 @@
     "flexDemand": 34,
     "records": 232306,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 19927,
+        "avgFare": 161.38,
+        "records": 19927,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19477,
+        "avgFare": 158.9,
+        "records": 19477,
+        "carriers": 9
+      },
+      {
+        "month": "2025-09",
+        "passengers": 18052,
+        "avgFare": 167.18,
+        "records": 18052,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19795,
+        "avgFare": 171.74,
+        "records": 19795,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 20254,
+        "avgFare": 188.13,
+        "records": 20254,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 23097,
+        "avgFare": 176.74,
+        "records": 23097,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 17713,
+        "avgFare": 169.16,
+        "records": 17713,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 21127,
+        "avgFare": 197.36,
+        "records": 21127,
+        "carriers": 7
+      },
+      {
+        "month": "2026-03",
+        "passengers": 26219,
+        "avgFare": 203.53,
+        "records": 26219,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 24846,
+        "avgFare": 211.11,
+        "records": 24846,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 21799,
+        "avgFare": 205.39,
+        "records": 21799,
+        "carriers": 9
+      }
+    ]
   },
   {
     "route": "SEA \u2192 PHX",
@@ -813,7 +4526,86 @@
     "flexDemand": 34,
     "records": 231976,
     "carriers": 14,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 20421,
+        "avgFare": 165.66,
+        "records": 20421,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19811,
+        "avgFare": 162.36,
+        "records": 19811,
+        "carriers": 11
+      },
+      {
+        "month": "2025-09",
+        "passengers": 18363,
+        "avgFare": 169.98,
+        "records": 18363,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 20683,
+        "avgFare": 173.59,
+        "records": 20683,
+        "carriers": 9
+      },
+      {
+        "month": "2025-11",
+        "passengers": 19854,
+        "avgFare": 184.86,
+        "records": 19854,
+        "carriers": 10
+      },
+      {
+        "month": "2025-12",
+        "passengers": 23139,
+        "avgFare": 183.93,
+        "records": 23139,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 17850,
+        "avgFare": 160.99,
+        "records": 17850,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 21314,
+        "avgFare": 194.18,
+        "records": 21314,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 25518,
+        "avgFare": 197.41,
+        "records": 25518,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 24424,
+        "avgFare": 203.85,
+        "records": 24424,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 20599,
+        "avgFare": 192.26,
+        "records": 20599,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "LAS \u2192 SFO",
@@ -830,7 +4622,86 @@
     "flexDemand": 34,
     "records": 230359,
     "carriers": 14,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 20439,
+        "avgFare": 131.51,
+        "records": 20439,
+        "carriers": 14
+      },
+      {
+        "month": "2025-08",
+        "passengers": 21490,
+        "avgFare": 126.53,
+        "records": 21490,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20481,
+        "avgFare": 126.76,
+        "records": 20481,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 23037,
+        "avgFare": 144.21,
+        "records": 23037,
+        "carriers": 13
+      },
+      {
+        "month": "2025-11",
+        "passengers": 19881,
+        "avgFare": 151.92,
+        "records": 19881,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 21446,
+        "avgFare": 151.42,
+        "records": 21446,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 21064,
+        "avgFare": 186.94,
+        "records": 21064,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 19456,
+        "avgFare": 157.58,
+        "records": 19456,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 19399,
+        "avgFare": 180.11,
+        "records": 19399,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21287,
+        "avgFare": 176.11,
+        "records": 21287,
+        "carriers": 11
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22379,
+        "avgFare": 182.75,
+        "records": 22379,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "FLL \u2192 EWR",
@@ -847,7 +4718,86 @@
     "flexDemand": 34,
     "records": 227097,
     "carriers": 12,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 17443,
+        "avgFare": 152.64,
+        "records": 17443,
+        "carriers": 7
+      },
+      {
+        "month": "2025-08",
+        "passengers": 18941,
+        "avgFare": 162.35,
+        "records": 18941,
+        "carriers": 7
+      },
+      {
+        "month": "2025-09",
+        "passengers": 13115,
+        "avgFare": 140.86,
+        "records": 13115,
+        "carriers": 7
+      },
+      {
+        "month": "2025-10",
+        "passengers": 18719,
+        "avgFare": 138.94,
+        "records": 18719,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 21203,
+        "avgFare": 171.01,
+        "records": 21203,
+        "carriers": 6
+      },
+      {
+        "month": "2025-12",
+        "passengers": 25903,
+        "avgFare": 182.21,
+        "records": 25903,
+        "carriers": 8
+      },
+      {
+        "month": "2026-01",
+        "passengers": 24032,
+        "avgFare": 187.58,
+        "records": 24032,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 22840,
+        "avgFare": 190.62,
+        "records": 22840,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 26548,
+        "avgFare": 191.39,
+        "records": 26548,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 22289,
+        "avgFare": 207.3,
+        "records": 22289,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 16064,
+        "avgFare": 212.35,
+        "records": 16064,
+        "carriers": 8
+      }
+    ]
   },
   {
     "route": "ATL \u2192 EWR",
@@ -864,7 +4814,86 @@
     "flexDemand": 34,
     "records": 227066,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 21463,
+        "avgFare": 167.44,
+        "records": 21463,
+        "carriers": 13
+      },
+      {
+        "month": "2025-08",
+        "passengers": 21203,
+        "avgFare": 169.58,
+        "records": 21203,
+        "carriers": 7
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20231,
+        "avgFare": 155.89,
+        "records": 20231,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22311,
+        "avgFare": 168.18,
+        "records": 22311,
+        "carriers": 7
+      },
+      {
+        "month": "2025-11",
+        "passengers": 20729,
+        "avgFare": 169.14,
+        "records": 20729,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 22915,
+        "avgFare": 168.79,
+        "records": 22915,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16511,
+        "avgFare": 148.18,
+        "records": 16511,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 17307,
+        "avgFare": 150.76,
+        "records": 17307,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 21418,
+        "avgFare": 165.69,
+        "records": 21418,
+        "carriers": 8
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21261,
+        "avgFare": 188.01,
+        "records": 21261,
+        "carriers": 8
+      },
+      {
+        "month": "2026-05",
+        "passengers": 21717,
+        "avgFare": 205.77,
+        "records": 21717,
+        "carriers": 9
+      }
+    ]
   },
   {
     "route": "EWR \u2192 ATL",
@@ -881,7 +4910,86 @@
     "flexDemand": 34,
     "records": 226150,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 21951,
+        "avgFare": 168.63,
+        "records": 21951,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 21149,
+        "avgFare": 167.49,
+        "records": 21149,
+        "carriers": 9
+      },
+      {
+        "month": "2025-09",
+        "passengers": 19911,
+        "avgFare": 154.46,
+        "records": 19911,
+        "carriers": 6
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22018,
+        "avgFare": 166.72,
+        "records": 22018,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 21051,
+        "avgFare": 166.01,
+        "records": 21051,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 22531,
+        "avgFare": 174.9,
+        "records": 22531,
+        "carriers": 8
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16772,
+        "avgFare": 143.63,
+        "records": 16772,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 17295,
+        "avgFare": 146.73,
+        "records": 17295,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 21425,
+        "avgFare": 164.61,
+        "records": 21425,
+        "carriers": 8
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21071,
+        "avgFare": 180.89,
+        "records": 21071,
+        "carriers": 8
+      },
+      {
+        "month": "2026-05",
+        "passengers": 20976,
+        "avgFare": 196.18,
+        "records": 20976,
+        "carriers": 9
+      }
+    ]
   },
   {
     "route": "EWR \u2192 FLL",
@@ -898,7 +5006,86 @@
     "flexDemand": 34,
     "records": 225485,
     "carriers": 11,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 17294,
+        "avgFare": 154.31,
+        "records": 17294,
+        "carriers": 7
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19022,
+        "avgFare": 160.02,
+        "records": 19022,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 12906,
+        "avgFare": 135.06,
+        "records": 12906,
+        "carriers": 8
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19213,
+        "avgFare": 140.79,
+        "records": 19213,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 21568,
+        "avgFare": 165.49,
+        "records": 21568,
+        "carriers": 8
+      },
+      {
+        "month": "2025-12",
+        "passengers": 27286,
+        "avgFare": 210.98,
+        "records": 27286,
+        "carriers": 7
+      },
+      {
+        "month": "2026-01",
+        "passengers": 23149,
+        "avgFare": 154.55,
+        "records": 23149,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 22513,
+        "avgFare": 188.23,
+        "records": 22513,
+        "carriers": 7
+      },
+      {
+        "month": "2026-03",
+        "passengers": 25836,
+        "avgFare": 190.64,
+        "records": 25836,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21135,
+        "avgFare": 190.99,
+        "records": 21135,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 15563,
+        "avgFare": 203.36,
+        "records": 15563,
+        "carriers": 8
+      }
+    ]
   },
   {
     "route": "SFO \u2192 SAN",
@@ -915,7 +5102,86 @@
     "flexDemand": 34,
     "records": 224709,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 24746,
+        "avgFare": 113.02,
+        "records": 24746,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 23192,
+        "avgFare": 121.83,
+        "records": 23192,
+        "carriers": 11
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20367,
+        "avgFare": 121.01,
+        "records": 20367,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 24806,
+        "avgFare": 117.9,
+        "records": 24806,
+        "carriers": 12
+      },
+      {
+        "month": "2025-11",
+        "passengers": 20884,
+        "avgFare": 140.76,
+        "records": 20884,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 21462,
+        "avgFare": 146.66,
+        "records": 21462,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 15843,
+        "avgFare": 150.21,
+        "records": 15843,
+        "carriers": 11
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16068,
+        "avgFare": 162.52,
+        "records": 16068,
+        "carriers": 12
+      },
+      {
+        "month": "2026-03",
+        "passengers": 18983,
+        "avgFare": 174.72,
+        "records": 18983,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 19253,
+        "avgFare": 159.77,
+        "records": 19253,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19105,
+        "avgFare": 152.76,
+        "records": 19105,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "LAS \u2192 DEN",
@@ -932,7 +5198,86 @@
     "flexDemand": 34,
     "records": 224691,
     "carriers": 12,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 19853,
+        "avgFare": 134.1,
+        "records": 19853,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 18755,
+        "avgFare": 127.8,
+        "records": 18755,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20184,
+        "avgFare": 144.24,
+        "records": 20184,
+        "carriers": 8
+      },
+      {
+        "month": "2025-10",
+        "passengers": 23057,
+        "avgFare": 144.1,
+        "records": 23057,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 19085,
+        "avgFare": 143.86,
+        "records": 19085,
+        "carriers": 8
+      },
+      {
+        "month": "2025-12",
+        "passengers": 20934,
+        "avgFare": 154.36,
+        "records": 20934,
+        "carriers": 8
+      },
+      {
+        "month": "2026-01",
+        "passengers": 18548,
+        "avgFare": 152.37,
+        "records": 18548,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 18304,
+        "avgFare": 152.14,
+        "records": 18304,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 22714,
+        "avgFare": 176.0,
+        "records": 22714,
+        "carriers": 7
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21247,
+        "avgFare": 165.55,
+        "records": 21247,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22010,
+        "avgFare": 163.23,
+        "records": 22010,
+        "carriers": 9
+      }
+    ]
   },
   {
     "route": "SFO \u2192 LAS",
@@ -949,7 +5294,86 @@
     "flexDemand": 34,
     "records": 224411,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 19996,
+        "avgFare": 126.75,
+        "records": 19996,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 20912,
+        "avgFare": 124.44,
+        "records": 20912,
+        "carriers": 15
+      },
+      {
+        "month": "2025-09",
+        "passengers": 19243,
+        "avgFare": 119.66,
+        "records": 19243,
+        "carriers": 12
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22201,
+        "avgFare": 137.45,
+        "records": 22201,
+        "carriers": 14
+      },
+      {
+        "month": "2025-11",
+        "passengers": 20081,
+        "avgFare": 145.92,
+        "records": 20081,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 21878,
+        "avgFare": 151.27,
+        "records": 21878,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 19053,
+        "avgFare": 164.48,
+        "records": 19053,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 18931,
+        "avgFare": 157.42,
+        "records": 18931,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 19399,
+        "avgFare": 174.04,
+        "records": 19399,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21082,
+        "avgFare": 172.3,
+        "records": 21082,
+        "carriers": 11
+      },
+      {
+        "month": "2026-05",
+        "passengers": 21635,
+        "avgFare": 175.93,
+        "records": 21635,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "SAN \u2192 SFO",
@@ -966,7 +5390,86 @@
     "flexDemand": 34,
     "records": 224355,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 24025,
+        "avgFare": 119.27,
+        "records": 24025,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 22609,
+        "avgFare": 126.78,
+        "records": 22609,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20629,
+        "avgFare": 122.57,
+        "records": 20629,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 24671,
+        "avgFare": 119.42,
+        "records": 24671,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 21178,
+        "avgFare": 139.38,
+        "records": 21178,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 21321,
+        "avgFare": 148.16,
+        "records": 21321,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16075,
+        "avgFare": 152.82,
+        "records": 16075,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16166,
+        "avgFare": 160.24,
+        "records": 16166,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 19231,
+        "avgFare": 174.44,
+        "records": 19231,
+        "carriers": 12
+      },
+      {
+        "month": "2026-04",
+        "passengers": 19263,
+        "avgFare": 162.02,
+        "records": 19263,
+        "carriers": 11
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19187,
+        "avgFare": 154.0,
+        "records": 19187,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "ORD \u2192 DFW",
@@ -983,7 +5486,86 @@
     "flexDemand": 34,
     "records": 224107,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22426,
+        "avgFare": 191.64,
+        "records": 22426,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 20810,
+        "avgFare": 191.72,
+        "records": 20810,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 21417,
+        "avgFare": 211.09,
+        "records": 21417,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22649,
+        "avgFare": 200.44,
+        "records": 22649,
+        "carriers": 9
+      },
+      {
+        "month": "2025-11",
+        "passengers": 21147,
+        "avgFare": 192.87,
+        "records": 21147,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 20548,
+        "avgFare": 187.86,
+        "records": 20548,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 13867,
+        "avgFare": 205.05,
+        "records": 13867,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 15685,
+        "avgFare": 220.11,
+        "records": 15685,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 20434,
+        "avgFare": 221.29,
+        "records": 20434,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21820,
+        "avgFare": 196.69,
+        "records": 21820,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 23304,
+        "avgFare": 214.81,
+        "records": 23304,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "DFW \u2192 ORD",
@@ -1000,7 +5582,86 @@
     "flexDemand": 34,
     "records": 223146,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22678,
+        "avgFare": 189.28,
+        "records": 22678,
+        "carriers": 13
+      },
+      {
+        "month": "2025-08",
+        "passengers": 20394,
+        "avgFare": 188.94,
+        "records": 20394,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20786,
+        "avgFare": 207.87,
+        "records": 20786,
+        "carriers": 8
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22421,
+        "avgFare": 202.35,
+        "records": 22421,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 20859,
+        "avgFare": 194.2,
+        "records": 20859,
+        "carriers": 10
+      },
+      {
+        "month": "2025-12",
+        "passengers": 20418,
+        "avgFare": 184.58,
+        "records": 20418,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 13950,
+        "avgFare": 206.81,
+        "records": 13950,
+        "carriers": 11
+      },
+      {
+        "month": "2026-02",
+        "passengers": 15672,
+        "avgFare": 220.95,
+        "records": 15672,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 20292,
+        "avgFare": 219.15,
+        "records": 20292,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21962,
+        "avgFare": 200.74,
+        "records": 21962,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 23714,
+        "avgFare": 217.16,
+        "records": 23714,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "DEN \u2192 LAS",
@@ -1017,7 +5678,86 @@
     "flexDemand": 34,
     "records": 222763,
     "carriers": 11,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 19860,
+        "avgFare": 130.57,
+        "records": 19860,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 18737,
+        "avgFare": 125.1,
+        "records": 18737,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 19967,
+        "avgFare": 138.18,
+        "records": 19967,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 23139,
+        "avgFare": 139.55,
+        "records": 23139,
+        "carriers": 9
+      },
+      {
+        "month": "2025-11",
+        "passengers": 18726,
+        "avgFare": 135.41,
+        "records": 18726,
+        "carriers": 6
+      },
+      {
+        "month": "2025-12",
+        "passengers": 21360,
+        "avgFare": 150.65,
+        "records": 21360,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 17729,
+        "avgFare": 146.17,
+        "records": 17729,
+        "carriers": 6
+      },
+      {
+        "month": "2026-02",
+        "passengers": 17996,
+        "avgFare": 148.33,
+        "records": 17996,
+        "carriers": 7
+      },
+      {
+        "month": "2026-03",
+        "passengers": 22183,
+        "avgFare": 168.36,
+        "records": 22183,
+        "carriers": 7
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21343,
+        "avgFare": 157.96,
+        "records": 21343,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 21723,
+        "avgFare": 157.55,
+        "records": 21723,
+        "carriers": 9
+      }
+    ]
   },
   {
     "route": "MCO \u2192 DTW",
@@ -1034,7 +5774,86 @@
     "flexDemand": 34,
     "records": 220020,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 17515,
+        "avgFare": 137.8,
+        "records": 17515,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 18215,
+        "avgFare": 136.45,
+        "records": 18215,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 13848,
+        "avgFare": 138.03,
+        "records": 13848,
+        "carriers": 8
+      },
+      {
+        "month": "2025-10",
+        "passengers": 18331,
+        "avgFare": 144.11,
+        "records": 18331,
+        "carriers": 7
+      },
+      {
+        "month": "2025-11",
+        "passengers": 18953,
+        "avgFare": 169.68,
+        "records": 18953,
+        "carriers": 7
+      },
+      {
+        "month": "2025-12",
+        "passengers": 22956,
+        "avgFare": 181.3,
+        "records": 22956,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 20056,
+        "avgFare": 167.77,
+        "records": 20056,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 24715,
+        "avgFare": 197.51,
+        "records": 24715,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 27315,
+        "avgFare": 221.71,
+        "records": 27315,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 22069,
+        "avgFare": 212.59,
+        "records": 22069,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 16047,
+        "avgFare": 216.03,
+        "records": 16047,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "JFK \u2192 MCO",
@@ -1051,7 +5870,86 @@
     "flexDemand": 34,
     "records": 219109,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22334,
+        "avgFare": 160.04,
+        "records": 22334,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 22844,
+        "avgFare": 167.61,
+        "records": 22844,
+        "carriers": 9
+      },
+      {
+        "month": "2025-09",
+        "passengers": 15235,
+        "avgFare": 125.86,
+        "records": 15235,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 18337,
+        "avgFare": 134.88,
+        "records": 18337,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 20744,
+        "avgFare": 149.69,
+        "records": 20744,
+        "carriers": 7
+      },
+      {
+        "month": "2025-12",
+        "passengers": 24130,
+        "avgFare": 177.97,
+        "records": 24130,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 17863,
+        "avgFare": 122.43,
+        "records": 17863,
+        "carriers": 11
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16945,
+        "avgFare": 169.55,
+        "records": 16945,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 20388,
+        "avgFare": 165.29,
+        "records": 20388,
+        "carriers": 7
+      },
+      {
+        "month": "2026-04",
+        "passengers": 22075,
+        "avgFare": 176.13,
+        "records": 22075,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 18214,
+        "avgFare": 163.08,
+        "records": 18214,
+        "carriers": 8
+      }
+    ]
   },
   {
     "route": "DTW \u2192 MCO",
@@ -1068,7 +5966,86 @@
     "flexDemand": 34,
     "records": 218707,
     "carriers": 13,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 17538,
+        "avgFare": 135.89,
+        "records": 17538,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 18137,
+        "avgFare": 134.93,
+        "records": 18137,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 13998,
+        "avgFare": 134.05,
+        "records": 13998,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 18479,
+        "avgFare": 143.57,
+        "records": 18479,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 18984,
+        "avgFare": 165.18,
+        "records": 18984,
+        "carriers": 8
+      },
+      {
+        "month": "2025-12",
+        "passengers": 23694,
+        "avgFare": 185.04,
+        "records": 23694,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 19369,
+        "avgFare": 154.97,
+        "records": 19369,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 25242,
+        "avgFare": 196.0,
+        "records": 25242,
+        "carriers": 7
+      },
+      {
+        "month": "2026-03",
+        "passengers": 27286,
+        "avgFare": 223.77,
+        "records": 27286,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 20530,
+        "avgFare": 186.11,
+        "records": 20530,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 15450,
+        "avgFare": 210.21,
+        "records": 15450,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "SFO \u2192 ORD",
@@ -1085,7 +6062,86 @@
     "flexDemand": 34,
     "records": 218301,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 27016,
+        "avgFare": 240.0,
+        "records": 27016,
+        "carriers": 13
+      },
+      {
+        "month": "2025-08",
+        "passengers": 25292,
+        "avgFare": 241.54,
+        "records": 25292,
+        "carriers": 17
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20430,
+        "avgFare": 278.61,
+        "records": 20430,
+        "carriers": 13
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22595,
+        "avgFare": 310.72,
+        "records": 22595,
+        "carriers": 13
+      },
+      {
+        "month": "2025-11",
+        "passengers": 18023,
+        "avgFare": 345.99,
+        "records": 18023,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18321,
+        "avgFare": 315.45,
+        "records": 18321,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 11770,
+        "avgFare": 327.27,
+        "records": 11770,
+        "carriers": 11
+      },
+      {
+        "month": "2026-02",
+        "passengers": 12538,
+        "avgFare": 316.65,
+        "records": 12538,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 18769,
+        "avgFare": 310.02,
+        "records": 18769,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 19624,
+        "avgFare": 290.51,
+        "records": 19624,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 23923,
+        "avgFare": 301.02,
+        "records": 23923,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "SEA \u2192 LAX",
@@ -1102,7 +6158,86 @@
     "flexDemand": 34,
     "records": 217335,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 24077,
+        "avgFare": 192.73,
+        "records": 24077,
+        "carriers": 15
+      },
+      {
+        "month": "2025-08",
+        "passengers": 24038,
+        "avgFare": 188.9,
+        "records": 24038,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 18771,
+        "avgFare": 189.7,
+        "records": 18771,
+        "carriers": 15
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19204,
+        "avgFare": 191.03,
+        "records": 19204,
+        "carriers": 12
+      },
+      {
+        "month": "2025-11",
+        "passengers": 18384,
+        "avgFare": 199.45,
+        "records": 18384,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 20676,
+        "avgFare": 205.3,
+        "records": 20676,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 14124,
+        "avgFare": 187.32,
+        "records": 14124,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16067,
+        "avgFare": 200.26,
+        "records": 16067,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 18830,
+        "avgFare": 181.97,
+        "records": 18830,
+        "carriers": 12
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21270,
+        "avgFare": 201.31,
+        "records": 21270,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 21894,
+        "avgFare": 183.28,
+        "records": 21894,
+        "carriers": 15
+      }
+    ]
   },
   {
     "route": "LAX \u2192 SEA",
@@ -1119,7 +6254,86 @@
     "flexDemand": 34,
     "records": 217158,
     "carriers": 19,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 23959,
+        "avgFare": 191.25,
+        "records": 23959,
+        "carriers": 16
+      },
+      {
+        "month": "2025-08",
+        "passengers": 23453,
+        "avgFare": 186.34,
+        "records": 23453,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 18374,
+        "avgFare": 188.76,
+        "records": 18374,
+        "carriers": 14
+      },
+      {
+        "month": "2025-10",
+        "passengers": 18897,
+        "avgFare": 188.87,
+        "records": 18897,
+        "carriers": 16
+      },
+      {
+        "month": "2025-11",
+        "passengers": 18603,
+        "avgFare": 202.92,
+        "records": 18603,
+        "carriers": 16
+      },
+      {
+        "month": "2025-12",
+        "passengers": 20421,
+        "avgFare": 201.49,
+        "records": 20421,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 14357,
+        "avgFare": 196.09,
+        "records": 14357,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16263,
+        "avgFare": 197.25,
+        "records": 16263,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 19190,
+        "avgFare": 189.68,
+        "records": 19190,
+        "carriers": 13
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21510,
+        "avgFare": 200.79,
+        "records": 21510,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22131,
+        "avgFare": 186.08,
+        "records": 22131,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "ORD \u2192 SFO",
@@ -1136,7 +6350,86 @@
     "flexDemand": 34,
     "records": 216824,
     "carriers": 19,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 26857,
+        "avgFare": 245.32,
+        "records": 26857,
+        "carriers": 13
+      },
+      {
+        "month": "2025-08",
+        "passengers": 24683,
+        "avgFare": 244.57,
+        "records": 24683,
+        "carriers": 15
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20474,
+        "avgFare": 279.64,
+        "records": 20474,
+        "carriers": 16
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22093,
+        "avgFare": 310.67,
+        "records": 22093,
+        "carriers": 15
+      },
+      {
+        "month": "2025-11",
+        "passengers": 18101,
+        "avgFare": 340.33,
+        "records": 18101,
+        "carriers": 17
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18655,
+        "avgFare": 317.63,
+        "records": 18655,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 11362,
+        "avgFare": 334.56,
+        "records": 11362,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 12547,
+        "avgFare": 310.45,
+        "records": 12547,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 18654,
+        "avgFare": 304.38,
+        "records": 18654,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 18860,
+        "avgFare": 286.75,
+        "records": 18860,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 24538,
+        "avgFare": 299.61,
+        "records": 24538,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "DCA \u2192 BOS",
@@ -1153,7 +6446,86 @@
     "flexDemand": 34,
     "records": 214353,
     "carriers": 18,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 18398,
+        "avgFare": 172.65,
+        "records": 18398,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19404,
+        "avgFare": 169.59,
+        "records": 19404,
+        "carriers": 11
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20094,
+        "avgFare": 156.23,
+        "records": 20094,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 23730,
+        "avgFare": 180.74,
+        "records": 23730,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 20796,
+        "avgFare": 167.66,
+        "records": 20796,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18746,
+        "avgFare": 141.58,
+        "records": 18746,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 12883,
+        "avgFare": 137.95,
+        "records": 12883,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 14436,
+        "avgFare": 154.48,
+        "records": 14436,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 20923,
+        "avgFare": 173.22,
+        "records": 20923,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21416,
+        "avgFare": 188.54,
+        "records": 21416,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 23527,
+        "avgFare": 180.82,
+        "records": 23527,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "SFO \u2192 BOS",
@@ -1170,7 +6542,86 @@
     "flexDemand": 34,
     "records": 213896,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 24527,
+        "avgFare": 323.47,
+        "records": 24527,
+        "carriers": 13
+      },
+      {
+        "month": "2025-08",
+        "passengers": 23394,
+        "avgFare": 337.3,
+        "records": 23394,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20468,
+        "avgFare": 341.23,
+        "records": 20468,
+        "carriers": 12
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22461,
+        "avgFare": 357.93,
+        "records": 22461,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 17951,
+        "avgFare": 375.36,
+        "records": 17951,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18487,
+        "avgFare": 362.14,
+        "records": 18487,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 13480,
+        "avgFare": 382.24,
+        "records": 13480,
+        "carriers": 7
+      },
+      {
+        "month": "2026-02",
+        "passengers": 13616,
+        "avgFare": 372.3,
+        "records": 13616,
+        "carriers": 7
+      },
+      {
+        "month": "2026-03",
+        "passengers": 17006,
+        "avgFare": 391.91,
+        "records": 17006,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 19878,
+        "avgFare": 376.36,
+        "records": 19878,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22628,
+        "avgFare": 395.42,
+        "records": 22628,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "ATL \u2192 MCO",
@@ -1187,7 +6638,86 @@
     "flexDemand": 34,
     "records": 213107,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 20864,
+        "avgFare": 136.04,
+        "records": 20864,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 17083,
+        "avgFare": 145.99,
+        "records": 17083,
+        "carriers": 11
+      },
+      {
+        "month": "2025-09",
+        "passengers": 17753,
+        "avgFare": 161.89,
+        "records": 17753,
+        "carriers": 12
+      },
+      {
+        "month": "2025-10",
+        "passengers": 21409,
+        "avgFare": 164.4,
+        "records": 21409,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 17795,
+        "avgFare": 160.96,
+        "records": 17795,
+        "carriers": 10
+      },
+      {
+        "month": "2025-12",
+        "passengers": 19643,
+        "avgFare": 148.2,
+        "records": 19643,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 17047,
+        "avgFare": 158.4,
+        "records": 17047,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 19528,
+        "avgFare": 177.64,
+        "records": 19528,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 19809,
+        "avgFare": 150.35,
+        "records": 19809,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 22264,
+        "avgFare": 142.96,
+        "records": 22264,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19912,
+        "avgFare": 169.09,
+        "records": 19912,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "MCO \u2192 JFK",
@@ -1204,7 +6734,86 @@
     "flexDemand": 34,
     "records": 213007,
     "carriers": 14,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 21724,
+        "avgFare": 153.83,
+        "records": 21724,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 21945,
+        "avgFare": 171.12,
+        "records": 21945,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 14953,
+        "avgFare": 127.85,
+        "records": 14953,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 17528,
+        "avgFare": 134.73,
+        "records": 17528,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 20002,
+        "avgFare": 154.43,
+        "records": 20002,
+        "carriers": 8
+      },
+      {
+        "month": "2025-12",
+        "passengers": 23238,
+        "avgFare": 157.82,
+        "records": 23238,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 17356,
+        "avgFare": 141.5,
+        "records": 17356,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16741,
+        "avgFare": 169.94,
+        "records": 16741,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 18958,
+        "avgFare": 161.25,
+        "records": 18958,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 22902,
+        "avgFare": 190.32,
+        "records": 22902,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 17660,
+        "avgFare": 173.19,
+        "records": 17660,
+        "carriers": 8
+      }
+    ]
   },
   {
     "route": "BOS \u2192 DCA",
@@ -1221,7 +6830,86 @@
     "flexDemand": 34,
     "records": 212762,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 18101,
+        "avgFare": 175.41,
+        "records": 18101,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19160,
+        "avgFare": 169.21,
+        "records": 19160,
+        "carriers": 11
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20346,
+        "avgFare": 158.67,
+        "records": 20346,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 23432,
+        "avgFare": 185.65,
+        "records": 23432,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 20180,
+        "avgFare": 167.66,
+        "records": 20180,
+        "carriers": 10
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18662,
+        "avgFare": 143.52,
+        "records": 18662,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 12876,
+        "avgFare": 136.42,
+        "records": 12876,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 14322,
+        "avgFare": 153.39,
+        "records": 14322,
+        "carriers": 7
+      },
+      {
+        "month": "2026-03",
+        "passengers": 20655,
+        "avgFare": 165.13,
+        "records": 20655,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21436,
+        "avgFare": 187.95,
+        "records": 21436,
+        "carriers": 11
+      },
+      {
+        "month": "2026-05",
+        "passengers": 23592,
+        "avgFare": 173.74,
+        "records": 23592,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "BOS \u2192 SFO",
@@ -1238,7 +6926,86 @@
     "flexDemand": 34,
     "records": 212699,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 24565,
+        "avgFare": 333.57,
+        "records": 24565,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 22718,
+        "avgFare": 344.08,
+        "records": 22718,
+        "carriers": 15
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20438,
+        "avgFare": 344.96,
+        "records": 20438,
+        "carriers": 12
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22669,
+        "avgFare": 375.28,
+        "records": 22669,
+        "carriers": 12
+      },
+      {
+        "month": "2025-11",
+        "passengers": 17920,
+        "avgFare": 370.52,
+        "records": 17920,
+        "carriers": 10
+      },
+      {
+        "month": "2025-12",
+        "passengers": 19472,
+        "avgFare": 376.32,
+        "records": 19472,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 12675,
+        "avgFare": 390.46,
+        "records": 12675,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 13721,
+        "avgFare": 358.39,
+        "records": 13721,
+        "carriers": 7
+      },
+      {
+        "month": "2026-03",
+        "passengers": 16074,
+        "avgFare": 373.91,
+        "records": 16074,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 19521,
+        "avgFare": 370.43,
+        "records": 19521,
+        "carriers": 11
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22926,
+        "avgFare": 384.86,
+        "records": 22926,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "LAX \u2192 BOS",
@@ -1255,7 +7022,86 @@
     "flexDemand": 34,
     "records": 210284,
     "carriers": 19,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22929,
+        "avgFare": 331.38,
+        "records": 22929,
+        "carriers": 14
+      },
+      {
+        "month": "2025-08",
+        "passengers": 22468,
+        "avgFare": 339.43,
+        "records": 22468,
+        "carriers": 17
+      },
+      {
+        "month": "2025-09",
+        "passengers": 17863,
+        "avgFare": 338.83,
+        "records": 17863,
+        "carriers": 16
+      },
+      {
+        "month": "2025-10",
+        "passengers": 21027,
+        "avgFare": 347.5,
+        "records": 21027,
+        "carriers": 13
+      },
+      {
+        "month": "2025-11",
+        "passengers": 18476,
+        "avgFare": 349.67,
+        "records": 18476,
+        "carriers": 15
+      },
+      {
+        "month": "2025-12",
+        "passengers": 19736,
+        "avgFare": 341.26,
+        "records": 19736,
+        "carriers": 15
+      },
+      {
+        "month": "2026-01",
+        "passengers": 14869,
+        "avgFare": 280.7,
+        "records": 14869,
+        "carriers": 11
+      },
+      {
+        "month": "2026-02",
+        "passengers": 14872,
+        "avgFare": 305.81,
+        "records": 14872,
+        "carriers": 13
+      },
+      {
+        "month": "2026-03",
+        "passengers": 18423,
+        "avgFare": 358.07,
+        "records": 18423,
+        "carriers": 14
+      },
+      {
+        "month": "2026-04",
+        "passengers": 19318,
+        "avgFare": 369.66,
+        "records": 19318,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 20303,
+        "avgFare": 372.69,
+        "records": 20303,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "DFW \u2192 ATL",
@@ -1272,7 +7118,86 @@
     "flexDemand": 34,
     "records": 210264,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 19762,
+        "avgFare": 172.24,
+        "records": 19762,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 18351,
+        "avgFare": 168.9,
+        "records": 18351,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 18287,
+        "avgFare": 179.12,
+        "records": 18287,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22128,
+        "avgFare": 183.69,
+        "records": 22128,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 19486,
+        "avgFare": 190.4,
+        "records": 19486,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18438,
+        "avgFare": 179.29,
+        "records": 18438,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 15237,
+        "avgFare": 190.54,
+        "records": 15237,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 18953,
+        "avgFare": 195.92,
+        "records": 18953,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 21073,
+        "avgFare": 200.94,
+        "records": 21073,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 19787,
+        "avgFare": 203.93,
+        "records": 19787,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 18762,
+        "avgFare": 220.93,
+        "records": 18762,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "ATL \u2192 DFW",
@@ -1289,7 +7214,86 @@
     "flexDemand": 34,
     "records": 209930,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 19710,
+        "avgFare": 173.36,
+        "records": 19710,
+        "carriers": 8
+      },
+      {
+        "month": "2025-08",
+        "passengers": 18739,
+        "avgFare": 170.18,
+        "records": 18739,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 18421,
+        "avgFare": 181.12,
+        "records": 18421,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 22052,
+        "avgFare": 184.86,
+        "records": 22052,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 19534,
+        "avgFare": 190.19,
+        "records": 19534,
+        "carriers": 8
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18985,
+        "avgFare": 177.52,
+        "records": 18985,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 14817,
+        "avgFare": 192.61,
+        "records": 14817,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 18587,
+        "avgFare": 197.09,
+        "records": 18587,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 20640,
+        "avgFare": 203.53,
+        "records": 20640,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 19736,
+        "avgFare": 203.57,
+        "records": 19736,
+        "carriers": 8
+      },
+      {
+        "month": "2026-05",
+        "passengers": 18709,
+        "avgFare": 222.75,
+        "records": 18709,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "MCO \u2192 ATL",
@@ -1306,7 +7310,86 @@
     "flexDemand": 34,
     "records": 209778,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 20655,
+        "avgFare": 137.14,
+        "records": 20655,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 16783,
+        "avgFare": 147.25,
+        "records": 16783,
+        "carriers": 11
+      },
+      {
+        "month": "2025-09",
+        "passengers": 17500,
+        "avgFare": 165.06,
+        "records": 17500,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 21234,
+        "avgFare": 163.97,
+        "records": 21234,
+        "carriers": 9
+      },
+      {
+        "month": "2025-11",
+        "passengers": 17633,
+        "avgFare": 160.37,
+        "records": 17633,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 19202,
+        "avgFare": 145.01,
+        "records": 19202,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 17019,
+        "avgFare": 161.82,
+        "records": 17019,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 19461,
+        "avgFare": 177.54,
+        "records": 19461,
+        "carriers": 7
+      },
+      {
+        "month": "2026-03",
+        "passengers": 19739,
+        "avgFare": 152.69,
+        "records": 19739,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 21337,
+        "avgFare": 148.27,
+        "records": 21337,
+        "carriers": 11
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19215,
+        "avgFare": 170.56,
+        "records": 19215,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "PHX \u2192 ORD",
@@ -1323,7 +7406,86 @@
     "flexDemand": 34,
     "records": 209424,
     "carriers": 18,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 15103,
+        "avgFare": 201.94,
+        "records": 15103,
+        "carriers": 8
+      },
+      {
+        "month": "2025-08",
+        "passengers": 14658,
+        "avgFare": 183.7,
+        "records": 14658,
+        "carriers": 9
+      },
+      {
+        "month": "2025-09",
+        "passengers": 15317,
+        "avgFare": 195.39,
+        "records": 15317,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19153,
+        "avgFare": 224.21,
+        "records": 19153,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 17583,
+        "avgFare": 233.46,
+        "records": 17583,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 19939,
+        "avgFare": 219.0,
+        "records": 19939,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16122,
+        "avgFare": 211.33,
+        "records": 16122,
+        "carriers": 7
+      },
+      {
+        "month": "2026-02",
+        "passengers": 19771,
+        "avgFare": 227.32,
+        "records": 19771,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 29393,
+        "avgFare": 250.68,
+        "records": 29393,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 22016,
+        "avgFare": 225.33,
+        "records": 22016,
+        "carriers": 8
+      },
+      {
+        "month": "2026-05",
+        "passengers": 20369,
+        "avgFare": 220.93,
+        "records": 20369,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "ORD \u2192 PHX",
@@ -1340,7 +7502,86 @@
     "flexDemand": 34,
     "records": 209022,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 15544,
+        "avgFare": 204.19,
+        "records": 15544,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 14976,
+        "avgFare": 185.34,
+        "records": 14976,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 15580,
+        "avgFare": 198.08,
+        "records": 15580,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19651,
+        "avgFare": 230.56,
+        "records": 19651,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 17948,
+        "avgFare": 231.93,
+        "records": 17948,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 20524,
+        "avgFare": 235.38,
+        "records": 20524,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16437,
+        "avgFare": 208.35,
+        "records": 16437,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 19660,
+        "avgFare": 226.5,
+        "records": 19660,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 29251,
+        "avgFare": 254.96,
+        "records": 29251,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 20407,
+        "avgFare": 211.34,
+        "records": 20407,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19044,
+        "avgFare": 211.27,
+        "records": 19044,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "BOS \u2192 LAX",
@@ -1357,7 +7598,86 @@
     "flexDemand": 34,
     "records": 207905,
     "carriers": 20,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22625,
+        "avgFare": 332.27,
+        "records": 22625,
+        "carriers": 15
+      },
+      {
+        "month": "2025-08",
+        "passengers": 21347,
+        "avgFare": 333.06,
+        "records": 21347,
+        "carriers": 16
+      },
+      {
+        "month": "2025-09",
+        "passengers": 18040,
+        "avgFare": 338.88,
+        "records": 18040,
+        "carriers": 16
+      },
+      {
+        "month": "2025-10",
+        "passengers": 21314,
+        "avgFare": 351.54,
+        "records": 21314,
+        "carriers": 13
+      },
+      {
+        "month": "2025-11",
+        "passengers": 18394,
+        "avgFare": 351.47,
+        "records": 18394,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 20205,
+        "avgFare": 365.58,
+        "records": 20205,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 14161,
+        "avgFare": 271.86,
+        "records": 14161,
+        "carriers": 11
+      },
+      {
+        "month": "2026-02",
+        "passengers": 14724,
+        "avgFare": 306.01,
+        "records": 14724,
+        "carriers": 14
+      },
+      {
+        "month": "2026-03",
+        "passengers": 17834,
+        "avgFare": 328.02,
+        "records": 17834,
+        "carriers": 14
+      },
+      {
+        "month": "2026-04",
+        "passengers": 18979,
+        "avgFare": 357.38,
+        "records": 18979,
+        "carriers": 14
+      },
+      {
+        "month": "2026-05",
+        "passengers": 20282,
+        "avgFare": 353.4,
+        "records": 20282,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "LAS \u2192 SEA",
@@ -1374,7 +7694,86 @@
     "flexDemand": 34,
     "records": 207568,
     "carriers": 13,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 20612,
+        "avgFare": 155.72,
+        "records": 20612,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19538,
+        "avgFare": 154.16,
+        "records": 19538,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 18359,
+        "avgFare": 163.09,
+        "records": 18359,
+        "carriers": 10
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19200,
+        "avgFare": 179.06,
+        "records": 19200,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 17138,
+        "avgFare": 179.67,
+        "records": 17138,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18698,
+        "avgFare": 169.77,
+        "records": 18698,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16421,
+        "avgFare": 165.32,
+        "records": 16421,
+        "carriers": 7
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16188,
+        "avgFare": 168.79,
+        "records": 16188,
+        "carriers": 6
+      },
+      {
+        "month": "2026-03",
+        "passengers": 18206,
+        "avgFare": 184.84,
+        "records": 18206,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 20863,
+        "avgFare": 197.15,
+        "records": 20863,
+        "carriers": 7
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22345,
+        "avgFare": 211.59,
+        "records": 22345,
+        "carriers": 9
+      }
+    ]
   },
   {
     "route": "SEA \u2192 SFO",
@@ -1391,7 +7790,86 @@
     "flexDemand": 34,
     "records": 206127,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22987,
+        "avgFare": 188.21,
+        "records": 22987,
+        "carriers": 13
+      },
+      {
+        "month": "2025-08",
+        "passengers": 23027,
+        "avgFare": 182.89,
+        "records": 23027,
+        "carriers": 13
+      },
+      {
+        "month": "2025-09",
+        "passengers": 20063,
+        "avgFare": 176.89,
+        "records": 20063,
+        "carriers": 14
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19647,
+        "avgFare": 176.42,
+        "records": 19647,
+        "carriers": 13
+      },
+      {
+        "month": "2025-11",
+        "passengers": 18567,
+        "avgFare": 196.6,
+        "records": 18567,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 17602,
+        "avgFare": 192.34,
+        "records": 17602,
+        "carriers": 14
+      },
+      {
+        "month": "2026-01",
+        "passengers": 13733,
+        "avgFare": 197.11,
+        "records": 13733,
+        "carriers": 11
+      },
+      {
+        "month": "2026-02",
+        "passengers": 15479,
+        "avgFare": 209.49,
+        "records": 15479,
+        "carriers": 12
+      },
+      {
+        "month": "2026-03",
+        "passengers": 17211,
+        "avgFare": 222.24,
+        "records": 17211,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 18028,
+        "avgFare": 218.07,
+        "records": 18028,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19783,
+        "avgFare": 218.9,
+        "records": 19783,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "SFO \u2192 SEA",
@@ -1408,7 +7886,86 @@
     "flexDemand": 34,
     "records": 205865,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22543,
+        "avgFare": 182.7,
+        "records": 22543,
+        "carriers": 13
+      },
+      {
+        "month": "2025-08",
+        "passengers": 22927,
+        "avgFare": 181.22,
+        "records": 22927,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 19958,
+        "avgFare": 175.2,
+        "records": 19958,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19445,
+        "avgFare": 178.46,
+        "records": 19445,
+        "carriers": 13
+      },
+      {
+        "month": "2025-11",
+        "passengers": 18564,
+        "avgFare": 197.55,
+        "records": 18564,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 17667,
+        "avgFare": 198.28,
+        "records": 17667,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 13691,
+        "avgFare": 197.48,
+        "records": 13691,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 15485,
+        "avgFare": 215.49,
+        "records": 15485,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 17499,
+        "avgFare": 232.24,
+        "records": 17499,
+        "carriers": 12
+      },
+      {
+        "month": "2026-04",
+        "passengers": 18207,
+        "avgFare": 219.18,
+        "records": 18207,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19879,
+        "avgFare": 225.5,
+        "records": 19879,
+        "carriers": 14
+      }
+    ]
   },
   {
     "route": "EWR \u2192 ORD",
@@ -1425,7 +7982,86 @@
     "flexDemand": 34,
     "records": 202926,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 19721,
+        "avgFare": 207.05,
+        "records": 19721,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19733,
+        "avgFare": 205.22,
+        "records": 19733,
+        "carriers": 11
+      },
+      {
+        "month": "2025-09",
+        "passengers": 18806,
+        "avgFare": 201.93,
+        "records": 18806,
+        "carriers": 13
+      },
+      {
+        "month": "2025-10",
+        "passengers": 20638,
+        "avgFare": 205.95,
+        "records": 20638,
+        "carriers": 12
+      },
+      {
+        "month": "2025-11",
+        "passengers": 19885,
+        "avgFare": 190.28,
+        "records": 19885,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 19251,
+        "avgFare": 185.29,
+        "records": 19251,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 12691,
+        "avgFare": 161.75,
+        "records": 12691,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 12660,
+        "avgFare": 165.56,
+        "records": 12660,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 18321,
+        "avgFare": 193.38,
+        "records": 18321,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 18787,
+        "avgFare": 188.54,
+        "records": 18787,
+        "carriers": 8
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22433,
+        "avgFare": 221.2,
+        "records": 22433,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "SEA \u2192 LAS",
@@ -1442,7 +8078,86 @@
     "flexDemand": 34,
     "records": 202870,
     "carriers": 13,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 20007,
+        "avgFare": 152.59,
+        "records": 20007,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19427,
+        "avgFare": 150.85,
+        "records": 19427,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 17409,
+        "avgFare": 161.02,
+        "records": 17409,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19326,
+        "avgFare": 174.35,
+        "records": 19326,
+        "carriers": 9
+      },
+      {
+        "month": "2025-11",
+        "passengers": 16967,
+        "avgFare": 173.39,
+        "records": 16967,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18542,
+        "avgFare": 170.65,
+        "records": 18542,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 15558,
+        "avgFare": 158.2,
+        "records": 15558,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 15997,
+        "avgFare": 171.49,
+        "records": 15997,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 17758,
+        "avgFare": 176.96,
+        "records": 17758,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 20493,
+        "avgFare": 195.58,
+        "records": 20493,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 21386,
+        "avgFare": 199.37,
+        "records": 21386,
+        "carriers": 10
+      }
+    ]
   },
   {
     "route": "ORD \u2192 EWR",
@@ -1459,7 +8174,86 @@
     "flexDemand": 34,
     "records": 202392,
     "carriers": 18,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 19662,
+        "avgFare": 206.88,
+        "records": 19662,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19620,
+        "avgFare": 211.76,
+        "records": 19620,
+        "carriers": 13
+      },
+      {
+        "month": "2025-09",
+        "passengers": 18802,
+        "avgFare": 206.79,
+        "records": 18802,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 20641,
+        "avgFare": 209.43,
+        "records": 20641,
+        "carriers": 11
+      },
+      {
+        "month": "2025-11",
+        "passengers": 20236,
+        "avgFare": 190.19,
+        "records": 20236,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 19168,
+        "avgFare": 184.7,
+        "records": 19168,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 12160,
+        "avgFare": 160.3,
+        "records": 12160,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 12321,
+        "avgFare": 165.6,
+        "records": 12321,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 18553,
+        "avgFare": 194.18,
+        "records": 18553,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 18525,
+        "avgFare": 191.43,
+        "records": 18525,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 22704,
+        "avgFare": 223.1,
+        "records": 22704,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "DEN \u2192 ORD",
@@ -1476,7 +8270,86 @@
     "flexDemand": 34,
     "records": 199514,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 23531,
+        "avgFare": 174.13,
+        "records": 23531,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 23597,
+        "avgFare": 161.55,
+        "records": 23597,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 21602,
+        "avgFare": 169.31,
+        "records": 21602,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 21764,
+        "avgFare": 171.04,
+        "records": 21764,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 15452,
+        "avgFare": 200.78,
+        "records": 15452,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 16300,
+        "avgFare": 195.83,
+        "records": 16300,
+        "carriers": 7
+      },
+      {
+        "month": "2026-01",
+        "passengers": 11661,
+        "avgFare": 189.26,
+        "records": 11661,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 12913,
+        "avgFare": 193.41,
+        "records": 12913,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 17217,
+        "avgFare": 200.21,
+        "records": 17217,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 15502,
+        "avgFare": 198.13,
+        "records": 15502,
+        "carriers": 7
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19975,
+        "avgFare": 195.05,
+        "records": 19975,
+        "carriers": 8
+      }
+    ]
   },
   {
     "route": "LAS \u2192 ORD",
@@ -1493,7 +8366,86 @@
     "flexDemand": 34,
     "records": 198384,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 18625,
+        "avgFare": 172.9,
+        "records": 18625,
+        "carriers": 14
+      },
+      {
+        "month": "2025-08",
+        "passengers": 18173,
+        "avgFare": 168.21,
+        "records": 18173,
+        "carriers": 11
+      },
+      {
+        "month": "2025-09",
+        "passengers": 21610,
+        "avgFare": 218.01,
+        "records": 21610,
+        "carriers": 14
+      },
+      {
+        "month": "2025-10",
+        "passengers": 21011,
+        "avgFare": 224.2,
+        "records": 21011,
+        "carriers": 12
+      },
+      {
+        "month": "2025-11",
+        "passengers": 15895,
+        "avgFare": 227.3,
+        "records": 15895,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 14625,
+        "avgFare": 208.77,
+        "records": 14625,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 14835,
+        "avgFare": 233.85,
+        "records": 14835,
+        "carriers": 11
+      },
+      {
+        "month": "2026-02",
+        "passengers": 15393,
+        "avgFare": 224.64,
+        "records": 15393,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 20594,
+        "avgFare": 265.96,
+        "records": 20594,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 18565,
+        "avgFare": 240.31,
+        "records": 18565,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19058,
+        "avgFare": 253.22,
+        "records": 19058,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "LAX \u2192 DFW",
@@ -1510,7 +8462,86 @@
     "flexDemand": 34,
     "records": 198184,
     "carriers": 18,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 24668,
+        "avgFare": 174.19,
+        "records": 24668,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 20417,
+        "avgFare": 182.25,
+        "records": 20417,
+        "carriers": 11
+      },
+      {
+        "month": "2025-09",
+        "passengers": 17820,
+        "avgFare": 200.63,
+        "records": 17820,
+        "carriers": 12
+      },
+      {
+        "month": "2025-10",
+        "passengers": 21513,
+        "avgFare": 205.63,
+        "records": 21513,
+        "carriers": 9
+      },
+      {
+        "month": "2025-11",
+        "passengers": 19020,
+        "avgFare": 216.84,
+        "records": 19020,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18384,
+        "avgFare": 220.42,
+        "records": 18384,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 13964,
+        "avgFare": 215.42,
+        "records": 13964,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 14460,
+        "avgFare": 232.3,
+        "records": 14460,
+        "carriers": 10
+      },
+      {
+        "month": "2026-03",
+        "passengers": 17467,
+        "avgFare": 264.26,
+        "records": 17467,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 14770,
+        "avgFare": 263.18,
+        "records": 14770,
+        "carriers": 10
+      },
+      {
+        "month": "2026-05",
+        "passengers": 15701,
+        "avgFare": 272.34,
+        "records": 15701,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "ORD \u2192 LAS",
@@ -1527,7 +8558,86 @@
     "flexDemand": 34,
     "records": 198025,
     "carriers": 19,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 18373,
+        "avgFare": 167.56,
+        "records": 18373,
+        "carriers": 15
+      },
+      {
+        "month": "2025-08",
+        "passengers": 18427,
+        "avgFare": 165.49,
+        "records": 18427,
+        "carriers": 13
+      },
+      {
+        "month": "2025-09",
+        "passengers": 21475,
+        "avgFare": 213.67,
+        "records": 21475,
+        "carriers": 16
+      },
+      {
+        "month": "2025-10",
+        "passengers": 21015,
+        "avgFare": 215.73,
+        "records": 21015,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 16110,
+        "avgFare": 214.95,
+        "records": 16110,
+        "carriers": 14
+      },
+      {
+        "month": "2025-12",
+        "passengers": 15043,
+        "avgFare": 221.26,
+        "records": 15043,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 14508,
+        "avgFare": 223.36,
+        "records": 14508,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 15321,
+        "avgFare": 221.19,
+        "records": 15321,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 20528,
+        "avgFare": 259.88,
+        "records": 20528,
+        "carriers": 12
+      },
+      {
+        "month": "2026-04",
+        "passengers": 18116,
+        "avgFare": 228.92,
+        "records": 18116,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19109,
+        "avgFare": 249.63,
+        "records": 19109,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "DFW \u2192 LAX",
@@ -1544,7 +8654,86 @@
     "flexDemand": 34,
     "records": 196675,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 24520,
+        "avgFare": 174.66,
+        "records": 24520,
+        "carriers": 10
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19804,
+        "avgFare": 179.25,
+        "records": 19804,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 17480,
+        "avgFare": 198.91,
+        "records": 17480,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 21444,
+        "avgFare": 207.43,
+        "records": 21444,
+        "carriers": 9
+      },
+      {
+        "month": "2025-11",
+        "passengers": 18801,
+        "avgFare": 217.77,
+        "records": 18801,
+        "carriers": 10
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18415,
+        "avgFare": 226.2,
+        "records": 18415,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 13532,
+        "avgFare": 219.1,
+        "records": 13532,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 14169,
+        "avgFare": 230.42,
+        "records": 14169,
+        "carriers": 9
+      },
+      {
+        "month": "2026-03",
+        "passengers": 17593,
+        "avgFare": 254.12,
+        "records": 17593,
+        "carriers": 9
+      },
+      {
+        "month": "2026-04",
+        "passengers": 14882,
+        "avgFare": 264.06,
+        "records": 14882,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 16035,
+        "avgFare": 278.9,
+        "records": 16035,
+        "carriers": 12
+      }
+    ]
   },
   {
     "route": "ORD \u2192 DEN",
@@ -1561,7 +8750,86 @@
     "flexDemand": 34,
     "records": 196511,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 23129,
+        "avgFare": 174.02,
+        "records": 23129,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 23467,
+        "avgFare": 164.09,
+        "records": 23467,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 21408,
+        "avgFare": 170.57,
+        "records": 21408,
+        "carriers": 11
+      },
+      {
+        "month": "2025-10",
+        "passengers": 21429,
+        "avgFare": 171.65,
+        "records": 21429,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 15075,
+        "avgFare": 204.82,
+        "records": 15075,
+        "carriers": 12
+      },
+      {
+        "month": "2025-12",
+        "passengers": 16218,
+        "avgFare": 209.96,
+        "records": 16218,
+        "carriers": 10
+      },
+      {
+        "month": "2026-01",
+        "passengers": 11562,
+        "avgFare": 183.98,
+        "records": 11562,
+        "carriers": 8
+      },
+      {
+        "month": "2026-02",
+        "passengers": 12978,
+        "avgFare": 191.41,
+        "records": 12978,
+        "carriers": 8
+      },
+      {
+        "month": "2026-03",
+        "passengers": 16683,
+        "avgFare": 201.57,
+        "records": 16683,
+        "carriers": 10
+      },
+      {
+        "month": "2026-04",
+        "passengers": 14944,
+        "avgFare": 197.66,
+        "records": 14944,
+        "carriers": 7
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19618,
+        "avgFare": 194.01,
+        "records": 19618,
+        "carriers": 9
+      }
+    ]
   },
   {
     "route": "HNL \u2192 KOA",
@@ -1578,7 +8846,86 @@
     "flexDemand": 34,
     "records": 193106,
     "carriers": 12,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22306,
+        "avgFare": 84.17,
+        "records": 22306,
+        "carriers": 6
+      },
+      {
+        "month": "2025-08",
+        "passengers": 20405,
+        "avgFare": 84.24,
+        "records": 20405,
+        "carriers": 8
+      },
+      {
+        "month": "2025-09",
+        "passengers": 16056,
+        "avgFare": 80.13,
+        "records": 16056,
+        "carriers": 8
+      },
+      {
+        "month": "2025-10",
+        "passengers": 18365,
+        "avgFare": 88.42,
+        "records": 18365,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 15952,
+        "avgFare": 89.96,
+        "records": 15952,
+        "carriers": 6
+      },
+      {
+        "month": "2025-12",
+        "passengers": 19096,
+        "avgFare": 97.31,
+        "records": 19096,
+        "carriers": 9
+      },
+      {
+        "month": "2026-01",
+        "passengers": 15946,
+        "avgFare": 85.97,
+        "records": 15946,
+        "carriers": 6
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16382,
+        "avgFare": 87.77,
+        "records": 16382,
+        "carriers": 6
+      },
+      {
+        "month": "2026-03",
+        "passengers": 16615,
+        "avgFare": 85.63,
+        "records": 16615,
+        "carriers": 7
+      },
+      {
+        "month": "2026-04",
+        "passengers": 15756,
+        "avgFare": 88.95,
+        "records": 15756,
+        "carriers": 7
+      },
+      {
+        "month": "2026-05",
+        "passengers": 16227,
+        "avgFare": 104.74,
+        "records": 16227,
+        "carriers": 6
+      }
+    ]
   },
   {
     "route": "ATL \u2192 MIA",
@@ -1595,7 +8942,86 @@
     "flexDemand": 34,
     "records": 192011,
     "carriers": 15,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 17931,
+        "avgFare": 150.76,
+        "records": 17931,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 14471,
+        "avgFare": 165.52,
+        "records": 14471,
+        "carriers": 10
+      },
+      {
+        "month": "2025-09",
+        "passengers": 14369,
+        "avgFare": 150.7,
+        "records": 14369,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 18203,
+        "avgFare": 152.71,
+        "records": 18203,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 17957,
+        "avgFare": 143.53,
+        "records": 17957,
+        "carriers": 11
+      },
+      {
+        "month": "2025-12",
+        "passengers": 20286,
+        "avgFare": 147.7,
+        "records": 20286,
+        "carriers": 11
+      },
+      {
+        "month": "2026-01",
+        "passengers": 15837,
+        "avgFare": 143.94,
+        "records": 15837,
+        "carriers": 9
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16535,
+        "avgFare": 150.17,
+        "records": 16535,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 18507,
+        "avgFare": 150.06,
+        "records": 18507,
+        "carriers": 12
+      },
+      {
+        "month": "2026-04",
+        "passengers": 18799,
+        "avgFare": 152.28,
+        "records": 18799,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19116,
+        "avgFare": 169.6,
+        "records": 19116,
+        "carriers": 11
+      }
+    ]
   },
   {
     "route": "ORD \u2192 ATL",
@@ -1612,7 +9038,86 @@
     "flexDemand": 34,
     "records": 190813,
     "carriers": 20,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 23243,
+        "avgFare": 171.3,
+        "records": 23243,
+        "carriers": 13
+      },
+      {
+        "month": "2025-08",
+        "passengers": 20899,
+        "avgFare": 169.93,
+        "records": 20899,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 18276,
+        "avgFare": 194.47,
+        "records": 18276,
+        "carriers": 13
+      },
+      {
+        "month": "2025-10",
+        "passengers": 20647,
+        "avgFare": 193.41,
+        "records": 20647,
+        "carriers": 13
+      },
+      {
+        "month": "2025-11",
+        "passengers": 15623,
+        "avgFare": 197.78,
+        "records": 15623,
+        "carriers": 15
+      },
+      {
+        "month": "2025-12",
+        "passengers": 15321,
+        "avgFare": 186.36,
+        "records": 15321,
+        "carriers": 15
+      },
+      {
+        "month": "2026-01",
+        "passengers": 11909,
+        "avgFare": 189.48,
+        "records": 11909,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 13163,
+        "avgFare": 183.88,
+        "records": 13163,
+        "carriers": 12
+      },
+      {
+        "month": "2026-03",
+        "passengers": 15643,
+        "avgFare": 210.31,
+        "records": 15643,
+        "carriers": 15
+      },
+      {
+        "month": "2026-04",
+        "passengers": 17294,
+        "avgFare": 203.56,
+        "records": 17294,
+        "carriers": 11
+      },
+      {
+        "month": "2026-05",
+        "passengers": 18795,
+        "avgFare": 200.02,
+        "records": 18795,
+        "carriers": 14
+      }
+    ]
   },
   {
     "route": "DEN \u2192 LAX",
@@ -1629,7 +9134,86 @@
     "flexDemand": 34,
     "records": 190724,
     "carriers": 17,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 18803,
+        "avgFare": 161.46,
+        "records": 18803,
+        "carriers": 9
+      },
+      {
+        "month": "2025-08",
+        "passengers": 17475,
+        "avgFare": 152.28,
+        "records": 17475,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 16350,
+        "avgFare": 151.84,
+        "records": 16350,
+        "carriers": 12
+      },
+      {
+        "month": "2025-10",
+        "passengers": 19225,
+        "avgFare": 150.34,
+        "records": 19225,
+        "carriers": 12
+      },
+      {
+        "month": "2025-11",
+        "passengers": 16383,
+        "avgFare": 165.32,
+        "records": 16383,
+        "carriers": 9
+      },
+      {
+        "month": "2025-12",
+        "passengers": 19183,
+        "avgFare": 161.57,
+        "records": 19183,
+        "carriers": 14
+      },
+      {
+        "month": "2026-01",
+        "passengers": 15350,
+        "avgFare": 157.63,
+        "records": 15350,
+        "carriers": 10
+      },
+      {
+        "month": "2026-02",
+        "passengers": 14163,
+        "avgFare": 160.95,
+        "records": 14163,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 17082,
+        "avgFare": 190.32,
+        "records": 17082,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 16502,
+        "avgFare": 169.96,
+        "records": 16502,
+        "carriers": 12
+      },
+      {
+        "month": "2026-05",
+        "passengers": 20208,
+        "avgFare": 158.31,
+        "records": 20208,
+        "carriers": 13
+      }
+    ]
   },
   {
     "route": "MIA \u2192 ATL",
@@ -1646,7 +9230,86 @@
     "flexDemand": 34,
     "records": 189964,
     "carriers": 16,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 18129,
+        "avgFare": 154.74,
+        "records": 18129,
+        "carriers": 12
+      },
+      {
+        "month": "2025-08",
+        "passengers": 14590,
+        "avgFare": 166.18,
+        "records": 14590,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 14319,
+        "avgFare": 153.61,
+        "records": 14319,
+        "carriers": 12
+      },
+      {
+        "month": "2025-10",
+        "passengers": 18014,
+        "avgFare": 151.0,
+        "records": 18014,
+        "carriers": 10
+      },
+      {
+        "month": "2025-11",
+        "passengers": 17629,
+        "avgFare": 151.24,
+        "records": 17629,
+        "carriers": 13
+      },
+      {
+        "month": "2025-12",
+        "passengers": 19787,
+        "avgFare": 144.29,
+        "records": 19787,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 15766,
+        "avgFare": 158.34,
+        "records": 15766,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 16330,
+        "avgFare": 152.75,
+        "records": 16330,
+        "carriers": 11
+      },
+      {
+        "month": "2026-03",
+        "passengers": 18464,
+        "avgFare": 156.72,
+        "records": 18464,
+        "carriers": 14
+      },
+      {
+        "month": "2026-04",
+        "passengers": 18354,
+        "avgFare": 158.32,
+        "records": 18354,
+        "carriers": 11
+      },
+      {
+        "month": "2026-05",
+        "passengers": 18582,
+        "avgFare": 171.84,
+        "records": 18582,
+        "carriers": 14
+      }
+    ]
   },
   {
     "route": "LAX \u2192 DEN",
@@ -1663,7 +9326,86 @@
     "flexDemand": 34,
     "records": 189938,
     "carriers": 20,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 18443,
+        "avgFare": 158.45,
+        "records": 18443,
+        "carriers": 11
+      },
+      {
+        "month": "2025-08",
+        "passengers": 17659,
+        "avgFare": 149.13,
+        "records": 17659,
+        "carriers": 12
+      },
+      {
+        "month": "2025-09",
+        "passengers": 16166,
+        "avgFare": 151.9,
+        "records": 16166,
+        "carriers": 9
+      },
+      {
+        "month": "2025-10",
+        "passengers": 18714,
+        "avgFare": 147.79,
+        "records": 18714,
+        "carriers": 12
+      },
+      {
+        "month": "2025-11",
+        "passengers": 16462,
+        "avgFare": 164.72,
+        "records": 16462,
+        "carriers": 10
+      },
+      {
+        "month": "2025-12",
+        "passengers": 19327,
+        "avgFare": 159.53,
+        "records": 19327,
+        "carriers": 12
+      },
+      {
+        "month": "2026-01",
+        "passengers": 15099,
+        "avgFare": 159.25,
+        "records": 15099,
+        "carriers": 12
+      },
+      {
+        "month": "2026-02",
+        "passengers": 14233,
+        "avgFare": 163.2,
+        "records": 14233,
+        "carriers": 12
+      },
+      {
+        "month": "2026-03",
+        "passengers": 17268,
+        "avgFare": 194.28,
+        "records": 17268,
+        "carriers": 11
+      },
+      {
+        "month": "2026-04",
+        "passengers": 16655,
+        "avgFare": 171.64,
+        "records": 16655,
+        "carriers": 9
+      },
+      {
+        "month": "2026-05",
+        "passengers": 19912,
+        "avgFare": 157.74,
+        "records": 19912,
+        "carriers": 8
+      }
+    ]
   },
   {
     "route": "ATL \u2192 ORD",
@@ -1680,7 +9422,86 @@
     "flexDemand": 34,
     "records": 189804,
     "carriers": 20,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22766,
+        "avgFare": 172.42,
+        "records": 22766,
+        "carriers": 14
+      },
+      {
+        "month": "2025-08",
+        "passengers": 20702,
+        "avgFare": 170.14,
+        "records": 20702,
+        "carriers": 14
+      },
+      {
+        "month": "2025-09",
+        "passengers": 18113,
+        "avgFare": 190.65,
+        "records": 18113,
+        "carriers": 13
+      },
+      {
+        "month": "2025-10",
+        "passengers": 20636,
+        "avgFare": 195.39,
+        "records": 20636,
+        "carriers": 14
+      },
+      {
+        "month": "2025-11",
+        "passengers": 15383,
+        "avgFare": 199.18,
+        "records": 15383,
+        "carriers": 12
+      },
+      {
+        "month": "2025-12",
+        "passengers": 15283,
+        "avgFare": 179.5,
+        "records": 15283,
+        "carriers": 13
+      },
+      {
+        "month": "2026-01",
+        "passengers": 11990,
+        "avgFare": 190.45,
+        "records": 11990,
+        "carriers": 14
+      },
+      {
+        "month": "2026-02",
+        "passengers": 13226,
+        "avgFare": 183.5,
+        "records": 13226,
+        "carriers": 12
+      },
+      {
+        "month": "2026-03",
+        "passengers": 15266,
+        "avgFare": 209.15,
+        "records": 15266,
+        "carriers": 14
+      },
+      {
+        "month": "2026-04",
+        "passengers": 17457,
+        "avgFare": 206.45,
+        "records": 17457,
+        "carriers": 13
+      },
+      {
+        "month": "2026-05",
+        "passengers": 18982,
+        "avgFare": 198.88,
+        "records": 18982,
+        "carriers": 15
+      }
+    ]
   },
   {
     "route": "KOA \u2192 HNL",
@@ -1697,6 +9518,85 @@
     "flexDemand": 34,
     "records": 188664,
     "carriers": 12,
-    "monthsObserved": 11
+    "monthsObserved": 11,
+    "monthly": [
+      {
+        "month": "2025-07",
+        "passengers": 22118,
+        "avgFare": 84.3,
+        "records": 22118,
+        "carriers": 6
+      },
+      {
+        "month": "2025-08",
+        "passengers": 19939,
+        "avgFare": 85.05,
+        "records": 19939,
+        "carriers": 7
+      },
+      {
+        "month": "2025-09",
+        "passengers": 15649,
+        "avgFare": 80.79,
+        "records": 15649,
+        "carriers": 6
+      },
+      {
+        "month": "2025-10",
+        "passengers": 18172,
+        "avgFare": 87.51,
+        "records": 18172,
+        "carriers": 8
+      },
+      {
+        "month": "2025-11",
+        "passengers": 15555,
+        "avgFare": 90.3,
+        "records": 15555,
+        "carriers": 6
+      },
+      {
+        "month": "2025-12",
+        "passengers": 18241,
+        "avgFare": 93.87,
+        "records": 18241,
+        "carriers": 8
+      },
+      {
+        "month": "2026-01",
+        "passengers": 16143,
+        "avgFare": 87.81,
+        "records": 16143,
+        "carriers": 7
+      },
+      {
+        "month": "2026-02",
+        "passengers": 15749,
+        "avgFare": 88.36,
+        "records": 15749,
+        "carriers": 7
+      },
+      {
+        "month": "2026-03",
+        "passengers": 16113,
+        "avgFare": 86.07,
+        "records": 16113,
+        "carriers": 7
+      },
+      {
+        "month": "2026-04",
+        "passengers": 15439,
+        "avgFare": 89.21,
+        "records": 15439,
+        "carriers": 6
+      },
+      {
+        "month": "2026-05",
+        "passengers": 15546,
+        "avgFare": 105.79,
+        "records": 15546,
+        "carriers": 6
+      }
+    ]
   }
 ]

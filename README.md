@@ -99,7 +99,7 @@ The processor is defensive about column naming because BTS public schemas can ev
 - `year`
 - `month`
 
-The website summary currently exposes route-level passenger volume, passenger-weighted average fare, reporting-carrier count, observation coverage, and transparent modeled fare-class inputs. The analyst pages keep observed DB1C-derived market signals separate from those modeled Saver/Main/Flex assumptions.
+The website summary currently exposes route-level passenger volume, passenger-weighted average fare, reporting-carrier count, observation coverage, monthly route observations, and transparent modeled fare-class inputs. The analyst pages keep observed DB1C-derived market signals separate from those modeled Saver/Main/Flex assumptions.
 
 ### 3. Run the starter optimizer
 
