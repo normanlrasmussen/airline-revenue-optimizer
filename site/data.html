@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Analyze AeroYield network fares, passengers, yield, competition, trends, and route-level opportunity." />
+  <meta name="description" content="Analyze AeroYield network fares, passengers, yield, competition, trends, and route-level market data." />
   <title>Market Data | AeroYield</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="analyst.css" />
@@ -18,8 +18,8 @@
 <main>
   <section class="page-hero analyst-hero">
     <div class="eyebrow">U.S. AIRLINE MARKET DATA</div>
-    <h1>Find the routes where better seat decisions could matter most.</h1>
-    <p class="lead">Screen markets by passenger scale, ticket price, trend, competition, and distance-normalized yield when available. Then open a route to understand the commercial context before changing a revenue-management policy.</p>
+    <h1>Understand the markets behind the revenue problem.</h1>
+    <p class="lead">Compare routes by passenger scale, ticket price, trend, competition, and distance-normalized yield when available. Then open one route for a closer look before testing a revenue-management policy.</p>
     <div class="hero-actions">
       <a class="button primary" href="route.html">Inspect one route</a>
       <a class="button secondary" href="#routeTableSection">Browse all routes</a>
@@ -37,17 +37,6 @@
       <article class="kpi-card"><span>Average ticket price</span><strong id="weightedFare">—</strong><small>passenger-weighted network average</small></article>
       <article class="kpi-card"><span>Average yield</span><strong id="networkYield">—</strong><small id="networkYieldNote">fare per passenger-mile when distance is available</small></article>
     </div>
-  </section>
-
-  <section class="section compact">
-    <div class="section-heading"><div><div class="eyebrow">WHERE TO INVESTIGATE</div><h2>Prioritize commercially meaningful markets.</h2></div></div>
-    <div class="analyst-question-grid">
-      <article class="insight-card"><span class="insight-label">Largest market</span><strong id="largestRoute">—</strong><p id="largestRouteDetail">Highest observed passenger volume.</p></article>
-      <article class="insight-card"><span class="insight-label">Largest estimated market value</span><strong id="largestRevenueRoute">—</strong><p id="largestRevenueDetail">Average fare × observed passengers.</p></article>
-      <article class="insight-card"><span class="insight-label">Highest opportunity score</span><strong id="topOpportunityRoute">—</strong><p id="topOpportunityDetail">Prioritization score for where deeper analysis is most worthwhile.</p></article>
-      <article class="insight-card"><span class="insight-label">Top-10 traffic concentration</span><strong id="top10Share">—</strong><p>Share of observed network passengers in the ten largest routes.</p></article>
-    </div>
-    <div class="callout" style="margin-top:18px"><strong>Opportunity score:</strong> a screening score, not a revenue forecast. It weights estimated market value (50%), passenger scale (25%), monthly fare variability (15%), and reporting-carrier breadth (10%).</div>
   </section>
 
   <section class="section">
@@ -84,16 +73,16 @@
 
   <section id="routeTableSection" class="section">
     <div class="section-heading route-table-heading">
-      <div><div class="eyebrow">ROUTE SCREENER</div><h2>Find the market worth investigating.</h2><p class="section-copy">Search by airport or route, then rank markets by commercial scale, yield, competition, or the combined opportunity score.</p></div>
+      <div><div class="eyebrow">ROUTE SCREENER</div><h2>Compare the markets in the extract.</h2><p class="section-copy">Search by airport or route, then rank markets by estimated market value, passenger volume, average fare, yield, or carrier count.</p></div>
       <div class="table-controls">
         <label><span>Search</span><input id="routeSearch" class="text-input" type="search" placeholder="LAX, JFK, LAX-JFK…" /></label>
-        <label><span>Rank by</span><select id="routeSort" class="select"><option value="opportunity">Opportunity score</option><option value="revenue">Estimated market value</option><option value="passengers">Passengers</option><option value="fare">Average fare</option><option value="yield">Yield</option><option value="carriers">Carrier count</option></select></label>
+        <label><span>Rank by</span><select id="routeSort" class="select"><option value="revenue">Estimated market value</option><option value="passengers">Passengers</option><option value="fare">Average fare</option><option value="yield">Yield</option><option value="carriers">Carrier count</option></select></label>
       </div>
     </div>
     <article class="table-card">
       <div class="table-scroll">
         <table class="analyst-table">
-          <thead><tr><th>#</th><th>Route</th><th>Passengers</th><th>Avg fare</th><th>Yield</th><th>Top carrier</th><th>Market value</th><th>Opportunity</th><th></th></tr></thead>
+          <thead><tr><th>#</th><th>Route</th><th>Passengers</th><th>Avg fare</th><th>Yield</th><th>Top carrier</th><th>Market value</th><th></th></tr></thead>
           <tbody id="routeTableBody"></tbody>
         </table>
       </div>
@@ -102,7 +91,8 @@
   </section>
 
   <section class="section compact">
-    <div class="callout"><strong>Observed vs. derived:</strong> fares, passengers, distance, and carrier identifiers come from the normalized DB1C extract when those fields are present. Yield, market value, carrier share, and opportunity score are derived analytics. Missing distance or carrier detail is shown as unavailable rather than estimated.</div>
+    <div class="callout"><strong>Observed vs. derived:</strong> fares, passengers, distance, and carrier identifiers come from the normalized DB1C extract when those fields are present. Yield, estimated market value, and carrier share are derived from those observations. Missing distance or carrier detail is shown as unavailable rather than estimated.</div>
+    <div class="callout" style="margin-top:14px"><strong>What “DB1C-derived market summary · up to 11 months” means:</strong> this page is built from processed U.S. DOT Bureau of Transportation Statistics DB1C Market files, not live airline booking data. “Up to 11 months” means the committed extract contains as many as 11 monthly observations for a route; some routes can have fewer months of coverage.</div>
   </section>
 </main>
 <footer><div><strong>AeroYield</strong> · Market Data</div><div>Observed market data is kept separate from modeled booking assumptions.</div></footer>
