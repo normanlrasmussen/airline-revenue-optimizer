@@ -94,7 +94,7 @@ def test_simplified_portfolio_sections_stay_removed():
 
 
 def test_opportunity_score_logic_is_removed_from_browser_code():
-    for name in ["analytics.js", "data.js", "route.js"]:
+    for name in ["analytics.js", "data.js", "route.js", "app.js"]:
         text = (SITE / name).read_text(encoding="utf-8")
         assert "opportunityScore" not in text, name
         assert "Opportunity score" not in text, name
@@ -106,3 +106,35 @@ def test_market_data_explains_db1c_summary_badge():
     assert "up to 11 months" in text
     assert "not live airline booking data" in text
     assert "some routes can have fewer months of coverage" in text
+
+
+def test_core_booking_decision_is_visually_emphasized():
+    soup = html("market.html")
+    decision = soup.select_one(".decision-callout")
+    assert decision is not None
+    assert "Accept this booking now" in decision.get_text(" ", strip=True)
+    assert "protect the seat" in decision.get_text(" ", strip=True)
+
+
+def test_network_trend_contains_stacked_fare_class_views():
+    soup = html("data.html")
+    required_ids = {
+        "networkPassengerTrend",
+        "networkFareTrend",
+        "networkClassTicketTrend",
+        "networkRevenueShareTrend",
+    }
+    assert required_ids <= {tag.get("id") for tag in soup.find_all(id=True)}
+    text = soup.get_text(" ", strip=True)
+    assert "Fare classes and average yield by month" in text
+    assert "Estimated tickets by modeled fare class" in text
+    assert "Estimated revenue share by modeled fare class" in text
+    assert "DB1C does not report Saver/Main/Flex booking classes" in text
+
+
+def test_cumulative_revenue_chart_uses_legend_not_end_labels():
+    text = (SITE / "app.js").read_text(encoding="utf-8")
+    assert 'aria-label="Policy legend"' in text
+    assert "svg-legend-bg" in text
+    assert "final revenue" in text
+    assert "opportunityScore" not in text
