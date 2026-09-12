@@ -1,12 +1,11 @@
 const AY = window.AeroYieldData;
-const state = { markets: [], summary: null, source: '', isDemo: false, filter: '', sort: 'opportunity' };
+const state = { markets: [], summary: null, source: '', isDemo: false, filter: '', sort: 'revenue' };
 
 function metricValue(m, sort) {
   if (sort === 'passengers') return m.passengers;
   if (sort === 'fare') return m.avgFare;
   if (sort === 'yield') return m.yieldPerMile ?? -1;
   if (sort === 'carriers') return m.carriers;
-  if (sort === 'opportunity') return AY.opportunityScore(state.markets, m);
   return m.revenueProxy;
 }
 
@@ -27,19 +26,11 @@ function renderSnapshot() {
   document.getElementById('networkYield').textContent = formatYield(s.networkYield);
   document.getElementById('networkYieldNote').textContent = Number.isFinite(s.networkYield)
     ? `${AY.format.integer.format(s.weightedDistance)} passenger-weighted average miles`
-    : 'distance is not present in the committed summary; run the enrichment step';
+    : 'distance is not present in the committed summary; rebuild the data with enrichment';
 
   const badge = document.getElementById('sourceBadge');
   badge.classList.toggle('ready', !state.isDemo);
   badge.innerHTML = `<i></i> ${state.source}${s.monthsObserved ? ` · up to ${s.monthsObserved} months` : ''}`;
-
-  document.getElementById('top10Share').textContent = AY.format.percent.format(s.top10PassengerShare);
-  document.getElementById('largestRoute').textContent = s.topVolume ? `${s.topVolume.origin} → ${s.topVolume.destination}` : '—';
-  document.getElementById('largestRouteDetail').textContent = s.topVolume ? `${AY.format.integer.format(s.topVolume.passengers)} observed passengers at an average fare of ${AY.format.money.format(s.topVolume.avgFare)}.` : '';
-  document.getElementById('largestRevenueRoute').textContent = s.topRevenue ? `${s.topRevenue.origin} → ${s.topRevenue.destination}` : '—';
-  document.getElementById('largestRevenueDetail').textContent = s.topRevenue ? `${AY.format.compactMoney.format(s.topRevenue.revenueProxy)} average-fare × passenger value.` : '';
-  document.getElementById('topOpportunityRoute').textContent = s.topOpportunity ? `${s.topOpportunity.origin} → ${s.topOpportunity.destination}` : '—';
-  document.getElementById('topOpportunityDetail').textContent = s.topOpportunity ? `Score ${AY.opportunityScore(state.markets, s.topOpportunity)}/100. High score means commercially material and worth deeper analysis; it is not a predicted revenue lift.` : '';
 }
 
 function renderRevenueBars() {
@@ -133,7 +124,6 @@ function renderTable() {
   const body = document.getElementById('routeTableBody');
   body.innerHTML = filtered.map((m, index) => {
     const topCarrier = m.topCarriers?.[0];
-    const opportunity = AY.opportunityScore(state.markets, m);
     return `<tr>
       <td class="rank-cell">${index + 1}</td>
       <td><a class="route-name-link" href="${AY.routeHref(m)}"><strong>${m.origin} → ${m.destination}</strong><span>${m.monthsObserved ? `${m.monthsObserved} months observed` : 'coverage not reported'}</span></a></td>
@@ -142,7 +132,6 @@ function renderTable() {
       <td>${formatYield(m.yieldPerMile)}</td>
       <td>${topCarrier ? `${topCarrier.carrier} · ${AY.format.percent.format(topCarrier.share)}` : '—'}</td>
       <td title="Average fare × observed passengers">${AY.format.compactMoney.format(m.revenueProxy)}</td>
-      <td><span class="metric-pill ${opportunity >= 75 ? 'metric-up' : opportunity >= 50 ? 'metric-flat' : 'metric-down'}">${opportunity}</span></td>
       <td><a class="table-action" href="${AY.routeHref(m)}">Open →</a></td>
     </tr>`;
   }).join('');

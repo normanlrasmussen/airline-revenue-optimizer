@@ -110,32 +110,6 @@
     return `route.html?route=${encodeURIComponent(routeKey(m))}`;
   }
 
-  function standardDeviation(values) {
-    const clean = values.filter(Number.isFinite);
-    if (clean.length < 2) return 0;
-    const mean = clean.reduce((sum, value) => sum + value, 0) / clean.length;
-    return Math.sqrt(clean.reduce((sum, value) => sum + (value - mean) ** 2, 0) / clean.length);
-  }
-
-  function fareVolatility(market) {
-    const fares = (market.monthly || []).map(point => point.avgFare).filter(value => Number.isFinite(value) && value > 0);
-    if (fares.length < 2) return 0;
-    const mean = fares.reduce((sum, value) => sum + value, 0) / fares.length;
-    return mean ? standardDeviation(fares) / mean : 0;
-  }
-
-  function opportunityScore(markets, market) {
-    const values = markets.map(m => m.revenueProxy);
-    const volumes = markets.map(m => m.passengers);
-    const volatilities = markets.map(fareVolatility);
-    const carrierCounts = markets.map(m => m.carriers);
-    const valuePct = percentileRank(values, market.revenueProxy);
-    const volumePct = percentileRank(volumes, market.passengers);
-    const volatilityPct = percentileRank(volatilities, fareVolatility(market));
-    const carrierPct = percentileRank(carrierCounts, market.carriers);
-    return Math.round(100 * (0.50 * valuePct + 0.25 * volumePct + 0.15 * volatilityPct + 0.10 * carrierPct));
-  }
-
   function networkMonthly(markets) {
     const periods = new Map();
     markets.forEach(market => {
@@ -179,7 +153,6 @@
     });
     const sortedByPassengers = markets.slice().sort((a, b) => b.passengers - a.passengers);
     const sortedByRevenue = markets.slice().sort((a, b) => b.revenueProxy - a.revenueProxy);
-    const sortedByOpportunity = markets.slice().sort((a, b) => opportunityScore(markets, b) - opportunityScore(markets, a));
     const top10Passengers = sortedByPassengers.slice(0, 10).reduce((sum, m) => sum + m.passengers, 0);
     return {
       routeCount: markets.length,
@@ -196,7 +169,6 @@
       top10PassengerShare: totalPassengers ? top10Passengers / totalPassengers : 0,
       topVolume: sortedByPassengers[0] || null,
       topRevenue: sortedByRevenue[0] || null,
-      topOpportunity: sortedByOpportunity[0] || null,
       monthsObserved: Math.max(...markets.map(m => m.monthsObserved || 0), 0),
     };
   }
@@ -215,9 +187,6 @@
     rankBy,
     routeKey,
     routeHref,
-    standardDeviation,
-    fareVolatility,
-    opportunityScore,
     networkMonthly,
     networkSummary,
     signedPercent,

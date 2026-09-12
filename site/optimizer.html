@@ -38,9 +38,10 @@
         <input id="seedInput" type="number" min="1" step="1" value="20260912" />
 
         <div class="field-label policy-label">Policies to compare</div>
-        <label class="policy-check fixed"><input type="checkbox" data-policy="open" checked disabled /><span><strong>Open Sales</strong><small>Baseline · accept until full</small></span></label>
-        <label class="policy-check"><input type="checkbox" data-policy="emsr" checked /><span><strong>EMSR-b</strong><small>Protection-level heuristic</small></span></label>
-        <label class="policy-check"><input type="checkbox" data-policy="dp" checked /><span><strong>Dynamic Programming</strong><small>Optimal for the discretized model</small></span></label>
+        <label class="policy-check fixed"><input type="checkbox" data-policy="open" checked disabled /><span><strong>Open Sales</strong><small>Accepts every request while a seat remains, giving a simple baseline with no seat protection.</small></span></label>
+        <label class="policy-check"><input type="checkbox" data-policy="emsr" checked /><span><strong>EMSR-b</strong><small>Protects seats for expected higher-fare demand using fare and demand estimates.</small></span></label>
+        <label class="policy-check"><input type="checkbox" data-policy="dp" checked /><span><strong>Dynamic Programming</strong><small>Accepts a request only when its fare is at least the expected future value of the seat.</small></span></label>
+        <p class="fine-print"><strong>Clairvoyant benchmark:</strong> sees every future request before choosing which customers to accept, so it is an unattainable upper bound rather than a usable policy.</p>
 
         <button id="optimizeButton" class="button primary full" type="button">Run revenue experiment</button>
         <div id="optimizerStatus" class="status-badge ready optimizer-status"><i></i> Ready</div>
@@ -71,7 +72,7 @@
   </section>
 
   <section class="section">
-    <div class="section-heading"><div><div class="eyebrow">WHY THE POLICIES DIFFER</div><h2>Inspect the control logic, not just the score.</h2></div></div>
+    <div class="section-heading"><div><div class="eyebrow">WHY THE POLICIES DIFFER</div><h2>Inspect the control logic, not just the result.</h2></div></div>
     <div class="three-col mechanics-grid">
       <article class="card"><div class="number">OPEN SALES</div><h3>No seat protection</h3><p>Every request is accepted while a seat remains. This is the baseline against which revenue lift is measured.</p><div class="mechanic-value"><span>Protection</span><strong>0 seats</strong></div></article>
       <article class="card feature"><div class="number">EMSR-B</div><h3>Nested protection levels</h3><p>Protect capacity from lower-fare requests using expected higher-fare demand and a normal approximation.</p><div id="emsrMechanics" class="mechanics-list"></div></article>

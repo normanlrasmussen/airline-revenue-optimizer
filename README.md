@@ -6,14 +6,14 @@ An airline seat is perishable inventory: once the aircraft departs, an empty sea
 
 ## What the project does
 
-The GitHub Pages application follows one decision pipeline:
+The GitHub Pages application follows one simple workflow:
 
 **Observed DB1C market data → modeled booking demand → seeded simulation → seat-control policy → revenue comparison**
 
 The product includes:
 
 - **The Problem** — plain-language explanation of single-flight revenue management.
-- **Market Data** — route screening, passenger/fare trends, optional distance-normalized yield, carrier-share context, and an opportunity score for prioritizing analysis.
+- **Market Data** — route screening, passenger/fare trends, distance-normalized yield, and carrier-share context.
 - **Route Detail** — commercial drill-down for one directional market before changing controls.
 - **Revenue Optimizer** — the single experiment and decision workbench. It runs common-random-number Monte Carlo simulation, compares Open Sales / EMSR-b / dynamic programming on identical booking streams, and reports expected revenue lift, load factor, rejected demand, empty seats, average accepted fare, regret, EMSR protection levels, and DP bid prices.
 
@@ -66,7 +66,6 @@ AeroYield deliberately keeps these separate.
 - yield per passenger-mile
 - reporting-carrier passenger shares
 - monthly network/route trends
-- route opportunity score
 
 **Modeled for experimentation**
 
