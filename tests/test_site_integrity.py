@@ -55,6 +55,15 @@ def test_optimizer_has_required_controls_and_engine_scripts():
     assert scripts[-3:] == ["rm.js", "simulation.js", "app.js"]
 
 
+def test_optimizer_explains_each_policy_in_plain_language():
+    text = (SITE / "optimizer.html").read_text(encoding="utf-8")
+    assert "Accepts every request while a seat remains" in text
+    assert "Protects seats for expected higher-fare demand" in text
+    assert "Accepts a request only when its fare is at least the expected future value of the seat" in text
+    assert "Clairvoyant benchmark:" in text
+    assert "unattainable upper bound" in text
+
+
 def test_legacy_simulator_url_redirects_to_optimizer():
     soup = html("twin.html")
     refresh = soup.find("meta", attrs={"http-equiv": "refresh"})
@@ -70,3 +79,30 @@ def test_user_facing_pages_no_longer_present_booking_simulator_as_a_product():
         assert "booking simulator" not in text, name
         assert 'href="twin.html"' not in text, name
         assert "digital twin" not in text, name
+
+
+def test_simplified_portfolio_sections_stay_removed():
+    index_text = (SITE / "index.html").read_text(encoding="utf-8").lower()
+    data_text = (SITE / "data.html").read_text(encoding="utf-8").lower()
+    route_text = (SITE / "route.html").read_text(encoding="utf-8").lower()
+
+    assert "decision pipeline" not in index_text
+    assert "where to investigate" not in data_text
+    assert "opportunity score" not in data_text
+    assert "decision context" not in route_text
+    assert "opportunity score" not in route_text
+
+
+def test_opportunity_score_logic_is_removed_from_browser_code():
+    for name in ["analytics.js", "data.js", "route.js"]:
+        text = (SITE / name).read_text(encoding="utf-8")
+        assert "opportunityScore" not in text, name
+        assert "Opportunity score" not in text, name
+
+
+def test_market_data_explains_db1c_summary_badge():
+    text = (SITE / "data.html").read_text(encoding="utf-8").lower()
+    assert "db1c-derived market summary" in text
+    assert "up to 11 months" in text
+    assert "not live airline booking data" in text
+    assert "some routes can have fewer months of coverage" in text
