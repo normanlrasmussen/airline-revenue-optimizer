@@ -29,3 +29,9 @@ jobs:
 
       - name: Compile Python sources
         run: python -m compileall -q data optimization tests
+
+      - name: Check JavaScript syntax
+        run: |
+          for file in site/*.js; do
+            node --check "$file"
+          done
