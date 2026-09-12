@@ -41,7 +41,7 @@ Rows without a valid positive distance are excluded from both the yield numerato
 
 Carrier share is computed from passenger weights among observations with a reporting-carrier identifier. The dashboard surfaces carrier-data coverage so a partial carrier field is not presented as complete market share.
 
-`average fare × observed passengers` is labeled **estimated market value**. It is a screening metric, not reported airline revenue.
+`average fare × observed passengers` is labeled **estimated market value**. It is a descriptive market-size proxy, not reported airline revenue.
 
 ## 3. Modeled fare groups
 
@@ -200,20 +200,7 @@ For every policy and replication, AeroYield records:
 
 Across replications the dashboard reports mean values and the 10th, 50th, and 90th percentiles of revenue.
 
-## 11. Route opportunity score
-
-The route screener includes a prioritization score to decide where deeper analysis is most useful. It is not an optimizer and not a predicted revenue lift.
-
-The score is a weighted combination of within-extract percentile ranks:
-
-- 50% estimated market value
-- 25% passenger volume
-- 15% monthly fare variability
-- 10% reporting-carrier breadth
-
-The score answers “where should an analyst look first?” rather than “how much will this route improve?”
-
-## 12. Reproducibility and testing
+## 11. Reproducibility and testing
 
 The Python and browser implementations deliberately mirror the same policy and simulation concepts. CI tests:
 
@@ -223,10 +210,10 @@ The Python and browser implementations deliberately mirror the same policy and s
 - seeded request-stream reproducibility
 - clairvoyant upper-bound dominance
 - passenger-weighted distance, yield, distance coverage, and carrier-share calculations
-- local site assets, navigation, and required optimizer/simulator wiring
+- local site assets, navigation, and required optimizer wiring
 - Python compilation and JavaScript syntax
 
-## 13. Scope that is intentionally left for future work
+## 12. Scope that is intentionally left for future work
 
 AeroYield stops at single-flight revenue management so the model remains explainable and the mathematical guarantees remain clear. Natural extensions are:
 
