@@ -9,6 +9,32 @@ from pathlib import Path
 import pandas as pd
 
 
+def distance_metrics(rows: pd.DataFrame, total_passengers: float) -> dict[str, float | None]:
+    valid = rows[
+        (rows["distance"].fillna(0) > 0)
+        & rows["fare"].notna()
+        & (rows["fare"] >= 0)
+    ].copy()
+    covered_passengers = float(valid["passengers"].sum())
+    if covered_passengers <= 0:
+        return {
+            "avgDistance": None,
+            "yieldPerMile": None,
+            "distanceCoverage": 0.0,
+        }
+
+    passenger_miles = float((valid["distance"] * valid["passengers"]).sum())
+    fare_passengers = float((valid["fare"] * valid["passengers"]).sum())
+    avg_distance = passenger_miles / covered_passengers
+    yield_per_mile = fare_passengers / passenger_miles if passenger_miles > 0 else None
+
+    return {
+        "avgDistance": round(avg_distance, 1),
+        "yieldPerMile": round(yield_per_mile, 6) if yield_per_mile is not None else None,
+        "distanceCoverage": round(covered_passengers / total_passengers, 4) if total_passengers else 0.0,
+    }
+
+
 def build_enrichment(markets: pd.DataFrame) -> dict[tuple[str, str], dict]:
     required = {"origin", "destination", "carrier", "passengers", "fare", "distance"}
     missing = required - set(markets.columns)
@@ -16,18 +42,15 @@ def build_enrichment(markets: pd.DataFrame) -> dict[tuple[str, str], dict]:
         raise KeyError(f"Normalized market file is missing: {', '.join(sorted(missing))}")
 
     df = markets.copy()
-    df["passengers"] = pd.to_numeric(df["passengers"], errors="coerce")
-    df["distance"] = pd.to_numeric(df["distance"], errors="coerce")
+    for column in ["passengers", "fare", "distance", "year", "month"]:
+        if column in df.columns:
+            df[column] = pd.to_numeric(df[column], errors="coerce")
     df = df[df["passengers"].fillna(0) > 0]
 
     result: dict[tuple[str, str], dict] = {}
     for (origin, destination), route in df.groupby(["origin", "destination"], dropna=False):
         passengers = float(route["passengers"].sum())
-        distance_rows = route[route["distance"].fillna(0) > 0].copy()
-        distance_weight = float(distance_rows["passengers"].sum())
-        avg_distance = None
-        if distance_weight > 0:
-            avg_distance = float((distance_rows["distance"] * distance_rows["passengers"]).sum() / distance_weight)
+        route_metrics = distance_metrics(route, passengers)
 
         carrier_rows = route.dropna(subset=["carrier"])
         carrier_pax = carrier_rows.groupby("carrier")["passengers"].sum().sort_values(ascending=False)
@@ -40,11 +63,25 @@ def build_enrichment(markets: pd.DataFrame) -> dict[tuple[str, str], dict]:
             }
             for carrier, pax in carrier_pax.head(5).items()
         ]
+
+        monthly_enrichment: dict[str, dict[str, float | None]] = {}
+        if {"year", "month"}.issubset(route.columns):
+            monthly = route.dropna(subset=["year", "month"]).copy()
+            if not monthly.empty:
+                monthly["period"] = (
+                    monthly["year"].astype(int).astype(str)
+                    + "-"
+                    + monthly["month"].astype(int).astype(str).str.zfill(2)
+                )
+                for period, period_rows in monthly.groupby("period"):
+                    period_passengers = float(period_rows["passengers"].sum())
+                    monthly_enrichment[str(period)] = distance_metrics(period_rows, period_passengers)
+
         result[(str(origin), str(destination))] = {
-            "avgDistance": round(avg_distance, 1) if avg_distance is not None else None,
-            "distanceCoverage": round(distance_weight / passengers, 4) if passengers else 0.0,
+            **route_metrics,
             "topCarriers": top_carriers,
             "carrierCoverage": round(known_carrier_pax / passengers, 4) if passengers else 0.0,
+            "monthlyEnrichment": monthly_enrichment,
         }
     return result
 
@@ -54,14 +91,37 @@ def enrich_summary(markets_path: Path, summary_path: Path, output_path: Path) ->
     summary = json.loads(summary_path.read_text(encoding="utf-8"))
     enrichment = build_enrichment(markets)
 
+    default_enrichment = {
+        "avgDistance": None,
+        "yieldPerMile": None,
+        "distanceCoverage": 0.0,
+        "topCarriers": [],
+        "carrierCoverage": 0.0,
+        "monthlyEnrichment": {},
+    }
+
     for market in summary:
         key = (str(market.get("origin", "")), str(market.get("destination", "")))
-        market.update(enrichment.get(key, {
-            "avgDistance": None,
-            "distanceCoverage": 0.0,
-            "topCarriers": [],
-            "carrierCoverage": 0.0,
-        }))
+        route_enrichment = enrichment.get(key, default_enrichment)
+        market.update({
+            "avgDistance": route_enrichment["avgDistance"],
+            "yieldPerMile": route_enrichment["yieldPerMile"],
+            "distanceCoverage": route_enrichment["distanceCoverage"],
+            "topCarriers": route_enrichment["topCarriers"],
+            "carrierCoverage": route_enrichment["carrierCoverage"],
+        })
+
+        monthly_enrichment = route_enrichment.get("monthlyEnrichment", {})
+        for point in market.get("monthly", []):
+            point_enrichment = monthly_enrichment.get(str(point.get("month", "")))
+            if point_enrichment:
+                point.update(point_enrichment)
+            else:
+                point.update({
+                    "avgDistance": None,
+                    "yieldPerMile": None,
+                    "distanceCoverage": 0.0,
+                })
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")

@@ -4,6 +4,7 @@
   const decimal = new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 });
   const compactMoney = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', notation: 'compact', maximumFractionDigits: 1 });
   const percent = new Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 1 });
+  const yieldPerMile = value => Number.isFinite(value) ? `${(value * 100).toFixed(1)}¢/mi` : '—';
 
   const numberOrNull = value => {
     const n = Number(value);
@@ -14,6 +15,8 @@
     const passengers = numberOrNull(m.passengers) ?? 0;
     const avgFare = numberOrNull(m.avgFare) ?? 0;
     const avgDistance = numberOrNull(m.avgDistance);
+    const distanceCoverage = numberOrNull(m.distanceCoverage) ?? 0;
+    const enrichedYield = numberOrNull(m.yieldPerMile);
     const topCarriers = Array.isArray(m.topCarriers) ? m.topCarriers.map(row => ({
       carrier: String(row.carrier || 'Unknown'),
       passengers: numberOrNull(row.passengers) ?? 0,
@@ -22,12 +25,15 @@
     const monthly = Array.isArray(m.monthly) ? m.monthly.map(point => {
       const pointFare = numberOrNull(point.avgFare) ?? 0;
       const pointDistance = numberOrNull(point.avgDistance) ?? avgDistance;
+      const pointCoverage = numberOrNull(point.distanceCoverage) ?? (pointDistance ? distanceCoverage || 1 : 0);
+      const pointYield = numberOrNull(point.yieldPerMile);
       return {
         ...point,
         passengers: numberOrNull(point.passengers) ?? 0,
         avgFare: pointFare,
         avgDistance: pointDistance,
-        yieldPerMile: pointDistance && pointDistance > 0 ? pointFare / pointDistance : null,
+        distanceCoverage: pointCoverage,
+        yieldPerMile: pointYield ?? (pointDistance && pointDistance > 0 ? pointFare / pointDistance : null),
         records: numberOrNull(point.records) ?? 0,
         carriers: numberOrNull(point.carriers) ?? 0,
       };
@@ -41,8 +47,8 @@
       monthsObserved: numberOrNull(m.monthsObserved),
       revenueProxy: passengers * avgFare,
       avgDistance,
-      distanceCoverage: numberOrNull(m.distanceCoverage) ?? 0,
-      yieldPerMile: avgDistance && avgDistance > 0 ? avgFare / avgDistance : null,
+      distanceCoverage,
+      yieldPerMile: enrichedYield ?? (avgDistance && avgDistance > 0 ? avgFare / avgDistance : null),
       topCarriers,
       topCarrierShare: topCarriers[0]?.share ?? null,
       carrierCoverage: numberOrNull(m.carrierCoverage) ?? 0,
@@ -135,11 +141,17 @@
     markets.forEach(market => {
       (market.monthly || []).forEach(point => {
         if (!point.month) return;
-        const row = periods.get(point.month) || { month: point.month, passengers: 0, farePassengers: 0, passengerMiles: 0 };
+        const row = periods.get(point.month) || { month: point.month, passengers: 0, farePassengers: 0, yieldFarePassengers: 0, passengerMiles: 0 };
         row.passengers += point.passengers;
         row.farePassengers += point.passengers * point.avgFare;
-        const distance = point.avgDistance || market.avgDistance;
-        if (distance && distance > 0) row.passengerMiles += point.passengers * distance;
+        const distance = point.avgDistance;
+        const coverage = Number.isFinite(point.distanceCoverage) ? point.distanceCoverage : (distance ? 1 : 0);
+        const coveredPassengers = point.passengers * coverage;
+        if (distance && distance > 0 && Number.isFinite(point.yieldPerMile) && coveredPassengers > 0) {
+          const pointPassengerMiles = coveredPassengers * distance;
+          row.passengerMiles += pointPassengerMiles;
+          row.yieldFarePassengers += point.yieldPerMile * pointPassengerMiles;
+        }
         periods.set(point.month, row);
       });
     });
@@ -147,15 +159,24 @@
       month: row.month,
       passengers: row.passengers,
       avgFare: row.passengers ? row.farePassengers / row.passengers : 0,
-      yieldPerMile: row.passengerMiles ? row.farePassengers / row.passengerMiles : null,
+      yieldPerMile: row.passengerMiles ? row.yieldFarePassengers / row.passengerMiles : null,
     }));
   }
 
   function networkSummary(markets) {
     const totalPassengers = markets.reduce((sum, m) => sum + m.passengers, 0);
     const totalRevenueProxy = markets.reduce((sum, m) => sum + m.revenueProxy, 0);
-    const passengerMiles = markets.reduce((sum, m) => sum + (m.avgDistance ? m.passengers * m.avgDistance : 0), 0);
-    const distancePassengers = markets.reduce((sum, m) => sum + (m.avgDistance ? m.passengers : 0), 0);
+    let distancePassengers = 0;
+    let passengerMiles = 0;
+    let yieldFarePassengers = 0;
+    markets.forEach(m => {
+      if (!m.avgDistance || !Number.isFinite(m.yieldPerMile)) return;
+      const coveredPassengers = m.passengers * (Number.isFinite(m.distanceCoverage) ? m.distanceCoverage : 1);
+      const routePassengerMiles = coveredPassengers * m.avgDistance;
+      distancePassengers += coveredPassengers;
+      passengerMiles += routePassengerMiles;
+      yieldFarePassengers += m.yieldPerMile * routePassengerMiles;
+    });
     const sortedByPassengers = markets.slice().sort((a, b) => b.passengers - a.passengers);
     const sortedByRevenue = markets.slice().sort((a, b) => b.revenueProxy - a.revenueProxy);
     const sortedByOpportunity = markets.slice().sort((a, b) => opportunityScore(markets, b) - opportunityScore(markets, a));
@@ -166,7 +187,7 @@
       totalRevenueProxy,
       weightedFare: totalPassengers ? totalRevenueProxy / totalPassengers : 0,
       weightedDistance: distancePassengers ? passengerMiles / distancePassengers : null,
-      networkYield: passengerMiles ? totalRevenueProxy / passengerMiles : null,
+      networkYield: passengerMiles ? yieldFarePassengers / passengerMiles : null,
       medianFare: median(markets.map(m => m.avgFare)),
       fareQ1: quantile(markets.map(m => m.avgFare), 0.25),
       fareQ3: quantile(markets.map(m => m.avgFare), 0.75),
@@ -200,6 +221,6 @@
     networkMonthly,
     networkSummary,
     signedPercent,
-    format: { money, integer, decimal, compactMoney, percent },
+    format: { money, integer, decimal, compactMoney, percent, yieldPerMile },
   };
 })();

@@ -11,7 +11,7 @@ function metricValue(m, sort) {
 }
 
 function formatYield(value) {
-  return Number.isFinite(value) ? `$${value.toFixed(3)}` : '—';
+  return AY.format.yieldPerMile(value);
 }
 
 function formatMonth(period) {
