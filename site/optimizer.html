@@ -3,54 +3,105 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Compare airline seat-allocation decisions and revenue-management policies." />
+  <meta name="description" content="Run airline revenue-management policy experiments and quantify expected revenue lift under uncertain demand." />
   <title>Revenue Optimizer | AeroYield</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="analyst.css" />
+  <link rel="stylesheet" href="optimizer.css" />
 </head>
 <body>
 <header class="topbar">
   <a class="brand" href="index.html"><span class="brand-mark">AY</span><span>AeroYield</span></a>
-  <nav aria-label="Primary navigation">
-    <a href="index.html">Home</a><a href="market.html">The Problem</a><a href="data.html">Market Data</a><a href="twin.html">Booking Simulator</a><a class="nav-cta active" href="optimizer.html">Revenue Optimizer</a>
-  </nav>
+  <nav aria-label="Primary navigation"><a href="index.html">Home</a><a href="market.html">The Problem</a><a href="data.html">Market Data</a><a href="twin.html">Booking Simulator</a><a class="nav-cta active" href="optimizer.html">Revenue Optimizer</a></nav>
 </header>
 <main>
   <section class="page-hero">
     <div class="eyebrow">REVENUE OPTIMIZER</div>
-    <h1>Measure what better seat decisions are worth.</h1>
-    <p class="lead">Start with a simple benchmark: if every future request were known in advance, how should the seats be allocated? Later steps add realistic policies that make decisions without seeing the future.</p>
+    <h1>How much are better seat-control decisions worth?</h1>
+    <p class="lead">Choose a route and operating assumptions, then compare Open Sales, EMSR-b, and an exact finite-horizon dynamic program on identical simulated booking demand. The clairvoyant benchmark shows the revenue ceiling if the future were known.</p>
+  </section>
+
+  <section class="section compact">
+    <div class="optimizer-workbench">
+      <aside class="controls-card optimizer-sidebar">
+        <div class="panel-label">EXPERIMENT INPUTS</div>
+        <label class="field-label" for="routeSelect">Route</label>
+        <select id="routeSelect" class="select"></select>
+        <div class="input-pair">
+          <label><span>Aircraft seats</span><input id="capacityInput" type="number" min="1" max="400" step="1" /></label>
+          <label><span>Replications</span><input id="replicationsInput" type="number" min="50" max="5000" step="50" value="500" /></label>
+        </div>
+        <label class="field-label" for="demandScale">Demand scenario</label>
+        <div class="range-row"><input id="demandScale" type="range" min="70" max="130" step="5" value="100" /><strong id="demandScaleValue">100%</strong></div>
+        <p class="fine-print">Scales expected Saver/Main/Flex demand together. Monte Carlo arrival randomness remains in every scenario.</p>
+        <label class="field-label" for="seedInput">Random seed</label>
+        <input id="seedInput" type="number" min="1" step="1" value="20260912" />
+
+        <div class="field-label policy-label">Policies to compare</div>
+        <label class="policy-check fixed"><input type="checkbox" data-policy="open" checked disabled /><span><strong>Open Sales</strong><small>Baseline · accept until full</small></span></label>
+        <label class="policy-check"><input type="checkbox" data-policy="emsr" checked /><span><strong>EMSR-b</strong><small>Protection-level heuristic</small></span></label>
+        <label class="policy-check"><input type="checkbox" data-policy="dp" checked /><span><strong>Dynamic Programming</strong><small>Optimal for the discretized model</small></span></label>
+
+        <button id="optimizeButton" class="button primary full" type="button">Run revenue experiment</button>
+        <div id="optimizerStatus" class="status-badge ready optimizer-status"><i></i> Ready</div>
+      </aside>
+
+      <div class="optimizer-main">
+        <div class="decision-banner">
+          <div><span>BEST POLICY IN THIS EXPERIMENT</span><strong id="bestPolicyName">—</strong><p id="bestPolicySummary">Run the experiment to compare policies.</p></div>
+          <div class="decision-lift"><span>REVENUE LIFT VS OPEN</span><strong id="bestPolicyLift">—</strong></div>
+        </div>
+        <div class="kpi-grid optimizer-kpis">
+          <article class="kpi-card"><span>Best avg revenue</span><strong id="bestRevenue">—</strong><small>mean across seeded replications</small></article>
+          <article class="kpi-card"><span>Clairvoyant gap</span><strong id="clairvoyantGap">—</strong><small>remaining value of perfect future information</small></article>
+          <article class="kpi-card"><span>Best load factor</span><strong id="bestLoad">—</strong><small>average accepted seats ÷ capacity</small></article>
+          <article class="kpi-card"><span>Best avg accepted fare</span><strong id="bestAcceptedFare">—</strong><small>ticket revenue ÷ accepted requests</small></article>
+        </div>
+        <article class="chart-card optimizer-revenue-card">
+          <div class="chart-title"><div><strong>Average revenue by policy</strong><br><span>Same demand streams within each replication</span></div><span id="experimentLabel">—</span></div>
+          <div id="policyRevenueBars" class="bar-chart wide-bars"></div>
+        </article>
+      </div>
+    </div>
   </section>
 
   <section class="section">
-    <div class="section-heading">
-      <div><div class="eyebrow">PERFECT-INFORMATION BENCHMARK</div><h2>Change the assumptions and recalculate the best allocation.</h2></div>
-      <button id="resetButton" class="text-button" type="button">Reset scenario</button>
-    </div>
-    <div class="optimizer-grid">
-      <div class="controls-card">
-        <label class="field-label" for="routeSelect">Route scenario</label>
-        <select id="routeSelect" class="select" style="margin-bottom:18px"></select>
-        <div class="control-header"><span>Fare group</span><span>Fare</span><span>Forecast demand</span></div>
-        <div id="fareControls"></div>
-        <div class="capacity-control"><label for="capacityInput">Aircraft seats</label><input id="capacityInput" type="number" min="0" max="400" step="1" /></div>
-        <button id="optimizeButton" class="button primary full" type="button">Find best allocation</button>
-        <p class="fine-print">This benchmark assumes all demand is known before any seat is sold. It is an upper-bound comparison, not a deployable booking policy.</p>
-      </div>
-      <div class="result-card">
-        <div class="result-topline"><div><span>Best possible revenue</span><strong id="optimizedRevenue">—</strong></div><div class="lift-pill" id="liftPill">—</div></div>
-        <div class="comparison">
-          <div class="comparison-row"><span>Low-fare-first baseline</span><div class="bar-track"><div id="baselineBar" class="bar baseline"></div></div><strong id="baselineRevenue">—</strong></div>
-          <div class="comparison-row"><span>Perfect-information allocation</span><div class="bar-track"><div id="optimizedBar" class="bar optimized"></div></div><strong id="optimizedRevenueBar">—</strong></div>
-        </div>
-        <div class="allocation-title">Best seat allocation if demand were known</div>
-        <div id="allocationVisual" class="allocation-visual"></div>
-        <div id="allocationLegend" class="allocation-legend"></div>
-      </div>
+    <div class="section-heading"><div><div class="eyebrow">POLICY PERFORMANCE</div><h2>What trade-offs create the revenue result?</h2><p class="section-copy">Revenue lift is only useful if you can see how the policy changes accepted demand, load factor, spill, spoilage, and regret.</p></div></div>
+    <article class="table-card"><div class="table-scroll"><table class="analyst-table optimizer-table"><thead><tr><th>Policy</th><th>Avg revenue</th><th>Lift vs Open</th><th>Load factor</th><th>Rejected</th><th>Empty seats</th><th>Accepted fare</th><th>Regret</th></tr></thead><tbody id="optimizerPolicyTable"></tbody></table></div></article>
+  </section>
+
+  <section class="section">
+    <div class="section-heading"><div><div class="eyebrow">WHY THE POLICIES DIFFER</div><h2>Inspect the control logic, not just the score.</h2></div></div>
+    <div class="three-col mechanics-grid">
+      <article class="card"><div class="number">OPEN SALES</div><h3>No seat protection</h3><p>Every request is accepted while a seat remains. This is the baseline against which revenue lift is measured.</p><div class="mechanic-value"><span>Protection</span><strong>0 seats</strong></div></article>
+      <article class="card feature"><div class="number">EMSR-B</div><h3>Nested protection levels</h3><p>Protect capacity from lower-fare requests using expected higher-fare demand and a normal approximation.</p><div id="emsrMechanics" class="mechanics-list"></div></article>
+      <article class="card"><div class="number">DYNAMIC PROGRAMMING</div><h3>Time-varying seat value</h3><p>Accept a request when its fare is at least the expected future value of the seat it consumes.</p><div id="dpMechanics" class="mechanics-list"></div></article>
     </div>
   </section>
-  <section class="section compact"><div class="callout"><strong>How to read this page:</strong> the perfect-information result shows the most revenue this modeled demand could produce. Real revenue management is harder because the airline must accept or reject requests before later demand is known. The next optimizer versions compare practical policies against this upper bound.</div></section>
+
+  <section class="section">
+    <div class="section-heading"><div><div class="eyebrow">UNCERTAINTY</div><h2>Expected revenue is a distribution, not one number.</h2></div></div>
+    <article class="chart-card"><div class="chart-title"><div><strong>Revenue distribution</strong><br><span>10th–90th percentile range with mean marker</span></div><span>Monte Carlo replications</span></div><div class="trend-wrap"><svg id="optimizerDistribution" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Revenue distribution by policy"></svg></div></article>
+  </section>
+
+  <section class="section">
+    <div class="section-heading"><div><div class="eyebrow">ONE POSSIBLE FUTURE</div><h2>Watch policy revenue separate as bookings arrive.</h2></div></div>
+    <article class="chart-card"><div class="chart-title"><div><strong>Cumulative ticket revenue</strong><br><span>First seeded replication; identical booking requests across policies</span></div><span>D-180 → departure</span></div><div class="trend-wrap"><svg id="optimizerRepresentative" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Representative cumulative revenue by policy"></svg></div></article>
+  </section>
+
+  <section class="section">
+    <div class="section-heading"><div><div class="eyebrow">METHODS</div><h2>Math is available when you want it.</h2><p class="section-copy">The product leads with business outcomes; these sections expose the assumptions and mathematical guarantees behind each method.</p></div></div>
+    <div class="method-stack">
+      <details class="method-details"><summary>EMSR-b: protection levels</summary><div><p>Fare classes are sorted from highest to lowest fare. At each fare boundary, higher-fare demand is aggregated into one distribution with a demand-weighted average fare. The protection level is the critical fractile of that aggregate demand distribution. AeroYield models class demand as independent Poisson demand, then uses the standard normal approximation for the EMSR-b quantile.</p><p><strong>Guarantee:</strong> EMSR-b is a heuristic; it is fast and interpretable but is not generally optimal.</p></div></details>
+      <details class="method-details"><summary>Dynamic programming: optimal sequential control for this model</summary><div><p>State is time and remaining seats. For each possible request, the Bellman recursion compares rejecting the request with accepting its fare plus the continuation value with one fewer seat. A request is accepted when its fare is at least the DP bid price: V(t+1,c) − V(t+1,c−1).</p><p><strong>Guarantee:</strong> the DP is optimal for the discretized model used here: four booking opportunities per day, at most one request per opportunity, known class-specific arrival probabilities, and no cancellations or overbooking.</p></div></details>
+      <details class="method-details"><summary>Clairvoyant benchmark: perfect future information</summary><div><p>The benchmark sorts the realized booking requests by fare and fills the aircraft with the highest fares. It is not deployable because it sees the future. Its only purpose is to show an upper bound and quantify each real policy's regret.</p></div></details>
+    </div>
+  </section>
 </main>
-<footer><div><strong>AeroYield</strong> · Revenue Optimizer</div><div>Perfect-information benchmark first; stochastic seat control next.</div></footer>
+<footer><div><strong>AeroYield</strong> · Revenue Optimizer</div><div>Observed market context → modeled bookings → policy experiment → revenue decision.</div></footer>
+<script src="analytics.js"></script>
+<script src="rm.js"></script>
+<script src="simulation.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
