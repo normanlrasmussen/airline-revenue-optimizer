@@ -41,16 +41,45 @@
 
   <section class="section">
     <div class="section-heading">
-      <div><div class="eyebrow">NETWORK TREND</div><h2>How has the observed market changed over time?</h2><p class="section-copy">Monthly DB1C aggregates reveal whether traffic and average ticket prices are stable, rising, or falling across the routes in the current extract.</p></div>
+      <div><div class="eyebrow">NETWORK TREND</div><h2>How has the observed market changed over time?</h2><p class="section-copy">Start with observed traffic and fare/yield movement, then use AeroYield's simple Saver/Main/Flex model to see how those monthly market changes translate into modeled ticket mix and revenue contribution.</p></div>
     </div>
-    <div class="analyst-chart-grid">
+    <div class="network-trend-stack">
       <article class="chart-card">
         <div class="chart-title"><div><strong>Observed passengers by month</strong><br><span>Sum across routes in the committed extract</span></div><span>Passengers</span></div>
         <div class="trend-wrap"><svg id="networkPassengerTrend" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Network passengers by month"></svg></div>
       </article>
+
       <article class="chart-card">
-        <div class="chart-title"><div><strong>Average ticket price by month</strong><br><span>Passenger-weighted average across routes</span></div><span>Fare</span></div>
-        <div class="trend-wrap"><svg id="networkFareTrend" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Network average fare by month"></svg></div>
+        <div class="chart-title"><div><strong>Fare classes and average yield by month</strong><br><span>Observed average fare plus modeled Saver/Main/Flex fares; yield uses the right axis</span></div><span>Fare + yield</span></div>
+        <div class="chart-legend" aria-label="Fare and yield chart legend">
+          <span><i class="legend-swatch observed"></i>Observed avg fare</span>
+          <span><i class="legend-swatch saver"></i>Saver</span>
+          <span><i class="legend-swatch main"></i>Main</span>
+          <span><i class="legend-swatch flex"></i>Flex</span>
+          <span><i class="legend-swatch yield"></i>Average yield</span>
+        </div>
+        <div class="trend-wrap"><svg id="networkFareTrend" class="trend-svg" viewBox="0 0 900 360" role="img" aria-label="Observed average fare, modeled fare classes, and average yield by month"></svg></div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-title"><div><strong>Estimated tickets by modeled fare class</strong><br><span>Monthly passenger totals split using the same simple Saver/Main/Flex mix used by the optimizer</span></div><span>Estimated tickets</span></div>
+        <div class="chart-legend" aria-label="Modeled ticket chart legend">
+          <span><i class="legend-swatch saver"></i>Saver</span>
+          <span><i class="legend-swatch main"></i>Main</span>
+          <span><i class="legend-swatch flex"></i>Flex</span>
+        </div>
+        <div class="trend-wrap"><svg id="networkClassTicketTrend" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Estimated monthly tickets by modeled fare class"></svg></div>
+      </article>
+
+      <article class="chart-card">
+        <div class="chart-title"><div><strong>Estimated revenue share by modeled fare class</strong><br><span>Share of modeled fare-class revenue in each month</span></div><span>Revenue share</span></div>
+        <div class="chart-legend" aria-label="Modeled revenue share chart legend">
+          <span><i class="legend-swatch saver"></i>Saver</span>
+          <span><i class="legend-swatch main"></i>Main</span>
+          <span><i class="legend-swatch flex"></i>Flex</span>
+        </div>
+        <div class="trend-wrap"><svg id="networkRevenueShareTrend" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Estimated monthly revenue share by modeled fare class"></svg></div>
+        <p class="model-note">DB1C does not report Saver/Main/Flex booking classes. These are transparent model groups derived from the observed monthly average fare and passenger total. The current class mix is fixed, so revenue shares remain stable unless those modeling assumptions change.</p>
       </article>
     </div>
   </section>
