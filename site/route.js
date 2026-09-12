@@ -78,47 +78,16 @@ function renderSnapshot(m) {
   document.getElementById('modeledRouteName').textContent = `${m.origin} → ${m.destination}`;
 }
 
-function renderDecisionContext(m) {
-  const score = AY.opportunityScore(state.viewMarkets, m);
-  document.getElementById('opportunityScore').textContent = `${score}/100`;
-  document.getElementById('opportunityText').textContent = score >= 75
-    ? 'High-priority screen: this route is commercially material and worth policy testing.'
-    : score >= 50 ? 'Moderate-priority screen: worth testing after larger or more variable markets.' : 'Lower-priority screen: smaller expected portfolio impact.';
-
-  const topCarrier = m.topCarriers?.[0];
-  document.getElementById('topCarrierShare').textContent = topCarrier ? `${topCarrier.carrier} · ${AY.format.percent.format(topCarrier.share)}` : 'Not available';
-  document.getElementById('topCarrierText').textContent = topCarrier
-    ? `Largest observed reporting-carrier share among records with carrier detail. Carrier-data coverage: ${AY.format.percent.format(m.carrierCoverage || 0)}.`
-    : 'Run the carrier-share enrichment stage to populate this measure.';
-
-  const originMarkets = state.viewMarkets.filter(route => route.origin === m.origin);
-  const originPassengers = originMarkets.reduce((sum, route) => sum + route.passengers, 0);
-  const share = originPassengers ? m.passengers / originPassengers : 0;
-  document.getElementById('originShare').textContent = AY.format.percent.format(share);
-  document.getElementById('originShareText').textContent = `${AY.format.integer.format(m.passengers)} of ${AY.format.integer.format(originPassengers)} observed passengers across ${originMarkets.length} routes from ${m.origin}.`;
-
-  const reverse = state.viewMarkets.find(route => route.origin === m.destination && route.destination === m.origin);
-  document.getElementById('reverseRoute').textContent = reverse ? `${reverse.origin} → ${reverse.destination}` : 'Not shown';
-  if (reverse) {
-    const fareDiff = reverse.avgFare ? m.avgFare / reverse.avgFare - 1 : 0;
-    const paxDiff = reverse.passengers ? m.passengers / reverse.passengers - 1 : 0;
-    document.getElementById('reverseDetail').textContent = `Average fare is ${AY.signedPercent(fareDiff)} and observed passengers are ${AY.signedPercent(paxDiff)} versus the reverse direction.`;
-  } else {
-    document.getElementById('reverseDetail').textContent = 'The reverse direction is not present in the current route summary.';
-  }
-}
-
 function renderReadout(m) {
   const s = state.summary;
   const volumePct = AY.percentileRank(state.viewMarkets.map(route => route.passengers), m.passengers);
   const valuePct = AY.percentileRank(state.viewMarkets.map(route => route.revenueProxy), m.revenueProxy);
   const fareDelta = s.weightedFare ? m.avgFare / s.weightedFare - 1 : 0;
-  const score = AY.opportunityScore(state.viewMarkets, m);
   const items = [
     {
       label: 'Passenger scale',
       value: `${Math.round(volumePct * 100)}th percentile`,
-      text: `${topPercentLabel(volumePct)} by passenger volume. ${volumePct >= 0.75 ? 'Even small per-passenger improvements can matter at this scale.' : 'The market is smaller, so portfolio impact is likely lower.'}`,
+      text: `${topPercentLabel(volumePct)} by passenger volume. ${volumePct >= 0.75 ? 'Even small per-passenger improvements can matter at this scale.' : 'This route carries less traffic than the largest markets in the extract.'}`,
     },
     {
       label: 'Average fare',
@@ -128,19 +97,13 @@ function renderReadout(m) {
     {
       label: 'Estimated market value',
       value: `${Math.round(valuePct * 100)}th percentile`,
-      text: valuePct >= 0.8 ? 'Traffic and ticket price combine to make this a high-materiality route.' : 'Total fare × passenger value is less concentrated here than in the largest routes.',
-    },
-    {
-      label: 'Opportunity score',
-      value: `${score}/100`,
-      text: 'This screening score prioritizes where analysis is most worthwhile; it is not a predicted revenue lift.',
+      text: valuePct >= 0.8 ? 'Passenger volume and average fare combine to make this one of the larger markets in the extract.' : 'Estimated market value is lower than the largest routes in the extract.',
     },
   ];
   if (m.topCarriers?.length) {
-    items.push({ label: 'Competition', value: `${m.topCarriers[0].carrier} ${AY.format.percent.format(m.topCarriers[0].share)}`, text: `${m.topCarriers.length} carrier shares are available in the enriched summary. Use shares rather than carrier count when evaluating concentration.` });
+    items.push({ label: 'Competition', value: `${m.topCarriers[0].carrier} ${AY.format.percent.format(m.topCarriers[0].share)}`, text: `The largest reporting carrier has ${AY.format.percent.format(m.topCarriers[0].share)} of observed passenger weight where carrier detail is available.` });
   }
   document.getElementById('analystReadout').innerHTML = items.map(item => `<div class="readout-item"><div><span>${item.label}</span><strong>${item.value}</strong></div><p>${item.text}</p></div>`).join('');
-  document.getElementById('routePriority').textContent = score >= 75 ? 'High-priority test market' : score >= 50 ? 'Worth testing' : 'Monitor';
 }
 
 function renderScatter(m) {
@@ -193,7 +156,7 @@ function renderCarrierShares(m) {
   document.getElementById('carrierShareSubtitle').textContent = `${m.origin} → ${m.destination}`;
   const container = document.getElementById('carrierShareBars');
   if (!rows.length) {
-    container.innerHTML = '<div class="empty-table">Carrier-share detail is not available. Run the enrichment stage after processing DB1C data.</div>';
+    container.innerHTML = '<div class="empty-table">Carrier-share detail is not available. Rebuild the DB1C summary with carrier enrichment.</div>';
     return;
   }
   const max = Math.max(...rows.map(row => row.share), 0.01);
@@ -280,7 +243,6 @@ function selectRoute(key, updateUrl = true) {
   document.getElementById('routeSelect').value = AY.routeKey(m);
   if (updateUrl) history.replaceState(null, '', `route.html?route=${encodeURIComponent(AY.routeKey(m))}`);
   renderSnapshot(current);
-  renderDecisionContext(current);
   renderReadout(current);
   renderScatter(current);
   renderPeers(current);
