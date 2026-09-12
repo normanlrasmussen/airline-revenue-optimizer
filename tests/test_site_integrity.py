@@ -5,7 +5,8 @@ from bs4 import BeautifulSoup
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
-EXPECTED_NAV = ["Home", "The Problem", "Market Data", "Booking Simulator", "Revenue Optimizer"]
+EXPECTED_NAV = ["Home", "The Problem", "Market Data", "Revenue Optimizer"]
+PRIMARY_PAGES = ["index.html", "market.html", "data.html", "route.html", "optimizer.html"]
 
 
 def html(name: str) -> BeautifulSoup:
@@ -13,12 +14,14 @@ def html(name: str) -> BeautifulSoup:
 
 
 def test_primary_navigation_is_consistent():
-    for path in SITE.glob("*.html"):
+    for name in PRIMARY_PAGES:
+        path = SITE / name
         soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
         nav = soup.find("nav", attrs={"aria-label": "Primary navigation"})
         assert nav is not None, path.name
         labels = [a.get_text(" ", strip=True) for a in nav.find_all("a")]
         assert labels == EXPECTED_NAV, path.name
+        assert all(a.get("href") != "twin.html" for a in nav.find_all("a")), path.name
 
 
 def test_local_stylesheets_and_scripts_exist():
@@ -52,15 +55,18 @@ def test_optimizer_has_required_controls_and_engine_scripts():
     assert scripts[-3:] == ["rm.js", "simulation.js", "app.js"]
 
 
-def test_simulator_uses_shared_policy_and_simulation_engines():
+def test_legacy_simulator_url_redirects_to_optimizer():
     soup = html("twin.html")
-    scripts = [tag["src"] for tag in soup.find_all("script", src=True)]
-    assert "rm.js" in scripts
-    assert "simulation.js" in scripts
-    assert scripts[-1] == "twin.js"
+    refresh = soup.find("meta", attrs={"http-equiv": "refresh"})
+    assert refresh is not None
+    assert "optimizer.html" in refresh.get("content", "")
+    assert soup.find("nav") is None
+    assert not (SITE / "twin.js").exists()
 
 
-def test_user_facing_pages_no_longer_call_simulator_a_digital_twin():
-    for name in ["index.html", "market.html", "data.html", "route.html", "optimizer.html", "twin.html"]:
+def test_user_facing_pages_no_longer_present_booking_simulator_as_a_product():
+    for name in PRIMARY_PAGES:
         text = (SITE / name).read_text(encoding="utf-8").lower()
+        assert "booking simulator" not in text, name
+        assert 'href="twin.html"' not in text, name
         assert "digital twin" not in text, name
