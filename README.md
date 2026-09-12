@@ -1,82 +1,123 @@
 # AeroYield — Airline Revenue Optimizer
 
-A portfolio-grade airline revenue management project built around the U.S. Department of Transportation Bureau of Transportation Statistics (BTS) Origin & Destination Survey.
+**AeroYield uses U.S. airline market data, stochastic booking simulation, and revenue-management optimization to estimate how better seat-control policies affect flight revenue.**
 
-The project is intentionally split into three layers:
+An airline seat is perishable inventory: once the aircraft departs, an empty seat is worth zero, but selling every seat too early can displace customers who arrive later and are willing to pay more. AeroYield turns that trade-off into an interactive operations-research product.
 
-1. **Data** — download and prepare DB1C / OD40 fare and itinerary data.
-2. **Optimization** — a deliberately simple seat-allocation model that is easy to replace with EMSR, bid-price control, stochastic dynamic programming, or network revenue management.
-3. **Decision product** — a static GitHub Pages dashboard that screens the network, drills into individual routes, runs an interactive seat-allocation scenario, and quantifies modeled revenue lift.
+## What the project does
 
-## Why DB1C / OD40?
+The GitHub Pages application follows one decision pipeline:
 
-Beginning in July 2025, BTS replaced the quarterly 10% DB1B sample with monthly DB1C (OD40), a 40% sample of airline tickets. The public files include ticket, market, coupon, and segment information such as fares, passenger counts, origins, destinations, and carriers.
+**Observed DB1C market data → modeled booking demand → seeded simulation → seat-control policy → revenue comparison**
 
-Official source: https://www.bts.gov/topics/airlines-and-airports/origin-and-destination-survey-data
+The product includes:
 
-## Repository layout
+- **The Problem** — plain-language explanation of single-flight revenue management.
+- **Market Data** — route screening, passenger/fare trends, optional distance-normalized yield, carrier-share context, and an opportunity score for prioritizing analysis.
+- **Route Detail** — commercial drill-down for one directional market before changing controls.
+- **Booking Simulator** — common-random-number Monte Carlo experiments that put every policy against identical booking streams.
+- **Revenue Optimizer** — the main decision view: expected revenue lift, load factor, rejected demand, empty seats, average accepted fare, regret, EMSR protection levels, and DP bid prices.
 
-```text
-.
-├── data/
-│   ├── download_db1c.py      # discover/download official monthly BTS ZIP files
-│   └── process_db1c.py       # normalize DB1C market files and build the site summary
-├── optimization/
-│   └── seat_optimizer.py     # intentionally simple deterministic integer model
-├── tests/
-│   └── test_seat_optimizer.py
-├── site/
-│   ├── index.html            # product landing page
-│   ├── data.html             # network fare intelligence / route screener
-│   ├── route.html            # single-route analyst drill-down
-│   ├── optimizer.html        # interactive seat-allocation scenario
-│   ├── analytics.js          # shared network/route analytics helpers
-│   ├── data.js               # network dashboard interactions
-│   ├── route.js              # route-level diagnostics
-│   ├── styles.css
-│   ├── analyst.css
-│   └── data/
-│       ├── market_summary.json # committed DB1C-derived top-route summary
-│       └── demo_markets.json   # transparent fallback scenarios
-├── .github/workflows/pages.yml
-└── requirements.txt
-```
+## Revenue-management methods
+
+AeroYield compares four levels of information and sophistication:
+
+| Method | What it does | Status |
+| --- | --- | --- |
+| **Open Sales** | Accept every request while capacity remains. | Baseline |
+| **EMSR-b** | Protect seats from lower fares using aggregated higher-fare demand. | Interpretable heuristic |
+| **Finite-horizon DP** | Accept when fare is at least the expected future value of the seat. | Exact for AeroYield's discretized model |
+| **Clairvoyant** | After seeing all realized demand, fill seats with the highest fares. | Perfect-information upper bound only |
+
+The dynamic program uses state `(booking period, remaining seats)` and Bellman recursion
+
+\[
+V_t(c)=p_0V_{t+1}(c)+\sum_k p_{t,k}\max\left\{V_{t+1}(c),\; f_k+V_{t+1}(c-1)\right\}.
+\]
+
+The implied bid price of one seat is
+
+\[
+V_{t+1}(c)-V_{t+1}(c-1).
+\]
+
+A request is accepted when its fare is at least that opportunity cost.
+
+See [METHODOLOGY.md](METHODOLOGY.md) for the simulation design, EMSR assumptions, guarantees, and limitations.
+
+## Observed data vs. modeled assumptions
+
+AeroYield deliberately keeps these separate.
+
+**Observed / DB1C-derived when available**
+
+- origin and destination
+- passenger weight
+- average fare
+- reporting carrier
+- market distance
+- year and month
+
+**Derived from observed data**
+
+- passenger-weighted average fare
+- estimated market value (`average fare × observed passengers`)
+- yield per passenger-mile
+- reporting-carrier passenger shares
+- monthly network/route trends
+- route opportunity score
+
+**Modeled for experimentation**
+
+- Saver / Main / Flex fare groups
+- Saver / Main / Flex expected demand
+- booking-arrival timing profiles
+- future booking requests
+
+Simulation results are **not airline accounting results** and the modeled fare groups are **not observed DB1C booking classes**.
+
+## Reproducible simulation
+
+The booking horizon contains four request opportunities per day over D-180 through departure. At most one request occurs in an opportunity. Class-specific arrival probabilities are normalized so expected total demand matches the selected route scenario.
+
+Every replication uses a deterministic seed. Within that replication, Open Sales, EMSR-b, DP, and the clairvoyant benchmark all receive the **same booking stream**. This common-random-number design reduces comparison noise: policy differences are not caused by one policy receiving luckier simulated customers.
+
+The dashboard reports:
+
+- average revenue and revenue lift vs. Open Sales
+- 10th / 50th / 90th percentile revenue
+- load factor
+- rejected requests (spill)
+- empty seats (spoilage)
+- average accepted fare
+- regret vs. clairvoyant revenue
 
 ## Quick start
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate      # Windows: .venv\\Scripts\\activate
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-pytest
+pytest -q
 ```
 
-### 1. Download DB1C data
+To serve the static site locally:
 
-Download the newest Market file:
+```bash
+python -m http.server 8000 --directory site
+```
+
+Then open `http://localhost:8000`.
+
+## Build the market data
+
+Download the newest BTS Market file:
 
 ```bash
 python data/download_db1c.py --dataset market --latest
 ```
 
-Download a specific month:
-
-```bash
-python data/download_db1c.py --dataset market --year 2026 --month 5
-python data/download_db1c.py --dataset ticket --year 2026 --month 5
-```
-
-Files are written to `data/raw/` and are ignored by Git.
-
-### 2. Prepare a market-level file
-
-```bash
-python data/process_db1c.py \
-  --input data/raw/<downloaded-market-file>.zip \
-  --output data/processed/markets.parquet
-```
-
-Prepare every Market ZIP/CSV in `data/raw/` as one combined website extract:
+Normalize all downloaded Market files and create the route summary:
 
 ```bash
 python data/process_db1c.py \
@@ -86,78 +127,82 @@ python data/process_db1c.py \
   --chunksize 100000
 ```
 
-If the processor still uses too much memory, lower `--chunksize` to `50000` or `25000`.
-
-The processor is defensive about column naming because BTS public schemas can evolve. It searches common DB1C field aliases and emits a normalized table with:
-
-- `origin`
-- `destination`
-- `carrier`
-- `passengers`
-- `fare`
-- `distance`
-- `year`
-- `month`
-
-The website summary currently exposes route-level passenger volume, passenger-weighted average fare, reporting-carrier count, observation coverage, monthly route observations, and transparent modeled fare-class inputs. The analyst pages keep observed DB1C-derived market signals separate from those modeled Saver/Main/Flex assumptions.
-
-### 3. Run the starter optimizer
+Add passenger-weighted distance and carrier-share metrics when the normalized fields are available:
 
 ```bash
-python optimization/seat_optimizer.py
+python data/enrich_summary.py \
+  --markets data/processed/markets.parquet \
+  --summary site/data/market_summary.json \
+  --output site/data/market_summary.json
 ```
 
-The MVP model solves a small deterministic integer seat-allocation problem:
+The site gracefully displays unavailable values when distance or carrier detail is absent rather than inventing estimates.
 
-\[
-\max \sum_k f_k x_k
-\]
+## Repository layout
 
-subject to
+```text
+.
+├── data/
+│   ├── download_db1c.py
+│   ├── process_db1c.py
+│   └── enrich_summary.py
+├── optimization/
+│   ├── seat_optimizer.py              # legacy deterministic allocation benchmark
+│   ├── revenue_management.py          # Open / EMSR-b / DP / clairvoyant methods
+│   └── simulation.py                  # seeded Python simulation mirror
+├── tests/
+│   ├── test_seat_optimizer.py
+│   ├── test_revenue_management.py
+│   ├── test_simulation.py
+│   ├── test_enrich_summary.py
+│   └── test_site_integrity.py
+├── site/
+│   ├── index.html
+│   ├── market.html
+│   ├── data.html / data.js
+│   ├── route.html / route.js
+│   ├── twin.html / twin.js
+│   ├── optimizer.html / app.js
+│   ├── analytics.js
+│   ├── rm.js
+│   ├── simulation.js
+│   └── data/
+│       ├── market_summary.json
+│       └── demo_markets.json
+└── .github/workflows/
+    ├── ci.yml
+    └── pages.yml
+```
 
-\[
-\sum_k x_k \le C, \qquad 0 \le x_k \le d_k, \qquad x_k \in \mathbb{Z}.
-\]
+## Tests and CI
 
-It is deliberately basic. The goal is to make the boundary clean so the optimization can evolve independently of the website and data pipeline.
+CI runs on every pull request and on pushes to `main`:
 
-Good next steps:
+```bash
+pytest -q
+python -m compileall -q data optimization tests
+for file in site/*.js; do node --check "$file"; done
+```
 
-- Littlewood's rule for two fare classes
-- EMSR-a / EMSR-b protection levels
-- booking-limit controls
-- demand distributions instead of point forecasts
-- overbooking with denied-boarding cost
-- bid-price control
-- connecting-passenger / network revenue management
-- dynamic programming or approximate dynamic programming
+Tests cover optimizer feasibility, EMSR protection behavior, DP Bellman decisions on exact toy cases, seeded simulation reproducibility, clairvoyant upper-bound behavior, enrichment calculations, and static-site wiring.
 
-## Decision views
+## Current scope
 
-The GitHub Pages product now has two complementary data views:
+The finished portfolio scope is intentionally **single-flight seat inventory control**. The goal is to make the data/model/decision boundary easy to understand and mathematically defensible rather than hide complexity behind a large prototype.
 
-- **Network Fare Intelligence (`site/data.html`)** — network KPIs, fare/volume positioning, revenue-exposure concentration, route search, and route ranking.
-- **Route Intelligence (`site/route.html`)** — route rank, fare position, passenger scale, competition breadth, reverse-direction asymmetry, origin peers, and the modeled fare ladder used by the optimizer.
+Explicit future work—not required for the current product—is:
 
-The network-to-route flow is intentionally analyst-oriented: identify where commercial exposure is concentrated first, then explain a specific market before changing revenue-management controls.
+- network revenue management and connecting itineraries
+- overbooking, cancellations, and no-shows
+- airline-specific fare-family and availability data
+- demand forecasting / machine-learning calibration
+- competitive price-response models
+- approximate dynamic programming for larger network state spaces
 
-## GitHub Pages
+## Data source
 
-The included workflow publishes the `site/` directory through GitHub Pages on pushes to `main`.
+The data pipeline is designed for the U.S. Department of Transportation Bureau of Transportation Statistics Origin & Destination Survey (DB1C / OD40):
 
-After creating the repository, enable **Settings → Pages → Source: GitHub Actions** once. Subsequent pushes to `main` deploy automatically.
+https://www.bts.gov/topics/airlines-and-airports/origin-and-destination-survey-data
 
-## Design system
-
-The MVP uses a restrained aviation/finance palette:
-
-- Deep navy: `#0B1F33`
-- Slate: `#52606D`
-- Teal: `#1F7A8C`
-- Warm gold: `#C7922B`
-- Cloud: `#F5F7FA`
-- White: `#FFFFFF`
-
-## Data note
-
-The site first loads `site/data/market_summary.json`, the committed DB1C-derived route summary, and falls back to `site/data/demo_markets.json` only if that summary is unavailable. Fare × passenger values shown in the analyst views are exposure proxies rather than reported airline accounting revenue. Cross-route fare comparisons are also raw fare comparisons; passenger-weighted distance/yield, carrier shares, fare distributions, and monthly trends are the next decision-grade data additions.
+GitHub Pages deploys the `site/` directory automatically after changes reach `main`.
