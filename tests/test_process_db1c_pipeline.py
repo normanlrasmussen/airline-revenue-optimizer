@@ -49,3 +49,27 @@ def test_process_pipeline_writes_enriched_yield_metrics(tmp_path, monkeypatch):
     assert monthly["avgDistance"] == pytest.approx(1040.0)
     assert monthly["yieldPerMile"] == pytest.approx(expected_yield, abs=1e-6)
     assert monthly["distanceCoverage"] == pytest.approx(1.0)
+
+
+def test_resolve_inputs_reports_missing_path_clearly(tmp_path):
+    missing = tmp_path / "raw"
+
+    with pytest.raises(FileNotFoundError, match="Input path does not exist"):
+        process_db1c.resolve_inputs([missing])
+
+
+def test_resolve_inputs_reports_empty_directory_clearly(tmp_path):
+    raw = tmp_path / "raw"
+    raw.mkdir()
+
+    with pytest.raises(ValueError, match="No \\.zip, \\.csv, or \\.parquet input files were found"):
+        process_db1c.resolve_inputs([raw])
+
+
+def test_resolve_inputs_accepts_parquet_from_directory(tmp_path):
+    raw = tmp_path / "raw"
+    raw.mkdir()
+    parquet = raw / "market.parquet"
+    parquet.touch()
+
+    assert process_db1c.resolve_inputs([raw]) == [parquet]
