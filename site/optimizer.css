@@ -4,12 +4,21 @@
   gap: 22px;
   align-items: start;
 }
-.optimizer-sidebar { display: grid; gap: 12px; position: sticky; top: 92px; }
+.optimizer-sidebar { display: grid; gap: 12px; position: static; }
 .optimizer-sidebar .panel-label { color: var(--teal); margin-bottom: 4px; }
 .input-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .input-pair label { display: grid; gap: 6px; }
 .input-pair label > span, .policy-label { color: var(--navy); font-size: 11px; font-weight: 800; }
 .policy-label { margin-top: 6px; }
+.range-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.range-row input[type="range"], .range-field input[type="range"] { width: 100%; accent-color: var(--teal); }
+.range-row strong { color: var(--navy); font-size: 11px; min-width: 44px; text-align: right; }
+.realism-controls { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 12px; padding: 2px 12px; background: #fbfcfd; }
+.range-field { display: grid; gap: 6px; padding: 10px 0; border-top: 1px solid var(--line); }
+.range-field:first-child { border-top: 0; }
+.range-field > span { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.range-field b { color: var(--slate); font-size: 10px; font-weight: 760; }
+.range-field strong { color: var(--navy); font-size: 10px; white-space: nowrap; }
 .policy-check {
   display: flex;
   align-items: center;
@@ -45,7 +54,7 @@
 .optimizer-kpis { grid-template-columns: repeat(4, 1fr); }
 .optimizer-kpis .kpi-card strong { font-size: 23px; }
 .optimizer-revenue-card { min-height: 235px; }
-.optimizer-table { min-width: 940px; }
+.optimizer-table { min-width: 1180px; }
 .mechanics-grid .card { min-height: 270px; }
 .mechanic-value, .mechanics-list > div {
   display: flex;
@@ -66,7 +75,6 @@
 .method-details p { margin: 8px 0 0; }
 @media (max-width: 1050px) {
   .optimizer-workbench { grid-template-columns: 1fr; }
-  .optimizer-sidebar { position: static; }
   .optimizer-kpis { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 700px) {
