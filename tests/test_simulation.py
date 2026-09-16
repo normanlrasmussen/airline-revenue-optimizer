@@ -2,8 +2,10 @@ import pytest
 
 from optimization.revenue_management import FareDemand
 from optimization.simulation import (
+    LCG,
     PERIODS,
     build_probabilities,
+    build_realized_probabilities,
     generate_stream,
     simulate_replication,
 )
@@ -16,7 +18,7 @@ CLASSES = [
 ]
 
 
-def test_probability_profiles_preserve_expected_class_demand():
+def test_forecast_probability_profiles_preserve_expected_class_demand():
     probabilities = build_probabilities(CLASSES)
     assert len(probabilities) == PERIODS
     for fc in CLASSES:
@@ -25,29 +27,63 @@ def test_probability_profiles_preserve_expected_class_demand():
     assert max(sum(row.values()) for row in probabilities) <= 1.0
 
 
-def test_seeded_stream_is_reproducible():
+def test_realized_probabilities_are_seeded_and_differ_from_forecast():
+    first = build_realized_probabilities(
+        CLASSES,
+        LCG(12345),
+        forecast_error_pct=20,
+        timing_jitter_days=18,
+    )
+    second = build_realized_probabilities(
+        CLASSES,
+        LCG(12345),
+        forecast_error_pct=20,
+        timing_jitter_days=18,
+    )
+    forecast = build_probabilities(CLASSES)
+
+    assert first == second
+    assert first != forecast
+    assert len(first) == PERIODS
+    assert max(sum(row.values()) for row in first) <= 0.98 + 1e-12
+
+
+def test_seeded_stream_is_reproducible_and_contains_party_sizes():
     probabilities = build_probabilities(CLASSES)
-    first = generate_stream(CLASSES, probabilities, 12345)
-    second = generate_stream(CLASSES, probabilities, 12345)
-    third = generate_stream(CLASSES, probabilities, 12346)
+    first = generate_stream(CLASSES, probabilities, 12345, cancellation_rate=0.15)
+    second = generate_stream(CLASSES, probabilities, 12345, cancellation_rate=0.15)
+    third = generate_stream(CLASSES, probabilities, 12346, cancellation_rate=0.15)
 
     assert first == second
     assert first != third
+    assert first
+    assert all(1 <= event.party_size <= 4 for event in first)
+    assert any(event.party_size > 1 for event in first)
+    assert all(event.cancel_period is None or event.cancel_period > event.period for event in first)
 
 
-def test_replication_is_reproducible_and_clairvoyant_is_upper_bound():
+def test_replication_is_reproducible_and_oracle_is_upper_bound():
     first = simulate_replication(CLASSES, capacity=100, seed=20260912)
     second = simulate_replication(CLASSES, capacity=100, seed=20260912)
 
     assert first == second
     for policy in ["open", "emsr", "dp"]:
-        assert first["clairvoyant"].revenue + 1e-9 >= first[policy].revenue
-        assert 0 <= first[policy].load_factor <= 1
-        assert first[policy].accepted + first[policy].empty_seats == 100
+        outcome = first[policy]
+        assert first["clairvoyant"].revenue + 1e-9 >= outcome.revenue
+        assert 0 <= outcome.load_factor <= 1
+        assert outcome.boarded + outcome.empty_seats == 100
+        assert outcome.accepted == outcome.boarded + outcome.cancelled + outcome.denied_boarding
+        assert outcome.refunds >= 0
 
 
-def test_high_capacity_causes_no_capacity_spoilage_error():
-    result = simulate_replication(CLASSES, capacity=300, seed=777)
+def test_high_capacity_has_no_denied_boarding_when_overbooking_is_disabled():
+    result = simulate_replication(
+        CLASSES,
+        capacity=300,
+        seed=777,
+        overbooking_pct=0,
+    )
     for policy in ["open", "emsr", "dp", "clairvoyant"]:
-        assert result[policy].accepted <= 300
+        assert result[policy].boarded <= 300
         assert result[policy].empty_seats >= 0
+        assert result[policy].denied_boarding == 0
