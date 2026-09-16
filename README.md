@@ -1,8 +1,28 @@
 # AeroYield — Airline Revenue Optimizer
 
-**AeroYield uses U.S. airline market data, stochastic booking simulation, and revenue-management optimization to estimate how better seat-control policies affect flight revenue.**
+[![CI](https://github.com/normanlrasmussen/airline-revenue-optimizer/actions/workflows/ci.yml/badge.svg)](https://github.com/normanlrasmussen/airline-revenue-optimizer/actions/workflows/ci.yml)
+[![Deploy GitHub Pages](https://github.com/normanlrasmussen/airline-revenue-optimizer/actions/workflows/pages.yml/badge.svg)](https://github.com/normanlrasmussen/airline-revenue-optimizer/actions/workflows/pages.yml)
 
-An airline seat is perishable inventory: once the aircraft departs, an empty seat is worth zero, but selling every seat too early can displace customers who arrive later and are willing to pay more. AeroYield turns that trade-off into an interactive operations-research product.
+**AeroYield is an interactive operations-research project that uses U.S. airline market data, stochastic booking simulation, and revenue-management optimization to quantify the value of better seat-control decisions.**
+
+**[Live Demo](https://normanlrasmussen.github.io/airline-revenue-optimizer/)** · **[Revenue Optimizer](https://normanlrasmussen.github.io/airline-revenue-optimizer/optimizer.html)** · **[Methodology](METHODOLOGY.md)**
+
+![AeroYield project overview](assets/aeroyield-overview.svg)
+
+## Why it matters
+
+An airline seat is **perishable inventory**: once the aircraft departs, an empty seat is worth zero. But selling every seat too early can also destroy value by displacing customers who arrive later and are willing to pay more.
+
+AeroYield turns that trade-off into a sequential decision problem: **accept this booking now, or preserve the seat for uncertain future demand?** The project connects real market context to stochastic simulation and optimization, then exposes the resulting revenue and operating trade-offs in an interactive decision-support application.
+
+## Portfolio highlights
+
+- **Data engineering:** processes U.S. DOT DB1C market data into route-level fare, passenger, distance, yield, carrier-share, and trend metrics.
+- **Operations research:** compares Open Sales, EMSR-b, and an exact finite-horizon dynamic program for AeroYield's stated single-flight model.
+- **Stochastic experimentation:** uses deterministic seeds and common random numbers so competing policies face identical simulated booking streams.
+- **Decision support:** reports revenue lift, load factor, spill, spoilage, accepted fare, regret, EMSR protection levels, and DP bid prices in a deployed web application.
+
+**Tech stack:** Python · Pandas · PyArrow · JavaScript · Dynamic Programming · Monte Carlo Simulation · GitHub Actions · GitHub Pages
 
 ## What the project does
 
