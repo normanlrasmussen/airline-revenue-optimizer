@@ -44,6 +44,11 @@ def test_optimizer_has_required_controls_and_engine_scripts():
         "capacityInput",
         "replicationsInput",
         "demandScale",
+        "forecastError",
+        "timingJitter",
+        "cancellationRate",
+        "refundRate",
+        "overbookPct",
         "seedInput",
         "optimizeButton",
         "optimizerPolicyTable",
@@ -55,13 +60,25 @@ def test_optimizer_has_required_controls_and_engine_scripts():
     assert scripts[-3:] == ["rm.js", "simulation.js", "app.js"]
 
 
-def test_optimizer_explains_each_policy_in_plain_language():
+def test_optimizer_explains_each_policy_and_information_boundary():
     text = (SITE / "optimizer.html").read_text(encoding="utf-8")
-    assert "Accepts every request while a seat remains" in text
-    assert "Protects seats for expected higher-fare demand" in text
-    assert "Accepts a request only when its fare is at least the expected future value of the seat" in text
-    assert "Clairvoyant benchmark:" in text
-    assert "unattainable upper bound" in text
+    assert "Accepts every party that fits under the current booking limit" in text
+    assert "Protects seats using the baseline higher-fare demand forecast" in text
+    assert "Uses baseline period-by-period demand estimates" in text
+    assert "Oracle upper bound:" in text
+    assert "sees the realized future demand and cancellations" in text
+    assert "intentionally unattainable" in text
+
+
+def test_optimizer_surfaces_realism_assumptions():
+    text = (SITE / "optimizer.html").read_text(encoding="utf-8")
+    assert "Demand-rate forecast error" in text
+    assert "Booking-timing perturbation" in text
+    assert "Cancellation probability" in text
+    assert "Refund if cancelled" in text
+    assert "Overbooking limit" in text
+    assert "84% request 1 seat" in text
+    assert "fixed $400 modeled compensation cost" in text
 
 
 def test_legacy_simulator_url_redirects_to_optimizer():
@@ -136,5 +153,5 @@ def test_cumulative_revenue_chart_uses_legend_not_end_labels():
     text = (SITE / "app.js").read_text(encoding="utf-8")
     assert 'aria-label="Policy legend"' in text
     assert "svg-legend-bg" in text
-    assert "final revenue" in text
+    assert "final net revenue" in text
     assert "opportunityScore" not in text
