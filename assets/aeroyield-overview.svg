@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="560" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
+  <title id="title">AeroYield project overview</title>
+  <desc id="desc">AeroYield turns U.S. airline market data into stochastic booking experiments, compares revenue-management policies, and reports revenue and operational outcomes.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#08182f"/>
+      <stop offset="1" stop-color="#12345b"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9fc7f5"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="560" rx="26" fill="url(#bg)"/>
+
+  <text x="64" y="74" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="700">AeroYield</text>
+  <text x="64" y="112" fill="#b8cbe3" font-family="Arial, Helvetica, sans-serif" font-size="21">Airline revenue management as an interactive operations-research product</text>
+
+  <g filter="url(#shadow)">
+    <rect x="64" y="162" width="232" height="154" rx="18" fill="#ffffff"/>
+    <rect x="338" y="162" width="232" height="154" rx="18" fill="#ffffff"/>
+    <rect x="612" y="162" width="232" height="154" rx="18" fill="#ffffff"/>
+    <rect x="886" y="162" width="250" height="154" rx="18" fill="#ffffff"/>
+  </g>
+
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="88" y="198" fill="#2468a2" font-size="15" font-weight="700">01 · OBSERVE</text>
+    <text x="88" y="234" fill="#10233c" font-size="24" font-weight="700">Market data</text>
+    <text x="88" y="265" fill="#4d6077" font-size="16">U.S. DOT DB1C fares,</text>
+    <text x="88" y="287" fill="#4d6077" font-size="16">passengers, distance</text>
+
+    <text x="362" y="198" fill="#2468a2" font-size="15" font-weight="700">02 · MODEL</text>
+    <text x="362" y="234" fill="#10233c" font-size="24" font-weight="700">Booking demand</text>
+    <text x="362" y="265" fill="#4d6077" font-size="16">Seeded stochastic arrivals</text>
+    <text x="362" y="287" fill="#4d6077" font-size="16">over a finite horizon</text>
+
+    <text x="636" y="198" fill="#2468a2" font-size="15" font-weight="700">03 · OPTIMIZE</text>
+    <text x="636" y="234" fill="#10233c" font-size="24" font-weight="700">Seat control</text>
+    <text x="636" y="265" fill="#4d6077" font-size="16">Open Sales · EMSR-b</text>
+    <text x="636" y="287" fill="#4d6077" font-size="16">Dynamic programming</text>
+
+    <text x="910" y="198" fill="#2468a2" font-size="15" font-weight="700">04 · MEASURE</text>
+    <text x="910" y="234" fill="#10233c" font-size="24" font-weight="700">Business impact</text>
+    <text x="910" y="265" fill="#4d6077" font-size="16">Revenue lift · load factor</text>
+    <text x="910" y="287" fill="#4d6077" font-size="16">spill · spoilage · regret</text>
+  </g>
+
+  <line x1="300" y1="239" x2="329" y2="239" stroke="#9fc7f5" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="574" y1="239" x2="603" y2="239" stroke="#9fc7f5" stroke-width="4" marker-end="url(#arrow)"/>
+  <line x1="848" y1="239" x2="877" y2="239" stroke="#9fc7f5" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="64" y="360" width="1072" height="132" rx="18" fill="#0d2747" stroke="#32567c"/>
+  <text x="88" y="397" fill="#8fb9e8" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700">EXPERIMENT DESIGN</text>
+  <text x="88" y="432" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Same booking streams across policies · deterministic seeds · clairvoyant upper bound</text>
+  <text x="88" y="466" fill="#b8cbe3" font-family="Arial, Helvetica, sans-serif" font-size="16">Observed market context is kept separate from modeled booking assumptions so results remain interpretable and reproducible.</text>
+
+  <text x="64" y="530" fill="#9fb1c6" font-family="Arial, Helvetica, sans-serif" font-size="15">Python · Pandas · JavaScript · Monte Carlo Simulation · Dynamic Programming · GitHub Actions</text>
+</svg>
