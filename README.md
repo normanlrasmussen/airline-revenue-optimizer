@@ -13,29 +13,30 @@
 
 An airline seat is **perishable inventory**: once the aircraft departs, an empty seat is worth zero. But selling every seat too early can also destroy value by displacing customers who arrive later and are willing to pay more.
 
-AeroYield turns that trade-off into a sequential decision problem: **accept this booking now, or preserve the seat for uncertain future demand?** The project connects real market context to stochastic simulation and optimization, then exposes the resulting revenue and operating trade-offs in an interactive decision-support application.
+AeroYield turns that trade-off into a sequential decision problem: **accept this booking now, or preserve the seat for uncertain future demand?** The project connects real market context to a deliberately noisy booking simulation, then compares forecast-based seat-control policies on the same realized customer streams.
 
 ## Portfolio highlights
 
 - **Data engineering:** processes U.S. DOT DB1C market data into route-level fare, passenger, distance, yield, carrier-share, and trend metrics.
-- **Operations research:** compares Open Sales, EMSR-b, and an exact finite-horizon dynamic program for AeroYield's stated single-flight model.
-- **Stochastic experimentation:** uses deterministic seeds and common random numbers so competing policies face identical simulated booking streams.
-- **Decision support:** reports revenue lift, load factor, spill, spoilage, accepted fare, regret, EMSR protection levels, and DP bid prices in a deployed web application.
+- **Operations research:** compares Open Sales, EMSR-b, and a finite-horizon dynamic program built from a baseline single-flight demand forecast.
+- **Stochastic experimentation:** separates the forecast from the realized world using correlated demand shocks, booking-timing error, multi-seat parties, cancellations, no-shows, and controlled overbooking.
+- **Decision support:** reports net revenue lift, load factor, spill, spoilage, cancellations, no-shows, denied boarding, regret, EMSR protection levels, and DP bid prices.
+- **Reproducibility:** uses deterministic seeds, separate random streams, common random numbers across policies, automated tests, CI, and GitHub Pages deployment.
 
 **Tech stack:** Python · Pandas · PyArrow · JavaScript · Dynamic Programming · Monte Carlo Simulation · GitHub Actions · GitHub Pages
 
 ## What the project does
 
-The GitHub Pages application follows one simple workflow:
+The application follows one simple workflow:
 
-**Observed DB1C market data → modeled booking demand → seeded simulation → seat-control policy → revenue comparison**
+**Observed DB1C market data → baseline demand forecast → noisy realized bookings → seat-control policy → net revenue comparison**
 
 The product includes:
 
 - **The Problem** — plain-language explanation of single-flight revenue management.
 - **Market Data** — route screening, passenger/fare trends, distance-normalized yield, and carrier-share context.
 - **Route Detail** — commercial drill-down for one directional market before changing controls.
-- **Revenue Optimizer** — the single experiment and decision workbench. It runs common-random-number Monte Carlo simulation, compares Open Sales / EMSR-b / dynamic programming on identical booking streams, and reports expected revenue lift, load factor, rejected demand, empty seats, average accepted fare, regret, EMSR protection levels, and DP bid prices.
+- **Revenue Optimizer** — a simulation and decision workbench that compares Open Sales, EMSR-b, and dynamic programming across common realized booking streams.
 
 The old `twin.html` Booking Simulator URL is retained only as a compatibility redirect to `optimizer.html`; there is no separate simulator product surface.
 
@@ -43,28 +44,40 @@ The old `twin.html` Booking Simulator URL is retained only as a compatibility re
 
 AeroYield compares four levels of information and sophistication:
 
-| Method | What it does | Status |
+| Method | What it does | Information available |
 | --- | --- | --- |
-| **Open Sales** | Accept every request while capacity remains. | Baseline |
-| **EMSR-b** | Protect seats from lower fares using aggregated higher-fare demand. | Interpretable heuristic |
-| **Finite-horizon DP** | Accept when fare is at least the expected future value of the seat. | Exact for AeroYield's discretized model |
-| **Clairvoyant** | After seeing all realized demand, fill seats with the highest fares. | Perfect-information upper bound only |
+| **Open Sales** | Accept every party while it fits under the booking limit. | Current inventory only |
+| **EMSR-b** | Protect seats from lower fares using aggregated higher-fare forecast demand. | Baseline demand forecast |
+| **Finite-horizon DP** | Use time-varying forecast seat opportunity costs. | Baseline period-by-period forecast |
+| **Oracle** | Choose with knowledge of realized requests, cancellations, and no-shows. | Perfect future information; benchmark only |
 
-The dynamic program uses state `(booking period, remaining seats)` and Bellman recursion
+The DP is solved exactly for its internal baseline one-seat forecast model. Its policy is then applied to a richer realized simulation that can contain forecast error, multi-seat requests, cancellations, no-shows, and overbooking. It is therefore **not** claimed to be optimal for the realized simulation or for a real airline.
+
+The DP uses state `(booking period, remaining booking capacity)` and Bellman recursion
 
 \[
-V_t(c)=p_0V_{t+1}(c)+\sum_k p_{t,k}\max\left\{V_{t+1}(c),\; f_k+V_{t+1}(c-1)\right\}.
+V_t(c)
+=
+\hat p_{t,0}V_{t+1}(c)
++
+\sum_k
+\hat p_{t,k}
+\max
+\left\{
+V_{t+1}(c),
+f_k+V_{t+1}(c-1)
+\right\}.
 \]
 
-The implied bid price of one seat is
+The implied one-seat bid price is
 
 \[
 V_{t+1}(c)-V_{t+1}(c-1).
 \]
 
-A request is accepted when its fare is at least that opportunity cost.
+For a multi-seat request, AeroYield approximates the opportunity cost by summing the relevant seat bid prices.
 
-See [METHODOLOGY.md](METHODOLOGY.md) for the simulation design, EMSR assumptions, guarantees, and limitations.
+See [METHODOLOGY.md](METHODOLOGY.md) for the simulation design, information boundary, assumptions, guarantees, and limitations.
 
 ## Observed data vs. modeled assumptions
 
@@ -90,27 +103,50 @@ AeroYield deliberately keeps these separate.
 **Modeled for experimentation**
 
 - Saver / Main / Flex fare groups
-- Saver / Main / Flex expected demand
+- Saver / Main / Flex baseline expected demand
 - booking-arrival timing profiles
-- future booking requests
+- forecast error and timing perturbations
+- party sizes
+- cancellations and refund fraction
+- no-shows
+- overbooking limit
+- denied-boarding compensation
 
-Simulation results are **not airline accounting results** and the modeled fare groups are **not observed DB1C booking classes**.
+DB1C does **not** provide the purchase date, days-before-departure, realized booking class, cancellation history, or no-show behavior used by the simulation. Simulation results are not airline accounting results.
 
-## Reproducible simulation
+## Stochastic simulation
 
-The booking horizon contains four request opportunities per day over D-180 through departure. At most one request occurs in an opportunity. Class-specific arrival probabilities are normalized so expected total demand matches the selected route scenario.
+The booking horizon contains four request opportunities per day over D-180 through departure.
 
-Every replication uses a deterministic seed. Within that replication, Open Sales, EMSR-b, DP, and the clairvoyant benchmark all receive the **same booking stream**. This common-random-number design reduces comparison noise: policy differences are not caused by one policy receiving luckier simulated customers.
+Each experiment starts with a baseline forecast. Every Monte Carlo replication then creates a different hidden realized world using:
+
+- a market-wide demand shock shared across fare groups;
+- class-specific demand forecast error;
+- market-wide and class-specific booking-timing shifts;
+- persistent day-to-day booking noise rather than independent daily spikes;
+- random parties of 1–4 seats;
+- lead-time-dependent cancellations;
+- departure no-shows;
+- user-selected cancellation refunds and overbooking.
+
+The deployable policies continue to use the **baseline forecast**. They do not receive the realized demand probabilities, future cancellations, or future no-show outcomes.
+
+Separate deterministic random streams are used for demand perturbations, request arrivals, party sizes, and attrition. This means changing a cancellation assumption does not silently redraw the underlying customer arrival stream.
+
+Within each replication, Open Sales, EMSR-b, DP, and the oracle are evaluated against the same realized requests and customer outcomes. This common-random-number design reduces comparison noise.
 
 The Revenue Optimizer reports:
 
-- average revenue and revenue lift vs. Open Sales
-- 10th / 50th / 90th percentile revenue
-- load factor
-- rejected requests (spill)
-- empty seats (spoilage)
-- average accepted fare
-- regret vs. clairvoyant revenue
+- average net revenue and revenue lift vs. Open Sales
+- 10th / 50th / 90th percentile net revenue
+- boarded load factor
+- rejected seats
+- cancelled seats
+- no-show seats
+- empty seats
+- denied boarding
+- average sold fare
+- regret vs. the oracle
 
 ## Quick start
 
@@ -155,7 +191,7 @@ python data/process_db1c.py \
   --chunksize 100000
 ```
 
-The processor writes the normalized parquet, generates the site summary, and automatically enriches it when distance and carrier fields are available. The site gracefully displays unavailable values rather than inventing estimates.
+The processor writes the normalized parquet, generates the site summary, and automatically enriches it when distance and carrier fields are available. The site displays unavailable values rather than inventing estimates.
 
 ## Repository layout
 
@@ -166,9 +202,9 @@ The processor writes the normalized parquet, generates the site summary, and aut
 │   ├── process_db1c.py
 │   └── enrich_summary.py
 ├── optimization/
-│   ├── seat_optimizer.py              # legacy deterministic allocation benchmark
-│   ├── revenue_management.py          # Open / EMSR-b / DP / clairvoyant methods
-│   └── simulation.py                  # seeded Python simulation mirror
+│   ├── seat_optimizer.py
+│   ├── revenue_management.py
+│   └── simulation.py                  # Python simulation mirror
 ├── tests/
 │   ├── test_seat_optimizer.py
 │   ├── test_revenue_management.py
@@ -181,8 +217,8 @@ The processor writes the normalized parquet, generates the site summary, and aut
 │   ├── market.html
 │   ├── data.html / data.js
 │   ├── route.html / route.js
-│   ├── optimizer.html / app.js        # simulation + optimization workbench
-│   ├── twin.html                      # legacy redirect to optimizer.html
+│   ├── optimizer.html / app.js
+│   ├── twin.html                      # legacy redirect
 │   ├── analytics.js
 │   ├── rm.js
 │   ├── simulation.js
@@ -204,18 +240,21 @@ python -m compileall -q data optimization tests
 for file in site/*.js; do node --check "$file"; done
 ```
 
-Tests cover optimizer feasibility, EMSR protection behavior, DP Bellman decisions on exact toy cases, seeded simulation reproducibility, clairvoyant upper-bound behavior, enrichment calculations, the data-build pipeline, and static-site wiring.
+Tests cover optimizer feasibility, EMSR protection behavior, DP Bellman decisions on toy forecast models, seeded demand perturbations, party-size and attrition generation, RNG-stream separation, no-show accounting, oracle upper-bound behavior, enrichment calculations, the data-build pipeline, and static-site wiring.
 
 ## Current scope
 
-The finished portfolio scope is intentionally **single-flight seat inventory control**. The goal is to make the data/model/decision boundary easy to understand and mathematically defensible rather than hide complexity behind a large prototype.
+The portfolio scope is intentionally **single-flight seat inventory control**. The goal is to make the data/model/decision boundary easy to understand and mathematically defensible rather than hide assumptions behind a large prototype.
 
-Explicit future work—not required for the current product—is:
+The simulation now includes imperfect demand forecasts, multi-seat requests, cancellations, no-shows, refunds, overbooking, and denied-boarding costs. Those elements are still **scenario models**, not empirically calibrated airline behavior.
+
+Explicit future work includes:
 
 - network revenue management and connecting itineraries
-- overbooking, cancellations, and no-shows
+- optimized overbooking rather than a user-selected booking limit
 - airline-specific fare-family and availability data
-- demand forecasting / machine-learning calibration
+- empirically calibrated booking, cancellation, and no-show models
+- richer demand forecasting / machine-learning calibration
 - competitive price-response models
 - approximate dynamic programming for larger network state spaces
 
