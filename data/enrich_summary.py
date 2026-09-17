@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 
 import pandas as pd
+import pyarrow.parquet as pq
 
 
 def distance_metrics(rows: pd.DataFrame, total_passengers: float) -> dict[str, float | None]:
@@ -86,10 +87,98 @@ def build_enrichment(markets: pd.DataFrame) -> dict[tuple[str, str], dict]:
     return result
 
 
+def build_enrichment_streaming(markets_path: Path, batch_size: int = 10_000) -> dict[tuple[str, str], dict]:
+    """Build enrichment without loading the complete Parquet file into RAM."""
+    columns = ["origin", "destination", "carrier", "passengers", "fare", "distance", "year", "month"]
+    aggregates: dict[tuple[str, str], dict] = {}
+
+    def route_for(key: tuple[str, str]) -> dict:
+        return aggregates.setdefault(
+            key,
+            {
+                "passengers": 0.0,
+                "covered_passengers": 0.0,
+                "passenger_miles": 0.0,
+                "fare_passengers": 0.0,
+                "carrier_pax": {},
+                "monthly": {},
+            },
+        )
+
+    parquet = pq.ParquetFile(markets_path)
+    for record_batch in parquet.iter_batches(batch_size=batch_size, columns=columns):
+        frame = record_batch.to_pandas()
+        frame["passengers"] = pd.to_numeric(frame["passengers"], errors="coerce")
+        frame["fare"] = pd.to_numeric(frame["fare"], errors="coerce")
+        frame["distance"] = pd.to_numeric(frame["distance"], errors="coerce")
+        frame["year"] = pd.to_numeric(frame["year"], errors="coerce")
+        frame["month"] = pd.to_numeric(frame["month"], errors="coerce")
+        frame = frame[frame["passengers"].fillna(0) > 0]
+
+        for row in frame.itertuples(index=False):
+            if pd.isna(row.origin) or pd.isna(row.destination):
+                continue
+            key = (str(row.origin), str(row.destination))
+            route = route_for(key)
+            passengers = float(row.passengers)
+            fare = float(row.fare) if pd.notna(row.fare) and row.fare >= 0 else None
+            distance = float(row.distance) if pd.notna(row.distance) and row.distance > 0 else None
+            route["passengers"] += passengers
+            if fare is not None:
+                route["fare_passengers"] += fare * passengers
+            if fare is not None and distance is not None:
+                route["covered_passengers"] += passengers
+                route["passenger_miles"] += distance * passengers
+
+            if pd.notna(row.carrier):
+                carrier = str(row.carrier)
+                route["carrier_pax"][carrier] = route["carrier_pax"].get(carrier, 0.0) + passengers
+
+            if pd.notna(row.year) and pd.notna(row.month):
+                period = f"{int(row.year)}-{int(row.month):02d}"
+                monthly = route["monthly"].setdefault(
+                    period,
+                    {"passengers": 0.0, "covered_passengers": 0.0, "passenger_miles": 0.0, "fare_passengers": 0.0},
+                )
+                monthly["passengers"] += passengers
+                if fare is not None:
+                    monthly["fare_passengers"] += fare * passengers
+                if fare is not None and distance is not None:
+                    monthly["covered_passengers"] += passengers
+                    monthly["passenger_miles"] += distance * passengers
+
+    result = {}
+    for key, route in aggregates.items():
+        passengers = route["passengers"]
+        covered = route["covered_passengers"]
+        miles = route["passenger_miles"]
+        carrier_pax = sorted(route["carrier_pax"].items(), key=lambda item: item[1], reverse=True)
+        known_carrier_pax = sum(route["carrier_pax"].values())
+
+        def metrics(values: dict) -> dict[str, float | None]:
+            covered_passengers = values["covered_passengers"]
+            passenger_miles = values["passenger_miles"]
+            return {
+                "avgDistance": round(passenger_miles / covered_passengers, 1) if covered_passengers else None,
+                "yieldPerMile": round(values["fare_passengers"] / passenger_miles, 6) if passenger_miles else None,
+                "distanceCoverage": round(covered_passengers / values["passengers"], 4) if values["passengers"] else 0.0,
+            }
+
+        result[key] = {
+            **metrics(route),
+            "topCarriers": [
+                {"carrier": carrier, "passengers": round(pax), "share": round(pax / known_carrier_pax, 4)}
+                for carrier, pax in carrier_pax[:5]
+            ],
+            "carrierCoverage": round(known_carrier_pax / passengers, 4) if passengers else 0.0,
+            "monthlyEnrichment": {period: metrics(values) for period, values in route["monthly"].items()},
+        }
+    return result
+
+
 def enrich_summary(markets_path: Path, summary_path: Path, output_path: Path) -> None:
-    markets = pd.read_parquet(markets_path)
     summary = json.loads(summary_path.read_text(encoding="utf-8"))
-    enrichment = build_enrichment(markets)
+    enrichment = build_enrichment_streaming(markets_path)
 
     default_enrichment = {
         "avgDistance": None,
