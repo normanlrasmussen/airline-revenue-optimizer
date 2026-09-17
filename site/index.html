@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="AeroYield uses airline market data, booking simulation, and optimization to test seat-control policies." />
+  <meta name="description" content="AeroYield uses public airline market data, stochastic booking simulation, and operations research to compare seat-control policies." />
   <title>AeroYield | Airline Revenue Optimizer</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -43,6 +43,12 @@
   </section>
 
   <section class="section compact">
+    <div class="callout">
+      <strong>Technical scope:</strong> public U.S. DOT DB1C market data, a Python data pipeline, Monte Carlo booking simulation, and seat-control methods including EMSR-b, finite-horizon dynamic programming, deterministic LP bid prices, Bayesian adaptation, distributionally robust optimization, and an optional locally trained neural policy. <a class="card-link" href="https://github.com/normanlrasmussen/airline-revenue-optimizer" target="_blank" rel="noopener">View source →</a>
+    </div>
+  </section>
+
+  <section class="section compact">
     <div class="section-heading">
       <div>
         <div class="eyebrow">HOW THE PROJECT WORKS</div>
@@ -58,12 +64,12 @@
       </article>
       <article class="card">
         <div class="number">02</div><h3>Explore the market</h3>
-        <p>Use observed fares, passenger volume, route trends, and competition context to choose where to focus.</p>
+        <p>Use observed U.S. DOT fares, passenger volume, route trends, and carrier context to understand each market.</p>
         <a class="card-link" href="data.html">Explore market data →</a>
       </article>
       <article class="card">
         <div class="number">03</div><h3>Optimize the decision</h3>
-        <p>Simulate uncertain booking requests, compare seat-control policies on identical demand, and measure the revenue impact in one workbench.</p>
+        <p>Compare heuristic, optimization, adaptive, robust, and learned policies on the same simulated booking streams.</p>
         <a class="card-link" href="optimizer.html">Open revenue optimizer →</a>
       </article>
     </div>
