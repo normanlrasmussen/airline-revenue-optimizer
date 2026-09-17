@@ -38,6 +38,17 @@
     return clean.sort((x, y) => y.fare - x.fare);
   }
 
+  function validateProbabilityRows(classFares, periodProbabilities) {
+    const names = new Set(Object.keys(classFares));
+    for (const row of periodProbabilities) {
+      const entries = Object.entries(row);
+      if (entries.some(([name]) => !names.has(name))) throw new Error('Probability row contains an unknown fare class.');
+      if (entries.some(([, p]) => Number(p) < 0)) throw new Error('Request probabilities must be non-negative.');
+      const total = entries.reduce((sum, [, p]) => sum + Number(p || 0), 0);
+      if (total > 1 + 1e-10) throw new Error('Per-period request probabilities must sum to at most one.');
+    }
+  }
+
   function emsrB(capacity, classes) {
     capacity = Math.max(0, Math.floor(Number(capacity)));
     const ordered = sortClasses(classes);
@@ -77,6 +88,7 @@
     if (!names.length) throw new Error('At least one fare is required.');
     const fares = Object.fromEntries(names.map(name => [name, Number(classFares[name])]));
     if (Object.values(fares).some(fare => !Number.isFinite(fare) || fare < 0)) throw new Error('Fares must be non-negative.');
+    validateProbabilityRows(fares, periodProbabilities);
     const T = periodProbabilities.length;
     const values = Array.from({ length: T + 1 }, () => Array(capacity + 1).fill(0));
     const bidPrices = Array.from({ length: T }, () => Array(capacity + 1).fill(0));
@@ -84,7 +96,6 @@
     for (let t = T - 1; t >= 0; t--) {
       const probs = periodProbabilities[t];
       const total = Object.values(probs).reduce((sum, p) => sum + Number(p || 0), 0);
-      if (total > 1 + 1e-10 || Object.values(probs).some(p => Number(p) < 0)) throw new Error('Per-period request probabilities must be non-negative and sum to at most one.');
       const pNone = Math.max(0, 1 - total);
       for (let c = 0; c <= capacity; c++) {
         const reject = values[t + 1][c];
@@ -112,6 +123,120 @@
     };
   }
 
+  function deterministicBidPrice(capacity, classFares, expectedDemand) {
+    if (capacity <= 0) return Infinity;
+    let remaining = Number(capacity);
+    const ordered = Object.keys(classFares).sort((a, b) => Number(classFares[b]) - Number(classFares[a]));
+    for (const name of ordered) {
+      const demand = Math.max(0, Number(expectedDemand[name] || 0));
+      if (demand <= 0) continue;
+      if (remaining <= demand + 1e-12) return Number(classFares[name]);
+      remaining -= demand;
+    }
+    return 0;
+  }
+
+  function buildLPBidPricePolicy(capacity, classFares, periodProbabilities) {
+    capacity = Math.max(0, Math.floor(Number(capacity)));
+    validateProbabilityRows(classFares, periodProbabilities);
+    const names = Object.keys(classFares);
+    const T = periodProbabilities.length;
+    const suffix = Object.fromEntries(names.map(name => [name, Array(T + 1).fill(0)]));
+    for (let t = T - 1; t >= 0; t--) {
+      for (const name of names) {
+        suffix[name][t] = suffix[name][t + 1] + Number(periodProbabilities[t][name] || 0);
+      }
+    }
+    const bidPrices = Array.from({ length: T }, () => Array(capacity + 1).fill(0));
+    for (let t = 0; t < T; t++) {
+      const demand = Object.fromEntries(names.map(name => [name, suffix[name][t]]));
+      for (let c = 1; c <= capacity; c++) {
+        bidPrices[t][c] = deterministicBidPrice(c, classFares, demand);
+      }
+    }
+    return { bidPrices, suffixDemand: suffix };
+  }
+
+  function gammaPoissonScale(observedDemand, expectedExposure, priorStrength = 30, lower = 0.5, upper = 1.75) {
+    const prior = Number(priorStrength);
+    if (!(prior > 0)) throw new Error('priorStrength must be positive.');
+    const raw = (prior + Math.max(0, Number(observedDemand))) /
+      (prior + Math.max(0, Number(expectedExposure)));
+    return Math.min(Number(upper), Math.max(Number(lower), raw));
+  }
+
+  function scaleProbabilitySchedule(periodProbabilities, scale, maxTotal = 0.98) {
+    return periodProbabilities.map(row => {
+      const scaled = Object.fromEntries(
+        Object.entries(row).map(([name, p]) => [name, Math.max(0, Number(p || 0) * Number(scale))])
+      );
+      const total = Object.values(scaled).reduce((sum, p) => sum + p, 0);
+      if (total > maxTotal) {
+        const factor = maxTotal / total;
+        Object.keys(scaled).forEach(name => { scaled[name] *= factor; });
+      }
+      return scaled;
+    });
+  }
+
+  function worstCaseTVExpectation(baseProbabilities, outcomeValues, radius) {
+    if (baseProbabilities.length !== outcomeValues.length || !baseProbabilities.length) throw new Error('Probability and value vectors must have equal non-zero length.');
+    const eps = Math.min(1, Math.max(0, Number(radius)));
+    const q = baseProbabilities.map(p => Math.max(0, Number(p)));
+    const total = q.reduce((sum, p) => sum + p, 0);
+    if (Math.abs(total - 1) > 1e-8) throw new Error('Base probabilities must sum to one.');
+    const order = q.map((_, i) => i).sort((a, b) => outcomeValues[a] - outcomeValues[b]);
+    let lo = 0;
+    let hi = order.length - 1;
+    let budget = eps;
+    while (budget > 1e-15 && lo < hi) {
+      const low = order[lo];
+      const high = order[hi];
+      if (outcomeValues[high] <= outcomeValues[low] + 1e-15) break;
+      const move = Math.min(q[high], 1 - q[low], budget);
+      if (move <= 1e-15) {
+        if (q[high] <= 1e-15) hi--;
+        if (1 - q[low] <= 1e-15) lo++;
+        continue;
+      }
+      q[high] -= move;
+      q[low] += move;
+      budget -= move;
+      if (q[high] <= 1e-15) hi--;
+      if (1 - q[low] <= 1e-15) lo++;
+    }
+    return q.reduce((sum, p, i) => sum + p * Number(outcomeValues[i]), 0);
+  }
+
+  function buildRobustDP(capacity, classFares, periodProbabilities, tvRadius = 0.075) {
+    capacity = Math.max(0, Math.floor(Number(capacity)));
+    const names = Object.keys(classFares);
+    if (!names.length) throw new Error('At least one fare is required.');
+    validateProbabilityRows(classFares, periodProbabilities);
+    const epsilon = Math.min(1, Math.max(0, Number(tvRadius)));
+    const T = periodProbabilities.length;
+    const values = Array.from({ length: T + 1 }, () => Array(capacity + 1).fill(0));
+    const bidPrices = Array.from({ length: T }, () => Array(capacity + 1).fill(0));
+
+    for (let t = T - 1; t >= 0; t--) {
+      const probs = periodProbabilities[t];
+      const requestTotal = names.reduce((sum, name) => sum + Number(probs[name] || 0), 0);
+      const base = [Math.max(0, 1 - requestTotal), ...names.map(name => Number(probs[name] || 0))];
+      for (let c = 0; c <= capacity; c++) {
+        const reject = values[t + 1][c];
+        const outcomes = [reject];
+        for (const name of names) {
+          outcomes.push(c === 0
+            ? reject
+            : Math.max(reject, Number(classFares[name]) + values[t + 1][c - 1]));
+        }
+        values[t][c] = worstCaseTVExpectation(base, outcomes, epsilon);
+        if (c > 0) bidPrices[t][c] = values[t + 1][c] - values[t + 1][c - 1];
+      }
+    }
+    return { values, bidPrices, expectedRevenue: values[0][capacity], tvRadius: epsilon };
+  }
+
   function clairvoyant(capacity, events) {
     const sorted = [...events].sort((a, b) => Number(b.fare) - Number(a.fare));
     const accepted = sorted.slice(0, Math.max(0, Math.floor(capacity)));
@@ -125,13 +250,34 @@
     };
   }
 
-  window.AeroYieldRM = { normalInv, emsrB, emsrAccept, buildDP, clairvoyant };
+  window.AeroYieldRM = {
+    normalInv,
+    emsrB,
+    emsrAccept,
+    buildDP,
+    deterministicBidPrice,
+    buildLPBidPricePolicy,
+    gammaPoissonScale,
+    scaleProbabilitySchedule,
+    worstCaseTVExpectation,
+    buildRobustDP,
+    clairvoyant,
+  };
 })();
 
 window.addEventListener('load', () => {
   if (!document.getElementById('optimizeButton')) return;
-  const script = document.createElement('script');
-  script.src = 'neural_policy.js';
-  script.async = true;
-  document.body.appendChild(script);
+  const loadScript = src => new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = false;
+    script.onload = resolve;
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+
+  loadScript('neural_policy.js')
+    .catch(() => null)
+    .then(() => loadScript('advanced_policies.js'))
+    .catch(error => console.error('Could not initialize advanced policies:', error));
 });
