@@ -29,3 +29,17 @@ def test_browser_rm_layer_contains_advanced_policy_math():
     assert "scaleProbabilitySchedule" in text
     assert "worstCaseTVExpectation" in text
     assert "buildRobustDP" in text
+
+
+def test_all_available_optimizer_policies_default_on():
+    clarity = (SITE / "clarity.js").read_text(encoding="utf-8")
+    neural = (SITE / "neural_policy.js").read_text(encoding="utf-8")
+    advanced = (SITE / "advanced_policies.js").read_text(encoding="utf-8")
+
+    assert "DEFAULT_ON_POLICIES" in clarity
+    for key in ("emsr", "dp", "nn", "lp", "bayes", "dro"):
+        assert f"'{key}'" in clarity
+
+    assert 'data-policy="nn" checked' in neural
+    assert 'data-policy="${spec.key}" checked' in advanced
+    assert "Advanced / learned policies (optional)" not in clarity
