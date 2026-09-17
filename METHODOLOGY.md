@@ -1,18 +1,30 @@
 # AeroYield Methodology
 
-This document defines the mathematical and simulation assumptions behind the AeroYield decision product. The website intentionally explains the business outcome first; this file records the technical details needed to reproduce and critique the experiment.
+This document defines the mathematical and simulation assumptions behind AeroYield. The website leads with business outcomes; this file records the model boundary, information structure, and experiment design needed to reproduce and critique the results.
 
 ## 1. Decision problem
 
-AeroYield models one economy cabin on one flight with capacity `C`. Booking requests arrive before departure. Each request belongs to a modeled fare group `k` with fare `f_k` and consumes one seat if accepted.
+AeroYield models one economy cabin on one flight with physical capacity \(C\). Booking requests arrive before departure. Each request belongs to a modeled fare group \(k\), has fare \(f_k\), and can request one or more seats.
 
-The airline must decide sequentially whether to accept or reject a request before future requests are known. The objective is to maximize expected ticket revenue.
+The airline must decide sequentially whether to accept or reject each request before future realized requests, cancellations, and no-shows are known. The experiment compares seat-control policies using **net ticket revenue**:
 
-The initial model excludes cancellations, no-shows, overbooking, group requests, network connections, and competitive price response. Those are deliberate scope boundaries, not hidden assumptions.
+\[
+\text{net revenue}
+=
+\text{gross ticket sales}
+-
+\text{cancellation refunds}
+-
+\text{denied-boarding refunds}
+-
+\text{denied-boarding compensation}.
+\]
+
+The current product is still a single-flight model. It does not model connecting itineraries, network displacement costs, competitor response, or airline-specific fare rules.
 
 ## 2. Market-data layer
 
-The pipeline normalizes BTS DB1C Market files into:
+The data pipeline normalizes BTS DB1C Market files into:
 
 - origin
 - destination
@@ -23,41 +35,45 @@ The pipeline normalizes BTS DB1C Market files into:
 - year
 - month
 
-Route-level average fare is passenger-weighted. When distance is available, AeroYield computes passenger-weighted route distance and average yield directly from the same distance-covered observations. For observation `i` with fare `f_i`, passenger weight `p_i`, and market distance `d_i`,
+Route-level average fare is passenger-weighted. When distance is available, AeroYield computes passenger-weighted route distance and yield from the same distance-covered observations. For observation \(i\) with fare \(f_i\), passenger weight \(p_i\), and market distance \(d_i\),
 
 \[
 \text{average distance}
-=\frac{\sum_i d_i p_i}{\sum_i p_i},
+=
+\frac{\sum_i d_i p_i}{\sum_i p_i},
 \]
 
 and
 
 \[
 \text{yield per passenger-mile}
-=\frac{\sum_i f_i p_i}{\sum_i d_i p_i}.
+=
+\frac{\sum_i f_i p_i}{\sum_i d_i p_i}.
 \]
 
-Rows without a valid positive distance are excluded from both the yield numerator and denominator. The dashboard reports distance coverage so a yield based on partial distance data is not presented as complete coverage. The same calculation is performed at both route and route-month level during enrichment.
-
-Carrier share is computed from passenger weights among observations with a reporting-carrier identifier. The dashboard surfaces carrier-data coverage so a partial carrier field is not presented as complete market share.
+Rows without a valid positive distance are excluded from both the yield numerator and denominator. Carrier share is computed from passenger weights among observations with a reporting-carrier identifier.
 
 `average fare × observed passengers` is labeled **estimated market value**. It is a descriptive market-size proxy, not reported airline revenue.
 
-## 3. Modeled fare groups
+DB1C does **not** provide the booking date, days-before-departure, realized booking class, cancellation history, or no-show outcome used by the simulation. Those elements are modeled assumptions.
 
-The current route summary maps each observed route-average fare into three transparent experiment groups:
+## 3. Modeled fare groups and baseline demand
+
+The route summary maps each observed route-average fare into three transparent experiment groups:
 
 - Saver: lower fare / earlier-booking demand
 - Main: middle fare / broad demand
 - Flex: higher fare / later-booking demand
 
-These are modeling inputs. They are not claimed to be observed DB1C fare classes.
+These are modeling inputs, not observed DB1C booking classes.
 
-The current processor derives baseline fare levels as fixed multiples of route-average fare and derives a bounded scenario demand from observed traffic. The website can scale all three expected demands together to test lower- or higher-demand scenarios.
+The processor derives baseline fare levels as fixed multiples of route-average fare and derives a bounded single-flight demand scenario from observed route traffic. The website can scale all three expected demands together.
 
-## 4. Booking-arrival model
+The resulting baseline is a **forecast**, not the realized demand process used to score the policies.
 
-The horizon runs from D-180 through departure. AeroYield uses four request opportunities per day, giving
+## 4. Baseline booking forecast
+
+The booking horizon runs from D-180 through departure. AeroYield uses four request opportunities per day:
 
 \[
 181 \times 4 = 724
@@ -65,164 +81,291 @@ The horizon runs from D-180 through departure. AeroYield uses four request oppor
 
 discrete periods.
 
-At most one request appears in a period. For class `k`, a nonnegative time-profile weight `w_{t,k}` is assigned to every period. The probability of a class-`k` request in period `t` is
+For forecast class \(k\), a nonnegative booking-profile weight \(w_{t,k}\) is assigned to each period. The baseline forecast probability is
 
 \[
-p_{t,k}=\mu_k\frac{w_{t,k}}{\sum_s w_{s,k}},
+\hat p_{t,k}
+=
+\mu_k
+\frac{w_{t,k}}{\sum_s w_{s,k}},
 \]
 
-where `mu_k` is expected total class demand. Therefore
+where \(\mu_k\) is the modeled expected seat demand for class \(k\).
 
-\[
-\sum_t p_{t,k}=\mu_k.
-\]
-
-The current qualitative profiles are:
+The qualitative forecast profiles are:
 
 - Saver demand is strongest earlier and declines toward departure.
 - Main demand is comparatively stable.
-- Flex demand is concentrated later in the horizon.
+- Flex demand is concentrated later.
 
-The implementation verifies that total request probability in every period is at most one. If a scenario becomes too concentrated for the discrete model, it fails explicitly rather than silently renormalizing demand.
+EMSR-b and the dynamic program are built from this baseline forecast. They are **not** rebuilt using the realized perturbations in each Monte Carlo replication.
 
-## 5. Common random numbers
+## 5. Realized demand process
 
-For replication `r`, the simulator creates one seeded request stream. Every policy is evaluated on that identical stream.
+Each replication creates a different realized demand process that is hidden from the deployable policies.
 
-This is a common-random-number experimental design. It reduces variance in pairwise policy comparisons because the random demand realization is held fixed while the decision rule changes.
+### 5.1 Market-wide and class-specific demand error
+
+AeroYield draws both:
+
+- a market-wide demand shock shared across fare groups, and
+- class-specific demand error.
+
+These are combined into a positive demand multiplier for each fare group. This creates correlated forecast miss: a strong market tends to affect more than one class instead of giving each class an unrelated error.
+
+The user-facing **Demand uncertainty** control changes the scale of these perturbations. It is a scenario parameter, not an empirically calibrated airline forecast-error estimate.
+
+### 5.2 Booking-timing error
+
+The realized booking curve also receives:
+
+- a shared market timing shift, and
+- class-specific timing error.
+
+The user-facing **Booking-timing uncertainty** control bounds the size of these shifts.
+
+### 5.3 Persistent day-to-day booking noise
+
+Real booking activity often arrives in bursts rather than as independent daily spikes. AeroYield therefore uses correlated day-level multiplicative noise. A high or low booking day tends to influence nearby days.
+
+The perturbed class profile is renormalized to the replication's class-demand target before requests are generated.
+
+### 5.4 Party arrivals
+
+The baseline demand values are interpreted as expected **seat demand**. Because one request can contain multiple seats, the realized party-arrival rate is divided by the expected party size so adding groups does not mechanically inflate expected seat demand.
+
+The current party-size distribution is:
+
+| Party size | Probability |
+| ---: | ---: |
+| 1 | 84% |
+| 2 | 12% |
+| 3 | 3% |
+| 4 | 1% |
+
+These probabilities are transparent modeling assumptions, not DB1C observations.
+
+## 6. Cancellations and no-shows
+
+A booking can experience one of three final states:
+
+1. remain active and show up,
+2. cancel before departure, or
+3. remain active but no-show at departure.
+
+### Cancellations
+
+The user specifies a base cancellation rate. Earlier bookings are assigned a higher event-level cancellation probability because they have more time before departure.
+
+Conditional on cancellation, the cancellation time is sampled within the remaining booking horizon and is skewed toward later dates rather than being uniformly distributed.
+
+When an accepted booking cancels:
+
+- its seats immediately return to booking inventory;
+- the chosen refund fraction is subtracted from net revenue.
+
+### No-shows
+
+No-shows are not revealed until departure. In the current model:
+
+- the booking continues to occupy booking inventory until departure;
+- the passenger does not consume a physical seat at departure;
+- the ticket revenue is retained;
+- no no-show refund is applied.
+
+The no-show rate is a user-controlled scenario assumption.
+
+## 7. Controlled overbooking and denied boarding
+
+Let the physical aircraft capacity be \(C\). If the user selects an overbooking fraction \(\alpha\), the booking limit is
+
+\[
+B
+=
+C+\operatorname{round}(\alpha C).
+\]
+
+Open Sales, EMSR-b, and the DP may accept bookings up to this booking limit.
+
+At departure, cancellations have already released inventory and no-shows are removed from the set of passengers attempting to board. If remaining show-ups exceed physical capacity, the excess is denied boarding.
+
+For each denied-boarded seat, the model currently applies:
+
+- a full ticket refund, and
+- a fixed $400 modeled compensation cost.
+
+The $400 value is a transparent scenario assumption, not a claim about a specific airline or regulatory payment.
+
+## 8. Random-number design and common random numbers
+
+Every replication is deterministic for a given seed.
+
+AeroYield uses separate seeded random-number streams for:
+
+- realized demand/timing perturbations,
+- booking arrivals,
+- party sizes, and
+- cancellations/no-shows.
+
+This separation matters. For example, changing the cancellation-rate slider does not silently redraw the underlying booking arrivals.
+
+Within one replication, every policy receives the **same realized booking requests, party sizes, cancellation outcomes, and no-show outcomes**. This common-random-number design reduces noise in policy comparisons.
 
 The browser and Python implementations use the same 32-bit linear congruential generator constants:
 
 \[
-x_{n+1}=(1664525x_n+1013904223)\bmod 2^{32}.
+x_{n+1}
+=
+(1664525x_n+1013904223)
+\bmod 2^{32}.
 \]
 
-The seed is user-visible so a scenario can be reproduced.
+## 9. Open Sales baseline
 
-## 6. Open Sales baseline
+Open Sales accepts every party that fits under the current booking limit.
 
-Open Sales accepts every request while capacity remains.
+It has no demand-protection rule. Cancellations can reopen booking capacity later, and no-shows are unknown until departure.
 
-It has no protection level and no forecast-based control. It is useful because any modeled lift can be stated relative to a simple policy that is easy to understand.
+Open Sales is useful as a transparent baseline for revenue lift.
 
-## 7. EMSR-b
+## 10. EMSR-b
 
-EMSR-b sorts fare groups from highest to lowest fare. At each fare boundary, higher-fare classes are aggregated into one demand distribution and represented by a demand-weighted average higher fare.
+EMSR-b sorts fare groups from highest to lowest fare. At each fare boundary, higher-fare forecast demand is aggregated into one demand distribution and represented by a demand-weighted average higher fare.
 
-AeroYield assumes independent Poisson total demand by fare group. For a sum of independent Poisson demands,
+AeroYield assumes independent Poisson total forecast demand by fare group. For an aggregate of higher-fare classes,
 
 \[
-\mu=\sum_k \mu_k, \qquad \sigma^2=\mu.
+\mu=\sum_k \mu_k,
+\qquad
+\sigma^2=\mu.
 \]
 
-For lower fare `f_L` and aggregated higher fare `\bar f_H`, the EMSR critical probability is
+For lower fare \(f_L\) and aggregated higher fare \(\bar f_H\), the EMSR critical probability is
 
 \[
-P(D_H \le y)=1-\frac{f_L}{\bar f_H}.
+P(D_H \le y)
+=
+1-\frac{f_L}{\bar f_H}.
 \]
 
-The implementation uses a normal approximation to the aggregate Poisson demand to obtain protection level `y`, rounds to an integer, and clips to `[0,C]`.
+The implementation uses a normal approximation to obtain an integer protection level.
 
-A low-fare request is accepted only when remaining capacity is strictly greater than its protection level.
+For a multi-seat request, AeroYield accepts the entire party only if it fits without crossing the applicable protection level.
 
 ### Guarantee
 
-EMSR-b is a heuristic. It is computationally inexpensive and interpretable, but it is not generally optimal for finite-horizon stochastic seat control.
+EMSR-b is a heuristic. It is not generally optimal, and the richer realized simulation intentionally violates some of its planning assumptions.
 
-## 8. Finite-horizon dynamic program
+## 11. Finite-horizon dynamic program
 
-The DP uses state
+The DP is solved for the **baseline one-seat forecast model** with state
 
 \[
 (t,c),
 \]
 
-where `t` is booking period and `c` is remaining capacity.
+where \(t\) is booking period and \(c\) is remaining booking capacity.
 
-Let `p_{t,k}` be the probability of a class-`k` request and let
-
-\[
-p_{t,0}=1-\sum_k p_{t,k}
-\]
-
-be the probability of no request. With terminal value zero at departure, the Bellman recursion is
+Let \(\hat p_{t,k}\) be the baseline forecast probability of class \(k\) in period \(t\), with
 
 \[
-V_t(c)=p_{t,0}V_{t+1}(c)
-+\sum_k p_{t,k}\max\left(V_{t+1}(c), f_k+V_{t+1}(c-1)\right)
+\hat p_{t,0}
+=
+1-\sum_k \hat p_{t,k}.
 \]
 
-for `c>0`.
-
-The opportunity cost or bid price of consuming one seat is
+The Bellman recursion is
 
 \[
-b_t(c)=V_{t+1}(c)-V_{t+1}(c-1).
+V_t(c)
+=
+\hat p_{t,0}V_{t+1}(c)
++
+\sum_k
+\hat p_{t,k}
+\max
+\left\{
+V_{t+1}(c),
+f_k+V_{t+1}(c-1)
+\right\}.
 \]
 
-A request is accepted exactly when
+The one-seat bid price is
 
 \[
-f_k \ge b_t(c).
+b_t(c)
+=
+V_{t+1}(c)-V_{t+1}(c-1).
 \]
+
+For a realized request of \(m\) seats, AeroYield approximates the opportunity cost by summing the next \(m\) forecast seat bid prices and accepts the entire request when the party's total fare clears that cost.
 
 ### Guarantee
 
-The implemented DP is exact for the stated discretized model: one flight, one-seat requests, at most one request per opportunity, known request probabilities, no cancellations/no-shows/overbooking, and additive ticket revenue.
+The DP is exact for its internal baseline forecast model: one-seat requests, known forecast probabilities, and no attrition inside the Bellman state.
 
-It is not claimed to be globally optimal for a real airline network.
+It is **not** exact for the richer realized simulation containing forecast error, groups, cancellations, no-shows, and overbooking. That mismatch is intentional: the experiment asks how a strong forecast-based policy behaves when reality differs from its model.
 
-## 9. Clairvoyant upper bound
+## 12. Oracle upper bound
 
-For each realized request stream, the clairvoyant benchmark observes every future request before making any allocation. It sorts requests by fare and accepts the highest fares up to capacity.
+The oracle sees the complete realized future:
 
-Therefore, for the same realized demand stream,
+- all booking requests,
+- party sizes,
+- cancellations, and
+- no-shows.
 
-\[
-R_{\text{policy}} \le R_{\text{clairvoyant}}
-\]
+Cancelled and no-show bookings do not consume final physical capacity. For the remaining show-up requests, the oracle solves a 0/1 knapsack problem over physical seat capacity.
 
-for any feasible online policy in this model.
+The oracle also relaxes transient booking-limit constraints. Therefore it is intentionally **unattainable** and should be interpreted only as a perfect-information upper bound.
 
-Clairvoyant revenue is never presented as deployable performance. It is used only to define an upper bound and regret.
+It is not presented as a deployable policy.
 
-## 10. Evaluation metrics
+## 13. Evaluation metrics
 
 For every policy and replication, AeroYield records:
 
-- **Revenue:** sum of accepted fares.
-- **Accepted requests:** number of seats sold.
-- **Load factor:** accepted requests divided by capacity.
-- **Rejected requests / spill:** generated requests not accepted.
-- **Empty seats / spoilage:** capacity remaining at departure.
-- **Average accepted fare:** revenue divided by accepted requests.
-- **Regret:** clairvoyant revenue minus policy revenue for the same request stream.
+- **Net revenue:** gross ticket sales minus modeled refunds and denied-boarding compensation.
+- **Gross ticket sales:** fare collected when bookings are accepted.
+- **Accepted seats:** seats sold across accepted parties.
+- **Boarded passengers:** show-ups that receive physical seats.
+- **Load factor:** boarded passengers divided by physical capacity.
+- **Rejected seats / spill:** requested seats not accepted.
+- **Cancelled seats:** accepted seats later cancelled.
+- **No-show seats:** active bookings that do not show at departure.
+- **Empty seats / spoilage:** physical seats unused at departure.
+- **Denied boarding:** show-up seats above physical capacity after overbooking.
+- **Average sold fare:** gross ticket sales divided by accepted seats.
+- **Regret:** oracle net revenue minus policy net revenue on the same realization.
 
-Across replications the dashboard reports mean values and the 10th, 50th, and 90th percentiles of revenue.
+Across replications the dashboard reports mean values and the 10th, 50th, and 90th percentiles of net revenue.
 
-## 11. Reproducibility and testing
+## 14. Reproducibility and testing
 
-The Python and browser implementations deliberately mirror the same policy and simulation concepts. CI tests:
+The Python and browser implementations mirror the same simulation concepts.
 
-- deterministic seat-allocation feasibility
-- EMSR protection-level semantics
-- exact DP behavior on analytically solvable toy problems
-- seeded request-stream reproducibility
-- clairvoyant upper-bound dominance
-- passenger-weighted distance, yield, distance coverage, and carrier-share calculations
-- local site assets, navigation, and required optimizer wiring
-- Python compilation and JavaScript syntax
+CI tests include:
 
-## 12. Scope that is intentionally left for future work
+- optimizer feasibility and EMSR protection behavior;
+- exact DP behavior on toy forecast models;
+- seeded demand perturbation reproducibility;
+- party-size and attrition generation;
+- separation of arrival RNG from attrition RNG;
+- no-show capacity accounting;
+- oracle upper-bound behavior;
+- data enrichment and processing;
+- static-site wiring and JavaScript syntax.
 
-AeroYield stops at single-flight revenue management so the model remains explainable and the mathematical guarantees remain clear. Natural extensions are:
+## 15. Scope and limitations
 
-- connecting itineraries and network bid-price control
-- leg-level displacement cost
-- overbooking with denied-boarding penalties
-- cancellations and no-shows
-- richer fare-family restrictions
-- calibrated booking curves from reservation-system data
-- competitive price response
-- demand forecasting and forecast uncertainty
-- approximate dynamic programming for larger state spaces
+AeroYield intentionally remains a transparent single-flight portfolio model. Important limitations include:
+
+- booking curves and forecast-error distributions are modeled rather than calibrated from reservation-system data;
+- cancellation, no-show, party-size, refund, and denied-boarding assumptions are scenario inputs;
+- the booking horizon allows at most one party request per discrete opportunity;
+- the DP does not optimize cancellations, no-shows, or overbooking jointly;
+- overbooking is a user-selected booking limit rather than an optimized control;
+- there is no network revenue management or connecting-itinerary displacement cost;
+- there is no demand response to price or competitor behavior.
+
+Natural extensions include calibrated booking curves, empirical cancellation/no-show models, optimized overbooking, richer demand forecasting, and network revenue management.
