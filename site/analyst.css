@@ -181,6 +181,7 @@
 .trend-line { fill: none; stroke: var(--teal); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
 .trend-point { fill: white; stroke: var(--teal); stroke-width: 3; }
 .trend-empty { fill: var(--muted); font-size: 15px; }
+#networkFareTrend polyline:first-of-type { stroke-dasharray: none !important; }
 
 .analyst-readout-card { min-height: 100%; }
 .readout-list { display: grid; gap: 0; }
