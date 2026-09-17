@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Run airline revenue-management policy experiments with forecast error, group bookings, cancellations, refunds, and overbooking." />
+  <meta name="description" content="Run airline revenue-management policy experiments with imperfect forecasts, correlated demand shocks, group bookings, cancellations, no-shows, refunds, and overbooking." />
   <title>Revenue Optimizer | AeroYield</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="analyst.css" />
@@ -18,7 +18,7 @@
   <section class="page-hero">
     <div class="eyebrow">REVENUE OPTIMIZER</div>
     <h1>How much are better seat-control decisions worth?</h1>
-    <p class="lead">Choose a route and operating assumptions, then compare Open Sales, EMSR-b, and dynamic programming when the forecast is imperfect. Realized demand is randomly perturbed, parties can request multiple seats, bookings can cancel and receive refunds, and the flight can be overbooked. Only the oracle sees the realized future.</p>
+    <p class="lead">Choose a route and operating assumptions, then compare Open Sales, EMSR-b, and dynamic programming under an imperfect demand forecast. Every replication creates a different realized booking world with correlated demand shocks, timing variation, multi-seat parties, cancellations, no-shows, and overbooking risk. Only the oracle sees the realized future.</p>
   </section>
 
   <section class="section compact">
@@ -35,21 +35,25 @@
 
         <label class="field-label" for="demandScale">Forecast demand scenario</label>
         <div class="range-row"><input id="demandScale" type="range" min="70" max="130" step="5" value="100" /><strong id="demandScaleValue">100%</strong></div>
-        <p class="fine-print">Scales the baseline Saver/Main/Flex forecast before each replication creates a different realized demand process.</p>
+        <p class="fine-print">Scales the baseline Saver/Main/Flex forecast. The realized flight is generated separately in every replication.</p>
 
-        <div class="field-label policy-label">Realism assumptions</div>
+        <div class="field-label policy-label">Simulation assumptions</div>
         <div class="realism-controls">
           <label class="range-field" for="forecastError">
-            <span><b>Demand-rate forecast error</b><strong id="forecastErrorValue">±15%</strong></span>
+            <span><b>Demand uncertainty</b><strong id="forecastErrorValue">15%</strong></span>
             <input id="forecastError" type="range" min="0" max="40" step="5" value="15" />
           </label>
           <label class="range-field" for="timingJitter">
-            <span><b>Booking-timing perturbation</b><strong id="timingJitterValue">±14 days</strong></span>
+            <span><b>Booking-timing uncertainty</b><strong id="timingJitterValue">±14 days</strong></span>
             <input id="timingJitter" type="range" min="0" max="30" step="2" value="14" />
           </label>
           <label class="range-field" for="cancellationRate">
-            <span><b>Cancellation probability</b><strong id="cancellationRateValue">8%</strong></span>
+            <span><b>Cancellation base rate</b><strong id="cancellationRateValue">8%</strong></span>
             <input id="cancellationRate" type="range" min="0" max="25" step="1" value="8" />
+          </label>
+          <label class="range-field" for="noShowRate">
+            <span><b>No-show probability</b><strong id="noShowRateValue">3%</strong></span>
+            <input id="noShowRate" type="range" min="0" max="15" step="1" value="3" />
           </label>
           <label class="range-field" for="refundRate">
             <span><b>Refund if cancelled</b><strong id="refundRateValue">70%</strong></span>
@@ -60,7 +64,7 @@
             <input id="overbookPct" type="range" min="0" max="15" step="1" value="5" />
           </label>
         </div>
-        <p class="fine-print"><strong>Party size:</strong> 84% request 1 seat, 12% request 2, 3% request 3, and 1% request 4. Policies see the baseline forecast—not the random rate/timing perturbations or future cancellations. Denied-boarded customers receive a full ticket refund plus a fixed $400 modeled compensation cost.</p>
+        <p class="fine-print"><strong>Party size:</strong> 84% request 1 seat, 12% request 2, 3% request 3, and 1% request 4. Earlier bookings have more time to cancel; cancellations tend to occur later in the remaining booking horizon. No-shows are only revealed at departure. Denied-boarded customers receive a full ticket refund plus a fixed $400 modeled compensation cost.</p>
 
         <label class="field-label" for="seedInput">Random seed</label>
         <input id="seedInput" type="number" min="1" step="1" value="20260912" />
@@ -68,8 +72,8 @@
         <div class="field-label policy-label">Policies to compare</div>
         <label class="policy-check fixed"><input type="checkbox" data-policy="open" checked disabled /><span><strong>Open Sales</strong><small>Accepts every party that fits under the current booking limit.</small></span></label>
         <label class="policy-check"><input type="checkbox" data-policy="emsr" checked /><span><strong>EMSR-b</strong><small>Protects seats using the baseline higher-fare demand forecast, not the realized future.</small></span></label>
-        <label class="policy-check"><input type="checkbox" data-policy="dp" checked /><span><strong>Dynamic Programming</strong><small>Uses baseline period-by-period demand estimates and accepts a party when its fare value clears the forecast seat opportunity cost.</small></span></label>
-        <p class="fine-print"><strong>Oracle upper bound:</strong> sees the realized future demand and cancellations. It is intentionally unattainable and is used only as a perfect-information benchmark.</p>
+        <label class="policy-check"><input type="checkbox" data-policy="dp" checked /><span><strong>Dynamic Programming</strong><small>Uses baseline period-by-period demand estimates and applies forecast seat values to the realized booking stream.</small></span></label>
+        <p class="fine-print"><strong>Oracle upper bound:</strong> sees realized demand, cancellations, and no-shows. It is intentionally unattainable and is used only as a perfect-information benchmark.</p>
 
         <button id="optimizeButton" class="button primary full" type="button">Run revenue experiment</button>
         <div id="optimizerStatus" class="status-badge ready optimizer-status"><i></i> Ready</div>
@@ -87,7 +91,7 @@
           <article class="kpi-card"><span>Best avg sold fare</span><strong id="bestAcceptedFare">—</strong><small>gross ticket sales ÷ accepted seats</small></article>
         </div>
         <article class="chart-card optimizer-revenue-card">
-          <div class="chart-title"><div><strong>Average net revenue by policy</strong><br><span>Same realized demand, party sizes, and cancellation outcomes within each replication</span></div><span id="experimentLabel">—</span></div>
+          <div class="chart-title"><div><strong>Average net revenue by policy</strong><br><span>Same realized demand, party sizes, cancellations, and no-shows within each replication</span></div><span id="experimentLabel">—</span></div>
           <div id="policyRevenueBars" class="bar-chart wide-bars"></div>
         </article>
       </div>
@@ -95,8 +99,29 @@
   </section>
 
   <section class="section">
-    <div class="section-heading"><div><div class="eyebrow">POLICY PERFORMANCE</div><h2>What trade-offs create the revenue result?</h2><p class="section-copy">The policies now face forecast error, multi-seat parties, cancellations, refunds, and overbooking risk. Net revenue is more useful when you can also see what happened operationally.</p></div></div>
-    <article class="table-card"><div class="table-scroll"><table class="analyst-table optimizer-table"><thead><tr><th>Policy</th><th>Avg net revenue</th><th>Lift vs Open</th><th>Load factor</th><th>Rejected seats</th><th>Canceled seats</th><th>Empty seats</th><th>Denied boarding</th><th>Avg sold fare</th><th>Regret</th></tr></thead><tbody id="optimizerPolicyTable"></tbody></table></div></article>
+    <div class="section-heading"><div><div class="eyebrow">SIMULATION MODEL</div><h2>The forecast is a best guess. The realized flight is noisier.</h2><p class="section-copy">AeroYield deliberately separates the information used to build a policy from the random events that actually occur. The goal is a useful robustness experiment—not a claim that the airline knows the future demand process.</p></div></div>
+    <div class="three-col simulation-model-grid">
+      <article class="card">
+        <div class="number">01 · FORECAST</div>
+        <h3>What the policy sees</h3>
+        <p>Baseline Saver/Main/Flex demand, generic booking curves, fares, physical capacity, and the selected booking limit. EMSR-b and DP are built once from this forecast.</p>
+      </article>
+      <article class="card">
+        <div class="number">02 · REALIZED WORLD</div>
+        <h3>What changes each run</h3>
+        <p>A shared market-demand shock, class-specific forecast error, smooth day-to-day booking bursts, timing shifts, random 1–4 seat parties, and customer attrition.</p>
+      </article>
+      <article class="card">
+        <div class="number">03 · DEPARTURE</div>
+        <h3>What settles at the end</h3>
+        <p>Cancellations release capacity before departure, no-shows leave unused seats only at departure, and excess show-ups after overbooking create refunds and denied-boarding costs.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-heading"><div><div class="eyebrow">POLICY PERFORMANCE</div><h2>What trade-offs create the revenue result?</h2><p class="section-copy">Revenue lift is only useful if you can see the operational consequences. The policies face forecast error, groups, cancellations, no-shows, and overbooking on exactly the same realized stream within each replication.</p></div></div>
+    <article class="table-card"><div class="table-scroll"><table class="analyst-table optimizer-table"><thead><tr><th>Policy</th><th>Avg net revenue</th><th>Lift vs Open</th><th>Load factor</th><th>Rejected seats</th><th>Canceled seats</th><th>No-show seats</th><th>Empty seats</th><th>Denied boarding</th><th>Avg sold fare</th><th>Regret</th></tr></thead><tbody id="optimizerPolicyTable"></tbody></table></div></article>
   </section>
 
   <section class="section">
@@ -109,7 +134,7 @@
   </section>
 
   <section class="section">
-    <div class="section-heading"><div><div class="eyebrow">UNCERTAINTY</div><h2>Expected net revenue is a distribution, not one number.</h2><p class="section-copy">Each replication changes the realized demand rates and timing, booking parties, and cancellations while the policies continue to use the same forecast.</p></div></div>
+    <div class="section-heading"><div><div class="eyebrow">UNCERTAINTY</div><h2>Expected net revenue is a distribution, not one number.</h2><p class="section-copy">Each replication changes market demand, class demand mix, booking timing, day-to-day booking intensity, party sizes, cancellations, and no-shows while the policies continue to use the same baseline forecast.</p></div></div>
     <article class="chart-card"><div class="chart-title"><div><strong>Net revenue distribution</strong><br><span>10th–90th percentile range with mean marker</span></div><span>Monte Carlo replications</span></div><div class="trend-wrap"><svg id="optimizerDistribution" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Net revenue distribution by policy"></svg></div></article>
   </section>
 
@@ -121,9 +146,11 @@
   <section class="section">
     <div class="section-heading"><div><div class="eyebrow">METHODS</div><h2>Math is available when you want it.</h2><p class="section-copy">The controls deliberately separate what the policy forecasts from what actually occurs in the simulation.</p></div></div>
     <div class="method-stack">
-      <details class="method-details"><summary>EMSR-b: protection levels under an imperfect forecast</summary><div><p>Fare classes are sorted from highest to lowest fare. Higher-fare forecast demand is aggregated and converted into nested protection levels. The realized simulation then perturbs both demand level and booking timing, so EMSR-b no longer receives the exact stochastic process that generates the requests.</p><p><strong>Guarantee:</strong> EMSR-b remains a heuristic; forecast error, party sizes, cancellations, and overbooking can all move realized performance away from its planning assumptions.</p></div></details>
-      <details class="method-details"><summary>Dynamic programming: exact forecast model, approximate real-world policy</summary><div><p>The DP state remains booking period and remaining booking capacity. Its Bellman recursion is solved exactly for the baseline one-seat forecast model. During simulation, however, realized demand rates and timing are perturbed, requests can contain multiple seats, cancellations can release capacity, and the aircraft can be overbooked. Multi-seat requests are evaluated against the sum of the relevant forecast seat bid prices.</p><p><strong>Guarantee:</strong> the DP is exact only for its internal forecast model. It is intentionally not given the true realized demand process, so the deployed simulation is a robustness experiment rather than a perfect-model test.</p></div></details>
-      <details class="method-details"><summary>Oracle: perfect future information upper bound</summary><div><p>The oracle knows the realized demand and which requests will cancel. It treats cancellations and final seat use with perfect information and relaxes transient booking-limit constraints, so it is an intentionally unattainable upper bound rather than a deployable policy.</p></div></details>
+      <details class="method-details"><summary>Realized demand: correlated forecast error instead of independent noise</summary><div><p>Each replication draws a market-wide demand shock and class-specific demand error. It also shifts booking timing and applies persistent day-level booking noise, so a strong or weak booking period tends to persist rather than producing unrelated spikes every day. These realized probabilities generate the requests; EMSR-b and DP never receive them.</p><p><strong>Interpretation:</strong> the sliders define scenario uncertainty, not statistically calibrated airline forecast errors.</p></div></details>
+      <details class="method-details"><summary>Customer attrition: cancellations and no-shows</summary><div><p>Earlier bookings have more time to cancel, so their event-level cancellation probability is higher than bookings made close to departure. A cancellation releases its seats when it occurs and subtracts the selected refund fraction from net revenue. A no-show remains an active booking until departure, retains its ticket revenue in the current model, and can leave capacity unused if overbooking was insufficient.</p></div></details>
+      <details class="method-details"><summary>EMSR-b: protection levels under an imperfect forecast</summary><div><p>Fare classes are sorted from highest to lowest fare. Higher-fare forecast demand is aggregated and converted into nested protection levels. The realized simulation then perturbs demand level and booking timing and introduces party sizes and attrition, so EMSR-b does not receive the stochastic process that actually generates the requests.</p><p><strong>Guarantee:</strong> EMSR-b remains a heuristic.</p></div></details>
+      <details class="method-details"><summary>Dynamic programming: exact forecast model, approximate real-world policy</summary><div><p>The DP state remains booking period and remaining booking capacity. Its Bellman recursion is solved exactly for the baseline one-seat forecast model. In the realized simulation, requests can contain multiple seats, arrival rates and timing differ from forecast, and cancellations/no-shows alter final capacity usage. Multi-seat requests are evaluated against the sum of the relevant forecast seat bid prices.</p><p><strong>Guarantee:</strong> the DP is exact only for its internal forecast model. Its simulation performance is a robustness experiment, not an optimality claim for the richer realized world.</p></div></details>
+      <details class="method-details"><summary>Oracle: perfect future information upper bound</summary><div><p>The oracle knows the realized requests, which bookings cancel, and which customers no-show. It relaxes transient booking-limit constraints and selects the best show-up parties against physical capacity, so it is intentionally unattainable and used only as a perfect-information upper bound.</p></div></details>
     </div>
   </section>
 </main>
