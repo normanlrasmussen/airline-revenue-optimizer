@@ -136,8 +136,10 @@ def test_zero_radius_robust_dp_matches_nominal_dp():
     )
 
     assert robust.expected_revenue == pytest.approx(nominal.expected_revenue)
-    assert robust.values == pytest.approx(nominal.values)
-    assert robust.bid_prices == pytest.approx(nominal.bid_prices)
+    for robust_row, nominal_row in zip(robust.values, nominal.values):
+        assert robust_row == pytest.approx(nominal_row)
+    for robust_row, nominal_row in zip(robust.bid_prices, nominal.bid_prices):
+        assert robust_row == pytest.approx(nominal_row)
 
 
 def test_robust_expected_value_cannot_exceed_nominal_value():
