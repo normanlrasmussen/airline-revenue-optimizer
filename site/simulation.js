@@ -9,7 +9,10 @@
     [3, 0.03],
     [4, 0.01],
   ];
-  const EXPECTED_PARTY_SIZE = PARTY_SIZE_PROBABILITIES.reduce((sum, [size, probability]) => sum + size * probability, 0);
+  const EXPECTED_PARTY_SIZE = PARTY_SIZE_PROBABILITIES.reduce(
+    (sum, [size, probability]) => sum + size * probability,
+    0
+  );
   const BUMP_COMPENSATION = 400;
 
   function clamp(value, lo, hi) {
@@ -22,6 +25,22 @@
       state = (Math.imul(1664525, state) + 1013904223) >>> 0;
       return state / 4294967296;
     };
+  }
+
+  function normalish(rand) {
+    let total = 0;
+    for (let i = 0; i < 6; i++) total += rand();
+    return (total - 3) / 3;
+  }
+
+  function correlatedDayNoise(rand, amplitude) {
+    if (amplitude <= 0) return Array(DAYS + 1).fill(1);
+
+    let state = 0;
+    return Array.from({ length: DAYS + 1 }, () => {
+      state = 0.82 * state + 0.58 * normalish(rand);
+      return clamp(1 + amplitude * state, 0.55, 1.55);
+    });
   }
 
   function classProfile(name, progress) {
@@ -57,12 +76,16 @@
       const row = {};
       let total = 0;
       for (const fc of classes) {
-        const p = fc.meanDemand <= 0 ? 0 : fc.meanDemand * profiles[fc.name][period] / totals[fc.name];
+        const p = fc.meanDemand <= 0
+          ? 0
+          : fc.meanDemand * profiles[fc.name][period] / totals[fc.name];
         row[fc.name] = p;
         total += p;
       }
       if (total > 1 + 1e-10) {
-        throw new Error(`Forecast demand is too concentrated for the one-request-per-slot DP model (max probability ${total.toFixed(3)}).`);
+        throw new Error(
+          `Forecast demand is too concentrated for the one-request-per-slot DP model (max probability ${total.toFixed(3)}).`
+        );
       }
       return row;
     });
@@ -95,50 +118,84 @@
     const forecastErrorPct = clamp(Number(options.forecastErrorPct ?? 15), 0, 60);
     const timingJitterDays = clamp(Number(options.timingJitterDays ?? 14), 0, 60);
     const error = forecastErrorPct / 100;
+
+    const marketDemandShock = normalish(rand) * error * 0.65;
+    const marketTimingShift = normalish(rand) * timingJitterDays * 0.65;
+    const marketDayNoise = correlatedDayNoise(rand, error * 0.70);
+
     const weights = {};
     const targets = {};
     const perturbations = {};
 
     for (const fc of scenario.classes) {
-      const demandMultiplier = Math.max(0.25, 1 + (2 * rand() - 1) * error);
-      const shiftDays = (2 * rand() - 1) * timingJitterDays;
-      const dayNoise = Array.from({ length: DAYS + 1 }, () =>
-        Math.max(0.20, 1 + (2 * rand() - 1) * Math.max(0.05, error))
+      const classDemandShock = normalish(rand) * error * 0.55;
+      const demandMultiplier = clamp(
+        1 + marketDemandShock + classDemandShock,
+        0.35,
+        1.75
       );
+      const classTimingShift = normalish(rand) * timingJitterDays * 0.55;
+      const shiftDays = clamp(
+        marketTimingShift + classTimingShift,
+        -timingJitterDays,
+        timingJitterDays
+      );
+      const classDayNoise = correlatedDayNoise(rand, error * 0.25);
 
       const classWeights = [];
       for (let period = 0; period < PERIODS; period++) {
         const day = DAYS - Math.floor(period / SLOTS_PER_DAY);
+        const dayIndex = DAYS - day;
         const shiftedProgress = (DAYS - day - shiftDays) / DAYS;
-        classWeights.push(classProfile(fc.name, shiftedProgress) * dayNoise[DAYS - day]);
+        classWeights.push(
+          classProfile(fc.name, shiftedProgress)
+          * marketDayNoise[dayIndex]
+          * classDayNoise[dayIndex]
+        );
       }
+
       weights[fc.name] = classWeights;
-      targets[fc.name] = Math.max(0, fc.meanDemand * demandMultiplier / EXPECTED_PARTY_SIZE);
+      targets[fc.name] = Math.max(
+        0,
+        fc.meanDemand * demandMultiplier / EXPECTED_PARTY_SIZE
+      );
       perturbations[fc.name] = {
         demandMultiplier,
         timingShiftDays: shiftDays,
       };
     }
 
-    const totals = Object.fromEntries(Object.entries(weights).map(([name, values]) => [
-      name,
-      values.reduce((sum, value) => sum + value, 0),
-    ]));
+    const totals = Object.fromEntries(
+      Object.entries(weights).map(([name, values]) => [
+        name,
+        values.reduce((sum, value) => sum + value, 0),
+      ])
+    );
 
     const probabilities = Array.from({ length: PERIODS }, (_, period) => {
       const row = {};
       for (const fc of scenario.classes) {
-        row[fc.name] = targets[fc.name] <= 0 ? 0 : targets[fc.name] * weights[fc.name][period] / totals[fc.name];
+        row[fc.name] = targets[fc.name] <= 0
+          ? 0
+          : targets[fc.name] * weights[fc.name][period] / totals[fc.name];
       }
+
       const total = Object.values(row).reduce((sum, value) => sum + value, 0);
       if (total > 0.98) {
         const scale = 0.98 / total;
-        Object.keys(row).forEach(name => { row[name] *= scale; });
+        Object.keys(row).forEach(name => {
+          row[name] *= scale;
+        });
       }
       return row;
     });
 
-    return { probabilities, perturbations };
+    return {
+      probabilities,
+      perturbations,
+      marketShock: marketDemandShock,
+      marketTimingShift,
+    };
   }
 
   function samplePartySize(rand) {
@@ -155,41 +212,62 @@
     const truthRand = makeRng((Number(seed) ^ 0xA5A5A5A5) >>> 0);
     const realized = buildRealizedProbabilities(scenario, truthRand, options);
 
-    const rand = makeRng(seed);
+    const arrivalRand = makeRng(Number(seed) >>> 0);
+    const partyRand = makeRng((Number(seed) ^ 0xC2B2AE35) >>> 0);
+    const attritionRand = makeRng((Number(seed) ^ 0x27D4EB2F) >>> 0);
+
     const cancellationRate = clamp(Number(options.cancellationRate ?? 8), 0, 50) / 100;
+    const noShowRate = clamp(Number(options.noShowRate ?? 3), 0, 25) / 100;
     const events = [];
 
     for (let period = 0; period < scenario.periods; period++) {
       const probabilities = realized.probabilities[period];
-      const r = rand();
+      const draw = arrivalRand();
       let cumulative = 0;
       let selected = null;
+
       for (const fc of scenario.classes) {
         cumulative += probabilities[fc.name] || 0;
-        if (r < cumulative) {
+        if (draw < cumulative) {
           selected = fc;
           break;
         }
       }
       if (!selected) continue;
 
-      const partySize = samplePartySize(rand);
-      const willCancel = rand() < cancellationRate && period < scenario.periods - 1;
+      const day = DAYS - Math.floor(period / SLOTS_PER_DAY);
+      const partySize = samplePartySize(partyRand);
+
+      const leadFraction = clamp(day / DAYS, 0, 1);
+      const cancelProbability = clamp(
+        cancellationRate * (0.40 + 1.20 * leadFraction),
+        0,
+        0.85
+      );
+      const willCancel = period < scenario.periods - 1 && attritionRand() < cancelProbability;
+
       let cancelPeriod = null;
       if (willCancel) {
         const remaining = scenario.periods - period - 1;
-        cancelPeriod = period + 1 + Math.min(remaining - 1, Math.floor(rand() * remaining));
+        const delayFraction = Math.pow(attritionRand(), 0.55);
+        cancelPeriod = period + 1 + Math.min(
+          remaining - 1,
+          Math.floor(delayFraction * remaining)
+        );
       }
+
+      const willNoShow = !willCancel && attritionRand() < noShowRate;
 
       events.push({
         id: events.length,
         period,
-        day: DAYS - Math.floor(period / SLOTS_PER_DAY),
+        day,
         name: selected.name,
         fare: selected.fare,
         partySize,
         willCancel,
         cancelPeriod,
+        willNoShow,
       });
     }
 
@@ -197,6 +275,8 @@
       events,
       trueProbabilities: realized.probabilities,
       perturbations: realized.perturbations,
+      marketShock: realized.marketShock,
+      marketTimingShift: realized.marketTimingShift,
     };
   }
 
@@ -214,7 +294,10 @@
     if (event.partySize > remaining || remaining <= 0) return false;
     let opportunityCost = 0;
     for (let offset = 0; offset < event.partySize; offset++) {
-      const c = Math.max(1, Math.min(dp.bidPrices[period].length - 1, remaining - offset));
+      const c = Math.max(
+        1,
+        Math.min(dp.bidPrices[period].length - 1, remaining - offset)
+      );
       opportunityCost += Number(dp.bidPrices[period][c] || 0);
     }
     return event.fare * event.partySize + 1e-12 >= opportunityCost;
@@ -228,7 +311,9 @@
 
     for (const event of events) {
       if (event.cancelPeriod == null) continue;
-      if (!cancellationsByPeriod.has(event.cancelPeriod)) cancellationsByPeriod.set(event.cancelPeriod, []);
+      if (!cancellationsByPeriod.has(event.cancelPeriod)) {
+        cancellationsByPeriod.set(event.cancelPeriod, []);
+      }
       cancellationsByPeriod.get(event.cancelPeriod).push(event.id);
     }
 
@@ -240,7 +325,9 @@
     let cancelledSeats = 0;
     let refunds = 0;
     const byClass = {};
-    const history = captureHistory ? [{ period: -1, day: DAYS, revenue: 0, accepted: 0 }] : null;
+    const history = captureHistory
+      ? [{ period: -1, day: DAYS, revenue: 0, accepted: 0 }]
+      : null;
     let eventIndex = 0;
 
     for (let period = 0; period < scenario.periods; period++) {
@@ -258,7 +345,10 @@
       while (eventIndex < events.length && events[eventIndex].period === period) {
         const event = events[eventIndex];
         const remaining = bookingLimit - activeSeats;
-        const shouldAccept = event.partySize <= remaining && acceptFn(event, remaining, period);
+        const shouldAccept =
+          event.partySize <= remaining
+          && acceptFn(event, remaining, period);
+
         if (shouldAccept) {
           active.set(event.id, event);
           activeSeats += event.partySize;
@@ -273,7 +363,10 @@
         eventIndex += 1;
       }
 
-      if (captureHistory && (period % SLOTS_PER_DAY === SLOTS_PER_DAY - 1 || period === scenario.periods - 1)) {
+      if (
+        captureHistory
+        && (period % SLOTS_PER_DAY === SLOTS_PER_DAY - 1 || period === scenario.periods - 1)
+      ) {
         history.push({
           period,
           day: DAYS - Math.floor(period / SLOTS_PER_DAY),
@@ -283,16 +376,24 @@
       }
     }
 
-    const deniedSeats = Math.max(0, activeSeats - scenario.capacity);
-    const boarded = Math.min(activeSeats, scenario.capacity);
+    let noShowSeats = 0;
+    const showFares = [];
+    active.forEach(event => {
+      if (event.willNoShow) {
+        noShowSeats += event.partySize;
+      } else {
+        for (let i = 0; i < event.partySize; i++) showFares.push(event.fare);
+      }
+    });
+
+    const deniedSeats = Math.max(0, showFares.length - scenario.capacity);
+    const boarded = showFares.length - deniedSeats;
 
     if (deniedSeats > 0) {
-      const activeSeatFares = [];
-      active.forEach(event => {
-        for (let i = 0; i < event.partySize; i++) activeSeatFares.push(event.fare);
-      });
-      activeSeatFares.sort((a, b) => a - b);
-      const deniedRefunds = activeSeatFares.slice(0, deniedSeats).reduce((sum, fare) => sum + fare, 0);
+      showFares.sort((a, b) => a - b);
+      const deniedRefunds = showFares
+        .slice(0, deniedSeats)
+        .reduce((sum, fare) => sum + fare, 0);
       refunds += deniedRefunds;
       revenue -= deniedRefunds + deniedSeats * BUMP_COMPENSATION;
     }
@@ -311,6 +412,7 @@
       boarded,
       rejected,
       cancelledSeats,
+      noShowSeats,
       deniedSeats,
       emptySeats,
       loadFactor: scenario.capacity ? boarded / scenario.capacity : 0,
@@ -323,12 +425,28 @@
   function clairvoyantUpperBound(events, scenario, options = {}) {
     const refundFraction = clamp(Number(options.refundRate ?? 70), 0, 100) / 100;
     const cancelled = events.filter(event => event.willCancel);
-    const live = events.filter(event => !event.willCancel);
+    const noShows = events.filter(event => !event.willCancel && event.willNoShow);
+    const live = events.filter(event => !event.willCancel && !event.willNoShow);
 
-    const cancelledGross = cancelled.reduce((sum, event) => sum + event.fare * event.partySize, 0);
+    const cancelledGross = cancelled.reduce(
+      (sum, event) => sum + event.fare * event.partySize,
+      0
+    );
     const cancelledRefunds = cancelledGross * refundFraction;
     const cancelledNet = cancelledGross - cancelledRefunds;
-    const cancelledSeats = cancelled.reduce((sum, event) => sum + event.partySize, 0);
+    const cancelledSeats = cancelled.reduce(
+      (sum, event) => sum + event.partySize,
+      0
+    );
+
+    const noShowGross = noShows.reduce(
+      (sum, event) => sum + event.fare * event.partySize,
+      0
+    );
+    const noShowSeats = noShows.reduce(
+      (sum, event) => sum + event.partySize,
+      0
+    );
 
     const capacity = scenario.capacity;
     const best = Array(capacity + 1).fill(-Infinity);
@@ -348,19 +466,24 @@
     for (let used = 1; used <= capacity; used++) {
       if (best[used] > best[boarded]) boarded = used;
     }
+
     const liveRevenue = Math.max(0, best[boarded]);
-    const accepted = cancelledSeats + boarded;
-    const totalRequested = events.reduce((sum, event) => sum + event.partySize, 0);
-    const grossRevenue = cancelledGross + liveRevenue;
+    const accepted = cancelledSeats + noShowSeats + boarded;
+    const totalRequested = events.reduce(
+      (sum, event) => sum + event.partySize,
+      0
+    );
+    const grossRevenue = cancelledGross + noShowGross + liveRevenue;
 
     return {
-      revenue: cancelledNet + liveRevenue,
+      revenue: cancelledNet + noShowGross + liveRevenue,
       grossRevenue,
       refunds: cancelledRefunds,
       accepted,
       boarded,
       rejected: Math.max(0, totalRequested - accepted),
       cancelledSeats,
+      noShowSeats,
       deniedSeats: 0,
       emptySeats: Math.max(0, capacity - boarded),
       loadFactor: capacity ? boarded / capacity : 0,
@@ -372,21 +495,34 @@
 
   function summarizeRows(rows, clairRows) {
     const n = Math.max(rows.length, 1);
-    const sum = key => rows.reduce((total, row) => total + Number(row[key] || 0), 0);
+    const sum = key => rows.reduce(
+      (total, row) => total + Number(row[key] || 0),
+      0
+    );
     const totalAccepted = sum('accepted');
     const totalGross = sum('grossRevenue');
+
     return {
       averageRevenue: sum('revenue') / n,
       averageAccepted: totalAccepted / n,
       averageBoarded: sum('boarded') / n,
       averageRejected: sum('rejected') / n,
       averageCancelled: sum('cancelledSeats') / n,
+      averageNoShow: sum('noShowSeats') / n,
       averageDenied: sum('deniedSeats') / n,
       averageRefunds: sum('refunds') / n,
       averageEmptySeats: sum('emptySeats') / n,
-      averageLoadFactor: rows.reduce((total, row) => total + row.loadFactor, 0) / n,
+      averageLoadFactor: rows.reduce(
+        (total, row) => total + row.loadFactor,
+        0
+      ) / n,
       averageAcceptedFare: totalAccepted ? totalGross / totalAccepted : 0,
-      averageRegret: clairRows ? clairRows.reduce((total, clair, i) => total + (clair.revenue - rows[i].revenue), 0) / n : 0,
+      averageRegret: clairRows
+        ? clairRows.reduce(
+            (total, clair, i) => total + (clair.revenue - rows[i].revenue),
+            0
+          ) / n
+        : 0,
       revenues: rows.map(row => row.revenue),
     };
   }
@@ -418,6 +554,7 @@
     forecastErrorPct = 15,
     timingJitterDays = 14,
     cancellationRate = 8,
+    noShowRate = 3,
     refundRate = 70,
     overbookPct = 5,
   }) {
@@ -425,25 +562,39 @@
       forecastErrorPct: clamp(Number(forecastErrorPct), 0, 60),
       timingJitterDays: clamp(Number(timingJitterDays), 0, 60),
       cancellationRate: clamp(Number(cancellationRate), 0, 50),
+      noShowRate: clamp(Number(noShowRate), 0, 25),
       refundRate: clamp(Number(refundRate), 0, 100),
       overbookPct: clamp(Number(overbookPct), 0, 30),
     };
 
     const scenario = buildScenario(market, capacity, assumptions);
     const emsr = RM.emsrB(scenario.bookingLimit, scenario.classes);
-    const dp = RM.buildDP(scenario.bookingLimit, scenario.fares, scenario.forecastProbabilities);
+    const dp = RM.buildDP(
+      scenario.bookingLimit,
+      scenario.fares,
+      scenario.forecastProbabilities
+    );
+
     const runs = { open: [], emsr: [], dp: [], clairvoyant: [] };
     let representative = null;
 
     const count = Math.max(1, Math.floor(Number(replications) || 1));
     const baseSeed = Number(seed) >>> 0;
+
     for (let rep = 0; rep < count; rep++) {
       const repSeed = (baseSeed + Math.imul(rep, 0x9e3779b9)) >>> 0;
       const realization = generateRealization(scenario, repSeed, assumptions);
       const events = realization.events;
       const capture = rep === 0;
 
-      const open = runPolicy(events, scenario, () => true, capture, assumptions);
+      const open = runPolicy(
+        events,
+        scenario,
+        () => true,
+        capture,
+        assumptions
+      );
+
       const emsrRun = runPolicy(
         events,
         scenario,
@@ -451,27 +602,39 @@
         capture,
         assumptions
       );
+
       const dpRun = runPolicy(
         events,
         scenario,
-        (event, remaining, period) => dpAcceptGroup(dp, event, remaining, period),
+        (event, remaining, period) => dpAcceptGroup(
+          dp,
+          event,
+          remaining,
+          period
+        ),
         capture,
         assumptions
       );
+
       const clair = clairvoyantUpperBound(events, scenario, assumptions);
 
       runs.open.push(open);
       runs.emsr.push(emsrRun);
       runs.dp.push(dpRun);
       runs.clairvoyant.push(clair);
-      if (capture) representative = {
-        events,
-        perturbations: realization.perturbations,
-        open,
-        emsr: emsrRun,
-        dp: dpRun,
-        clairvoyant: clair,
-      };
+
+      if (capture) {
+        representative = {
+          events,
+          perturbations: realization.perturbations,
+          marketShock: realization.marketShock,
+          marketTimingShift: realization.marketTimingShift,
+          open,
+          emsr: emsrRun,
+          dp: dpRun,
+          clairvoyant: clair,
+        };
+      }
     }
 
     const summaries = {
