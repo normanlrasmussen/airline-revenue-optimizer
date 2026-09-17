@@ -47,6 +47,7 @@ def test_optimizer_has_required_controls_and_engine_scripts():
         "forecastError",
         "timingJitter",
         "cancellationRate",
+        "noShowRate",
         "refundRate",
         "overbookPct",
         "seedInput",
@@ -66,19 +67,31 @@ def test_optimizer_explains_each_policy_and_information_boundary():
     assert "Protects seats using the baseline higher-fare demand forecast" in text
     assert "Uses baseline period-by-period demand estimates" in text
     assert "Oracle upper bound:" in text
-    assert "sees the realized future demand and cancellations" in text
+    assert "realized demand, cancellations, and no-shows" in text
     assert "intentionally unattainable" in text
 
 
 def test_optimizer_surfaces_realism_assumptions():
     text = (SITE / "optimizer.html").read_text(encoding="utf-8")
-    assert "Demand-rate forecast error" in text
-    assert "Booking-timing perturbation" in text
-    assert "Cancellation probability" in text
+    assert "Demand uncertainty" in text
+    assert "Booking-timing uncertainty" in text
+    assert "Cancellation base rate" in text
+    assert "No-show probability" in text
     assert "Refund if cancelled" in text
     assert "Overbooking limit" in text
     assert "84% request 1 seat" in text
     assert "fixed $400 modeled compensation cost" in text
+
+
+def test_optimizer_explains_forecast_vs_realized_simulation():
+    soup = html("optimizer.html")
+    text = soup.get_text(" ", strip=True)
+    assert "SIMULATION MODEL" in text
+    assert "What the policy sees" in text
+    assert "What changes each run" in text
+    assert "What settles at the end" in text
+    assert "shared market-demand shock" in text
+    assert "smooth day-to-day booking bursts" in text
 
 
 def test_legacy_simulator_url_redirects_to_optimizer():
