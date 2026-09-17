@@ -264,7 +264,7 @@ def update_route_stats(stats: dict, df: pd.DataFrame) -> None:
         stats[(row.origin, row.destination)]["months"].add((int(row.year), int(row.month)))
 
 
-def write_route_summary(stats: dict, path: Path, top_n: int = 500) -> None:
+def write_route_summary(stats: dict, path: Path, top_n: int = 100) -> None:
     rows = []
     for (origin, destination), route in stats.items():
         passengers = route["passengers"]
@@ -325,7 +325,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--input", type=Path, nargs="+", required=True)
     parser.add_argument("--output", type=Path, default=Path("data/processed/markets.parquet"))
     parser.add_argument("--site-summary", type=Path, default=Path("site/data/market_summary.json"))
-    parser.add_argument("--top-routes", type=int, default=500)
+    parser.add_argument("--top-routes", type=int, default=100)
     parser.add_argument("--chunksize", type=int, default=100_000)
     return parser.parse_args()
 
