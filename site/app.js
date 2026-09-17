@@ -11,7 +11,9 @@ function policyLabel(key) {
 }
 
 function selectedPolicies() {
-  const selected = [...document.querySelectorAll('[data-policy]')].filter(input => input.checked).map(input => input.dataset.policy);
+  const selected = [...document.querySelectorAll('[data-policy]')]
+    .filter(input => input.checked)
+    .map(input => input.dataset.policy);
   return selected.includes('open') ? selected : ['open', ...selected];
 }
 
@@ -31,7 +33,13 @@ function liftVsOpen(summary, open) {
 
 function bestSelectedPolicy(result) {
   const policies = selectedPolicies();
-  return policies.reduce((best, key) => result.summaries[key].averageRevenue > result.summaries[best].averageRevenue ? key : best, policies[0]);
+  return policies.reduce(
+    (best, key) =>
+      result.summaries[key].averageRevenue > result.summaries[best].averageRevenue
+        ? key
+        : best,
+    policies[0]
+  );
 }
 
 function renderDecision(result) {
@@ -43,24 +51,32 @@ function renderDecision(result) {
   const regret = oracle.averageRevenue - bestSummary.averageRevenue;
 
   document.getElementById('bestPolicyName').textContent = policyLabel(best);
-  document.getElementById('bestPolicyLift').textContent = `${lift >= 0 ? '+' : ''}${percent.format(lift)}`;
-  document.getElementById('bestRevenue').textContent = money.format(bestSummary.averageRevenue);
+  document.getElementById('bestPolicyLift').textContent =
+    `${lift >= 0 ? '+' : ''}${percent.format(lift)}`;
+  document.getElementById('bestRevenue').textContent =
+    money.format(bestSummary.averageRevenue);
   document.getElementById('clairvoyantGap').textContent = money.format(regret);
-  document.getElementById('bestLoad').textContent = percent.format(bestSummary.averageLoadFactor);
-  document.getElementById('bestAcceptedFare').textContent = money.format(bestSummary.averageAcceptedFare);
+  document.getElementById('bestLoad').textContent =
+    percent.format(bestSummary.averageLoadFactor);
+  document.getElementById('bestAcceptedFare').textContent =
+    money.format(bestSummary.averageAcceptedFare);
   document.getElementById('bestPolicySummary').textContent = best === 'open'
-    ? 'Under these noisy demand and cancellation realizations, protecting capacity did not improve average net revenue over Open Sales.'
+    ? 'Under these noisy booking, cancellation, and no-show realizations, protecting capacity did not improve average net revenue over Open Sales.'
     : `${policyLabel(best)} earns ${money.format(bestSummary.averageRevenue - open.averageRevenue)} more net revenue than Open Sales on average across the same realized booking streams.`;
 
   const scale = Number(document.getElementById('demandScale').value || 100);
   const a = result.assumptions;
   document.getElementById('experimentLabel').textContent =
-    `${result.replications.toLocaleString()} runs · ${scale}% demand · ±${a.forecastErrorPct}% rate error · ±${a.timingJitterDays}d timing`;
+    `${result.replications.toLocaleString()} runs · ${scale}% demand · ${a.forecastErrorPct}% demand uncertainty · ±${a.timingJitterDays}d timing`;
 }
 
 function renderRevenueBars(result) {
   const policies = [...selectedPolicies(), 'clairvoyant'];
-  const max = Math.max(...policies.map(key => result.summaries[key].averageRevenue), 1);
+  const max = Math.max(
+    ...policies.map(key => result.summaries[key].averageRevenue),
+    1
+  );
+
   document.getElementById('policyRevenueBars').innerHTML = policies.map(key => {
     const s = result.summaries[key];
     return `<div class="bar-row"><span class="bar-label">${policyLabel(key)}</span><span class="bar-track"><span class="bar-fill ${key === 'clairvoyant' ? 'modeled-demand-fill' : ''}" style="display:block;width:${Math.max(0, 100 * s.averageRevenue / max)}%"></span></span><span class="bar-value">${money.format(s.averageRevenue)}</span></div>`;
@@ -70,6 +86,7 @@ function renderRevenueBars(result) {
 function renderPolicyTable(result) {
   const policies = [...selectedPolicies(), 'clairvoyant'];
   const open = result.summaries.open;
+
   document.getElementById('optimizerPolicyTable').innerHTML = policies.map(key => {
     const s = result.summaries[key];
     const lift = liftVsOpen(s, open);
@@ -80,6 +97,7 @@ function renderPolicyTable(result) {
       <td>${percent.format(s.averageLoadFactor)}</td>
       <td>${oneDecimal.format(s.averageRejected)}</td>
       <td>${oneDecimal.format(s.averageCancelled)}</td>
+      <td>${oneDecimal.format(s.averageNoShow)}</td>
       <td>${oneDecimal.format(s.averageEmptySeats)}</td>
       <td>${oneDecimal.format(s.averageDenied)}</td>
       <td>${money.format(s.averageAcceptedFare)}</td>
@@ -92,6 +110,7 @@ function renderMechanics(result) {
   const protection = result.emsr.protection;
   document.getElementById('openBookingLimit').textContent =
     `${result.scenario.bookingLimit} bookings (${result.scenario.bookingLimit - result.scenario.capacity >= 0 ? '+' : ''}${result.scenario.bookingLimit - result.scenario.capacity} vs seats)`;
+
   document.getElementById('emsrMechanics').innerHTML = ['Saver', 'Main', 'Flex']
     .map(name => `<div><span>${name} request</span><strong>protect ${protection[name] ?? 0} seats</strong></div>`)
     .join('');
@@ -99,10 +118,17 @@ function renderMechanics(result) {
   const capacity = result.scenario.bookingLimit;
   const seats = Math.min(25, capacity);
   const checkpoints = [180, 30, 7].map(day => {
-    const period = Math.max(0, Math.min(result.scenario.periods - 1, (SIM.DAYS - day) * SIM.SLOTS_PER_DAY));
+    const period = Math.max(
+      0,
+      Math.min(
+        result.scenario.periods - 1,
+        (SIM.DAYS - day) * SIM.SLOTS_PER_DAY
+      )
+    );
     const bid = result.dp.bidPrices[period][seats] || 0;
     return { day, bid };
   });
+
   document.getElementById('dpMechanics').innerHTML = checkpoints
     .map(row => `<div><span>D-${row.day} · ${seats} booking spaces left</span><strong>${money.format(row.bid)} seat value</strong></div>`)
     .join('');
@@ -114,14 +140,17 @@ function renderDistribution(result) {
   const min = Math.min(...policies.map(key => summaries[key].p10));
   const max = Math.max(...policies.map(key => summaries[key].p90));
   const W = 900, H = 330, L = 175, R = 35, T = 28, B = 54;
-  const x = value => L + (value - min) / Math.max(max - min, 1) * (W - L - R);
+  const x = value =>
+    L + (value - min) / Math.max(max - min, 1) * (W - L - R);
   const rowGap = (H - T - B - 30) / Math.max(policies.length - 1, 1);
+
   let html = '';
   for (let i = 0; i <= 4; i++) {
     const value = min + i * (max - min) / 4;
     const xx = x(value);
     html += `<line class="scatter-grid" x1="${xx}" y1="${T}" x2="${xx}" y2="${H - B}"></line><text class="scatter-label" x="${xx}" y="${H - 20}" text-anchor="middle">${money.format(value)}</text>`;
   }
+
   policies.forEach((key, i) => {
     const y = T + 18 + i * rowGap;
     const s = summaries[key];
@@ -129,24 +158,40 @@ function renderDistribution(result) {
     html += `<line x1="${x(s.p10)}" y1="${y}" x2="${x(s.p90)}" y2="${y}" stroke="#1f7a8c" stroke-width="7" stroke-linecap="round" ${key === 'clairvoyant' ? 'stroke-dasharray="6 5"' : ''}></line>`;
     html += `<circle cx="${x(s.averageRevenue)}" cy="${y}" r="7" fill="#c7922b" stroke="white" stroke-width="2"><title>Mean ${money.format(s.averageRevenue)} · P10 ${money.format(s.p10)} · P90 ${money.format(s.p90)}</title></circle>`;
   });
+
   document.getElementById('optimizerDistribution').innerHTML = html;
 }
 
 function renderRepresentative(result) {
   const policies = selectedPolicies();
-  const histories = Object.fromEntries(policies.map(key => [key, result.representative[key].history || []]));
-  const allRevenue = Object.values(histories).flatMap(rows => rows.map(row => row.revenue));
+  const histories = Object.fromEntries(
+    policies.map(key => [key, result.representative[key].history || []])
+  );
+  const allRevenue = Object.values(histories)
+    .flatMap(rows => rows.map(row => row.revenue));
   const minRevenue = Math.min(0, ...allRevenue);
   const maxRevenue = Math.max(1, ...allRevenue);
   const W = 900, H = 330, L = 72, R = 34, T = 58, B = 56;
-  const x = row => L + (SIM.DAYS - row.day) / SIM.DAYS * (W - L - R);
-  const y = value => H - B - (value - minRevenue) / Math.max(maxRevenue - minRevenue, 1) * (H - T - B);
-  const lineStyle = { open: ['#52606d', '0'], emsr: ['#1f7a8c', '0'], dp: ['#c7922b', '0'] };
-  let html = '';
+  const x = row =>
+    L + (SIM.DAYS - row.day) / SIM.DAYS * (W - L - R);
+  const y = value =>
+    H - B - (value - minRevenue) / Math.max(maxRevenue - minRevenue, 1) * (H - T - B);
+  const lineStyle = {
+    open: ['#52606d', '0'],
+    emsr: ['#1f7a8c', '0'],
+    dp: ['#c7922b', '0'],
+  };
 
-  const legendItems = policies.map(key => ({ key, label: policyLabel(key), width: policyLabel(key).length * 6.5 + 32 }));
-  const legendWidth = legendItems.reduce((sum, item) => sum + item.width, 0) + 16;
+  let html = '';
+  const legendItems = policies.map(key => ({
+    key,
+    label: policyLabel(key),
+    width: policyLabel(key).length * 6.5 + 32,
+  }));
+  const legendWidth =
+    legendItems.reduce((sum, item) => sum + item.width, 0) + 16;
   const legendX = Math.max(L, W - R - legendWidth);
+
   html += `<g aria-label="Policy legend"><rect class="svg-legend-bg" x="${legendX}" y="10" width="${legendWidth}" height="32" rx="8"></rect>`;
   let itemX = legendX + 10;
   legendItems.forEach(item => {
@@ -162,6 +207,7 @@ function renderRepresentative(result) {
     const value = maxRevenue - i * (maxRevenue - minRevenue) / 4;
     html += `<line class="scatter-grid" x1="${L}" y1="${yy}" x2="${W - R}" y2="${yy}"></line><text class="scatter-label" x="5" y="${yy + 4}">${money.format(value)}</text>`;
   }
+
   html += `<text class="scatter-label" x="${L}" y="${H - 20}">D-180</text><text class="scatter-label" x="${W - R}" y="${H - 20}" text-anchor="end">Departure</text>`;
 
   policies.forEach(key => {
@@ -171,6 +217,7 @@ function renderRepresentative(result) {
     const finalRevenue = rows[rows.length - 1].revenue;
     html += `<polyline points="${rows.map(row => `${x(row)},${y(row.revenue)}`).join(' ')}" fill="none" stroke="${stroke}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${dash}"><title>${policyLabel(key)} · final net revenue ${money.format(finalRevenue)}</title></polyline>`;
   });
+
   document.getElementById('optimizerRepresentative').innerHTML = html;
 }
 
@@ -182,15 +229,35 @@ function sliderNumber(id, fallback) {
 function runOptimization() {
   const button = document.getElementById('optimizeButton');
   const status = document.getElementById('optimizerStatus');
+
   button.disabled = true;
   status.classList.remove('ready');
   status.innerHTML = '<i></i> Running policy experiment';
 
   try {
     const market = scaledMarket();
-    const capacity = Math.max(1, Math.floor(Number(document.getElementById('capacityInput').value || market.capacity || 180)));
-    const replications = Math.min(5000, Math.max(50, Math.floor(Number(document.getElementById('replicationsInput').value || 500))));
-    const seed = Math.max(1, Math.floor(Number(document.getElementById('seedInput').value || 20260912)));
+    const capacity = Math.max(
+      1,
+      Math.floor(
+        Number(document.getElementById('capacityInput').value || market.capacity || 180)
+      )
+    );
+    const replications = Math.min(
+      5000,
+      Math.max(
+        50,
+        Math.floor(
+          Number(document.getElementById('replicationsInput').value || 500)
+        )
+      )
+    );
+    const seed = Math.max(
+      1,
+      Math.floor(
+        Number(document.getElementById('seedInput').value || 20260912)
+      )
+    );
+
     const result = SIM.runExperiment({
       market,
       capacity,
@@ -199,9 +266,11 @@ function runOptimization() {
       forecastErrorPct: sliderNumber('forecastError', 15),
       timingJitterDays: sliderNumber('timingJitter', 14),
       cancellationRate: sliderNumber('cancellationRate', 8),
+      noShowRate: sliderNumber('noShowRate', 3),
       refundRate: sliderNumber('refundRate', 70),
       overbookPct: sliderNumber('overbookPct', 5),
     });
+
     state.result = result;
     renderDecision(result);
     renderRevenueBars(result);
@@ -209,8 +278,10 @@ function runOptimization() {
     renderMechanics(result);
     renderDistribution(result);
     renderRepresentative(result);
+
     status.classList.add('ready');
-    status.innerHTML = `<i></i> ${replications.toLocaleString()} seeded replications complete`;
+    status.innerHTML =
+      `<i></i> ${replications.toLocaleString()} seeded replications complete`;
   } catch (error) {
     console.error(error);
     status.innerHTML = `<i></i> ${error.message}`;
@@ -221,25 +292,42 @@ function runOptimization() {
 
 function updateMarket(index) {
   state.selected = state.markets[index];
-  document.getElementById('capacityInput').value = state.selected.capacity || 180;
-  history.replaceState(null, '', `optimizer.html?route=${encodeURIComponent(AY.routeKey(state.selected))}`);
+  document.getElementById('capacityInput').value =
+    state.selected.capacity || 180;
+  history.replaceState(
+    null,
+    '',
+    `optimizer.html?route=${encodeURIComponent(AY.routeKey(state.selected))}`
+  );
 }
 
 function defaultIndex(markets) {
   const requested = new URLSearchParams(window.location.search).get('route');
   if (requested) {
-    const normalized = requested.toUpperCase().replace(/→/g, '-').replace(/\s+/g, '');
+    const normalized = requested
+      .toUpperCase()
+      .replace(/→/g, '-')
+      .replace(/\s+/g, '');
     const found = markets.findIndex(m => AY.routeKey(m) === normalized);
     if (found >= 0) return found;
   }
+
   if (!markets.length) return 0;
-  return markets.reduce((bestIndex, market, index) => market.revenueProxy > markets[bestIndex].revenueProxy ? index : bestIndex, 0);
+  return markets.reduce(
+    (bestIndex, market, index) =>
+      market.revenueProxy > markets[bestIndex].revenueProxy
+        ? index
+        : bestIndex,
+    0
+  );
 }
 
 function bindRange(inputId, outputId, formatter) {
   const input = document.getElementById(inputId);
   const output = document.getElementById(outputId);
-  const update = () => { output.textContent = formatter(Number(input.value)); };
+  const update = () => {
+    output.textContent = formatter(Number(input.value));
+  };
   input.addEventListener('input', update);
   update();
 }
@@ -247,22 +335,38 @@ function bindRange(inputId, outputId, formatter) {
 async function init() {
   const loaded = await AY.loadMarkets();
   state.markets = loaded.markets;
+
   const select = document.getElementById('routeSelect');
-  select.innerHTML = state.markets.map((m, i) => `<option value="${i}">${m.route || `${m.origin} → ${m.destination}`}</option>`).join('');
+  select.innerHTML = state.markets.map(
+    (m, i) => `<option value="${i}">${m.route || `${m.origin} → ${m.destination}`}</option>`
+  ).join('');
+
   const index = defaultIndex(state.markets);
   select.value = String(index);
   updateMarket(index);
 
-  select.addEventListener('change', () => updateMarket(Number(select.value)));
+  select.addEventListener('change', () =>
+    updateMarket(Number(select.value))
+  );
+
   bindRange('demandScale', 'demandScaleValue', value => `${value}%`);
-  bindRange('forecastError', 'forecastErrorValue', value => `±${value}%`);
+  bindRange('forecastError', 'forecastErrorValue', value => `${value}%`);
   bindRange('timingJitter', 'timingJitterValue', value => `±${value} days`);
   bindRange('cancellationRate', 'cancellationRateValue', value => `${value}%`);
+  bindRange('noShowRate', 'noShowRateValue', value => `${value}%`);
   bindRange('refundRate', 'refundRateValue', value => `${value}%`);
   bindRange('overbookPct', 'overbookPctValue', value => `${value}%`);
 
-  document.getElementById('optimizeButton').addEventListener('click', runOptimization);
-  document.querySelectorAll('[data-policy]').forEach(input => input.addEventListener('change', () => state.result && runOptimization()));
+  document.getElementById('optimizeButton')
+    .addEventListener('click', runOptimization);
+
+  document.querySelectorAll('[data-policy]').forEach(input =>
+    input.addEventListener(
+      'change',
+      () => state.result && runOptimization()
+    )
+  );
+
   runOptimization();
 }
 
