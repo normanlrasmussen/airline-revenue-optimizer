@@ -54,7 +54,8 @@
 .optimizer-kpis { grid-template-columns: repeat(4, 1fr); }
 .optimizer-kpis .kpi-card strong { font-size: 23px; }
 .optimizer-revenue-card { min-height: 235px; }
-.optimizer-table { min-width: 1180px; }
+.optimizer-table { min-width: 1320px; }
+.simulation-model-grid .card { min-height: 215px; }
 .mechanics-grid .card { min-height: 270px; }
 .mechanic-value, .mechanics-list > div {
   display: flex;
