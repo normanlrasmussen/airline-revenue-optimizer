@@ -127,3 +127,11 @@
 
   window.AeroYieldRM = { normalInv, emsrB, emsrAccept, buildDP, clairvoyant };
 })();
+
+window.addEventListener('load', () => {
+  if (!document.getElementById('optimizeButton')) return;
+  const script = document.createElement('script');
+  script.src = 'neural_policy.js';
+  script.async = true;
+  document.body.appendChild(script);
+});
