@@ -17,7 +17,7 @@ def test_primary_navigation_is_consistent():
     for name in PRIMARY_PAGES:
         path = SITE / name
         soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
-        nav = soup.find("nav", attrs={"aria-label": "Primary navigation"})
+        nav = soup.find("nav", attrs={"aria-label": "Primary navigation")
         assert nav is not None, path.name
         labels = [a.get_text(" ", strip=True) for a in nav.find_all("a")]
         assert labels == EXPECTED_NAV, path.name
@@ -87,7 +87,7 @@ def test_optimizer_explains_forecast_vs_realized_simulation():
     soup = html("optimizer.html")
     text = soup.get_text(" ", strip=True)
     assert "SIMULATION MODEL" in text
-    assert "What the policy sees" in text
+    assert "What a policy may know" in text
     assert "What changes each run" in text
     assert "What settles at the end" in text
     assert "shared market-demand shock" in text
