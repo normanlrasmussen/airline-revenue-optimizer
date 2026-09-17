@@ -17,7 +17,7 @@ def test_primary_navigation_is_consistent():
     for name in PRIMARY_PAGES:
         path = SITE / name
         soup = BeautifulSoup(path.read_text(encoding="utf-8"), "html.parser")
-        nav = soup.find("nav", attrs={"aria-label": "Primary navigation")
+        nav = soup.find("nav", attrs={"aria-label": "Primary navigation"})
         assert nav is not None, path.name
         labels = [a.get_text(" ", strip=True) for a in nav.find_all("a")]
         assert labels == EXPECTED_NAV, path.name
