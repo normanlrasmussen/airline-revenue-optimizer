@@ -23,28 +23,28 @@
     <div>
       <div class="eyebrow">AIRLINE REVENUE MANAGEMENT</div>
       <h1>Which bookings should an airline accept?</h1>
-      <p class="lead">AeroYield uses U.S. airline market data, simulated booking demand, and optimization to test how seat-control decisions change flight revenue. The core trade-off is simple: sell a seat now, or save it for a customer who may pay more later.</p>
+      <p class="lead">AeroYield is an operations-research portfolio project that combines U.S. airline market data with simulated booking demand to compare seat-control policies. The core decision is simple: sell a seat now, or protect it for a customer who may pay more later.</p>
       <div class="hero-actions">
-        <a class="button primary" href="market.html">See the business problem</a>
-        <a class="button secondary" href="optimizer.html">Run the optimizer</a>
+        <a class="button primary" href="optimizer.html">Run the optimizer</a>
+        <a class="button secondary" href="market.html">Understand the problem</a>
       </div>
     </div>
     <div class="hero-panel">
       <div class="panel-label">THE DECISION</div>
       <div class="big-number">1 seat</div>
-      <div class="panel-sub">Every booking consumes inventory that cannot be sold again.</div>
+      <div class="panel-sub">Every accepted booking uses inventory that cannot be sold again.</div>
       <div class="mini-grid">
         <div><span>Data</span><strong>Fares + passengers</strong></div>
         <div><span>Uncertainty</span><strong>Future bookings</strong></div>
         <div><span>Decision</span><strong>Accept or protect</strong></div>
-        <div><span>Goal</span><strong>Increase revenue</strong></div>
+        <div><span>Goal</span><strong>Increase net revenue</strong></div>
       </div>
     </div>
   </section>
 
   <section class="section compact">
     <div class="callout">
-      <strong>Technical scope:</strong> public U.S. DOT DB1C market data, a Python data pipeline, Monte Carlo booking simulation, and seat-control methods including EMSR-b, finite-horizon dynamic programming, deterministic LP bid prices, Bayesian adaptation, distributionally robust optimization, and an optional locally trained neural policy. <a class="card-link" href="https://github.com/normanlrasmussen/airline-revenue-optimizer" target="_blank" rel="noopener">View source →</a>
+      <strong>Project scope:</strong> public U.S. DOT DB1C market data, a Python data pipeline, Monte Carlo booking simulation, and multiple revenue-management policies ranging from EMSR-b and dynamic programming to LP, adaptive, robust, and learned methods. Observed market data is kept separate from modeled booking behavior. <a class="card-link" href="https://github.com/normanlrasmussen/airline-revenue-optimizer" target="_blank" rel="noopener">View source →</a>
     </div>
   </section>
 
@@ -54,22 +54,22 @@
         <div class="eyebrow">HOW THE PROJECT WORKS</div>
         <h2>Data → simulation → decision → revenue.</h2>
       </div>
-      <div class="status-badge ready"><i></i> DB1C market data + modeled booking demand</div>
+      <div class="status-badge ready"><i></i> Observed market data + modeled bookings</div>
     </div>
     <div class="card-grid">
       <article class="card feature">
-        <div class="number">01</div><h3>Understand the problem</h3>
-        <p>See why an airline cannot judge a booking only by the fare offered today.</p>
+        <div class="number">01</div><h3>Frame the business problem</h3>
+        <p>Understand why accepting every available booking can reduce total flight revenue.</p>
         <a class="card-link" href="market.html">Read the problem →</a>
       </article>
       <article class="card">
-        <div class="number">02</div><h3>Explore the market</h3>
-        <p>Use observed U.S. DOT fares, passenger volume, route trends, and carrier context to understand each market.</p>
+        <div class="number">02</div><h3>Explore real market data</h3>
+        <p>Compare observed U.S. DOT fares, passenger volume, route trends, yield, and carrier context.</p>
         <a class="card-link" href="data.html">Explore market data →</a>
       </article>
       <article class="card">
-        <div class="number">03</div><h3>Optimize the decision</h3>
-        <p>Compare heuristic, optimization, adaptive, robust, and learned policies on the same simulated booking streams.</p>
+        <div class="number">03</div><h3>Compare decision policies</h3>
+        <p>Test heuristic, optimization, adaptive, robust, and learned policies on the same simulated booking streams.</p>
         <a class="card-link" href="optimizer.html">Open revenue optimizer →</a>
       </article>
     </div>
