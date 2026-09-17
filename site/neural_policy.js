@@ -22,6 +22,12 @@
     'is_flex',
   ];
 
+  const money = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  });
+
   let model = null;
   let wrapped = false;
   let originalRunExperiment = null;
@@ -201,7 +207,7 @@
     return result;
   }
 
-  function install() {
+  function installExperimentWrapper() {
     if (wrapped || !model) return;
     originalRunExperiment = SIM.runExperiment.bind(SIM);
     SIM.runExperiment = options => augmentExperiment(originalRunExperiment(options));
@@ -213,12 +219,120 @@
       const response = await fetch(url, { cache: 'no-store' });
       if (!response.ok) return false;
       model = validateModel(await response.json());
-      install();
+      installExperimentWrapper();
       return true;
     } catch (error) {
       console.info('Neural policy is unavailable:', error.message);
       model = null;
       return false;
+    }
+  }
+
+  function patchPolicyLabel() {
+    if (typeof window.policyLabel !== 'function' || window.policyLabel.__nnPatched) return;
+    const original = window.policyLabel;
+    const patched = key => key === 'nn' ? 'Neural Network' : original(key);
+    patched.__nnPatched = true;
+    window.policyLabel = patched;
+  }
+
+  function patchRepresentativeRenderer() {
+    if (typeof window.renderRepresentative !== 'function') return;
+    window.renderRepresentative = result => {
+      const policies = window.selectedPolicies();
+      const histories = Object.fromEntries(
+        policies.map(key => [key, result.representative[key].history || []])
+      );
+      const allRevenue = Object.values(histories)
+        .flatMap(rows => rows.map(row => row.revenue));
+      const minRevenue = Math.min(0, ...allRevenue);
+      const maxRevenue = Math.max(1, ...allRevenue);
+      const W = 900, H = 330, L = 72, R = 34, T = 58, B = 56;
+      const x = row => L + (SIM.DAYS - row.day) / SIM.DAYS * (W - L - R);
+      const y = value => H - B - (value - minRevenue) / Math.max(maxRevenue - minRevenue, 1) * (H - T - B);
+      const lineStyle = {
+        open: ['#52606d', '0'],
+        emsr: ['#1f7a8c', '0'],
+        dp: ['#c7922b', '0'],
+        nn: ['#6d4c8f', '0'],
+      };
+
+      let html = '';
+      const legendItems = policies.map(key => ({
+        key,
+        label: window.policyLabel(key),
+        width: window.policyLabel(key).length * 6.5 + 32,
+      }));
+      const legendWidth = legendItems.reduce((sum, item) => sum + item.width, 0) + 16;
+      const legendX = Math.max(L, W - R - legendWidth);
+
+      html += `<g aria-label="Policy legend"><rect class="svg-legend-bg" x="${legendX}" y="10" width="${legendWidth}" height="32" rx="8"></rect>`;
+      let itemX = legendX + 10;
+      legendItems.forEach(item => {
+        const [stroke] = lineStyle[item.key];
+        html += `<line x1="${itemX}" y1="26" x2="${itemX + 18}" y2="26" stroke="${stroke}" stroke-width="4" stroke-linecap="round"></line>`;
+        html += `<text class="svg-legend-text" x="${itemX + 24}" y="30">${item.label}</text>`;
+        itemX += item.width;
+      });
+      html += '</g>';
+
+      for (let i = 0; i <= 4; i++) {
+        const yy = T + i * (H - T - B) / 4;
+        const value = maxRevenue - i * (maxRevenue - minRevenue) / 4;
+        html += `<line class="scatter-grid" x1="${L}" y1="${yy}" x2="${W - R}" y2="${yy}"></line><text class="scatter-label" x="5" y="${yy + 4}">${money.format(value)}</text>`;
+      }
+
+      html += `<text class="scatter-label" x="${L}" y="${H - 20}">D-180</text><text class="scatter-label" x="${W - R}" y="${H - 20}" text-anchor="end">Departure</text>`;
+
+      policies.forEach(key => {
+        const rows = histories[key];
+        if (!rows.length) return;
+        const [stroke, dash] = lineStyle[key];
+        const finalRevenue = rows[rows.length - 1].revenue;
+        html += `<polyline points="${rows.map(row => `${x(row)},${y(row.revenue)}`).join(' ')}" fill="none" stroke="${stroke}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${dash}"><title>${window.policyLabel(key)} · final net revenue ${money.format(finalRevenue)}</title></polyline>`;
+      });
+
+      document.getElementById('optimizerRepresentative').innerHTML = html;
+    };
+  }
+
+  function insertPolicyControl(available) {
+    if (document.querySelector('[data-policy="nn"]')) return;
+    const dpInput = document.querySelector('[data-policy="dp"]');
+    const dpLabel = dpInput?.closest('label');
+    if (!dpLabel) return;
+
+    const label = document.createElement('label');
+    label.className = 'policy-check';
+    const metric = model?.metrics?.holdoutBalancedAccuracy;
+    const metricText = Number.isFinite(Number(metric))
+      ? ` Holdout balanced accuracy: ${(100 * Number(metric)).toFixed(1)}%.`
+      : '';
+    label.innerHTML = available
+      ? `<input type="checkbox" data-policy="nn" checked /><span><strong>Neural Network</strong><small>Locally trained to imitate forecast-DP decisions using only booking-time state and baseline forecast features.${metricText}</small></span>`
+      : '<input type="checkbox" data-policy="nn" disabled /><span><strong>Neural Network</strong><small>Train it locally with <code>python neural_network/train_policy.py</code> to create <code>site/data/nn_policy.json</code>.</small></span>';
+    dpLabel.insertAdjacentElement('afterend', label);
+
+    const input = label.querySelector('input');
+    if (available) {
+      input.addEventListener('change', () => {
+        if (typeof window.runOptimization === 'function') window.runOptimization();
+      });
+    }
+  }
+
+  async function bootstrap() {
+    patchPolicyLabel();
+    patchRepresentativeRenderer();
+    const available = await loadModel();
+    insertPolicyControl(available);
+
+    if (
+      available
+      && typeof window.runOptimization === 'function'
+      && document.getElementById('bestPolicyName')?.textContent !== '—'
+    ) {
+      window.runOptimization();
     }
   }
 
@@ -229,5 +343,8 @@
     metadata: () => model,
     featureVector,
     predictProbability,
+    bootstrap,
   };
+
+  bootstrap().catch(error => console.error('Could not initialize neural policy:', error));
 })();
