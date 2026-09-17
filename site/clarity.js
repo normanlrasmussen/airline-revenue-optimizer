@@ -1,37 +1,39 @@
 (() => {
-  const OPTIONAL_POLICIES = new Set(['nn', 'lp', 'bayes', 'dro']);
+  const DEFAULT_ON_POLICIES = new Set(['emsr', 'dp', 'nn', 'lp', 'bayes', 'dro']);
   let rerunTimer = null;
 
-  function insertAdvancedLabel() {
-    if (document.getElementById('advancedPoliciesLabel')) return;
+  function updatePolicyCopy() {
+    const policyHeading = [...document.querySelectorAll('.optimizer-sidebar .policy-label')]
+      .find(node => node.textContent.trim() === 'Core policies');
+    if (policyHeading) policyHeading.textContent = 'Seat-control policies';
 
-    const firstOptional = [...document.querySelectorAll('[data-policy]')]
-      .find(input => OPTIONAL_POLICIES.has(input.dataset.policy));
-    const firstLabel = firstOptional?.closest('label');
-    if (!firstLabel) return;
+    const note = [...document.querySelectorAll('.optimizer-sidebar .fine-print')]
+      .find(node => node.textContent.includes('Start with these three'));
+    if (note) {
+      note.textContent = 'All available policies are enabled by default so the experiment compares the full method set. Uncheck any policy to isolate a smaller comparison.';
+    }
 
-    const heading = document.createElement('div');
-    heading.id = 'advancedPoliciesLabel';
-    heading.className = 'field-label policy-label';
-    heading.textContent = 'Advanced / learned policies (optional)';
-    firstLabel.insertAdjacentElement('beforebegin', heading);
+    const heroLead = document.querySelector('.page-hero .lead');
+    if (heroLead && heroLead.textContent.includes('optional LP, Bayesian, robust, and neural policies')) {
+      heroLead.textContent = 'Choose a route and operating assumptions, then compare seat-control policies on the same uncertain booking streams. AeroYield evaluates Open Sales, EMSR-b, finite-horizon dynamic programming, deterministic LP bid prices, Bayesian adaptive DP, distributionally robust DP, and a trained neural policy. No deployable policy sees the realized future. Only the oracle benchmark does.';
+    }
   }
 
-  function applyPortfolioDefaults() {
+  function applyPolicyDefaults() {
     let changed = false;
 
     document.querySelectorAll('[data-policy]').forEach(input => {
-      if (!OPTIONAL_POLICIES.has(input.dataset.policy)) return;
-      if (input.dataset.portfolioDefaultApplied === 'true') return;
+      if (!DEFAULT_ON_POLICIES.has(input.dataset.policy)) return;
+      if (input.disabled || input.dataset.defaultOnApplied === 'true') return;
 
-      input.dataset.portfolioDefaultApplied = 'true';
-      if (input.checked) {
-        input.checked = false;
+      input.dataset.defaultOnApplied = 'true';
+      if (!input.checked) {
+        input.checked = true;
         changed = true;
       }
     });
 
-    insertAdvancedLabel();
+    updatePolicyCopy();
 
     if (changed && typeof window.runOptimization === 'function') {
       clearTimeout(rerunTimer);
@@ -43,8 +45,8 @@
     const sidebar = document.querySelector('.optimizer-sidebar');
     if (!sidebar) return;
 
-    const observer = new MutationObserver(applyPortfolioDefaults);
+    const observer = new MutationObserver(applyPolicyDefaults);
     observer.observe(sidebar, { childList: true, subtree: true });
-    applyPortfolioDefaults();
+    applyPolicyDefaults();
   });
 })();
