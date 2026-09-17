@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Run airline revenue-management policy experiments with imperfect forecasts, correlated demand shocks, group bookings, cancellations, no-shows, refunds, and overbooking." />
+  <meta name="description" content="Compare airline seat-control policies under uncertain booking demand using Monte Carlo simulation and operations-research methods." />
   <title>Revenue Optimizer | AeroYield</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="analyst.css" />
@@ -18,7 +18,11 @@
   <section class="page-hero">
     <div class="eyebrow">REVENUE OPTIMIZER</div>
     <h1>How much are better seat-control decisions worth?</h1>
-    <p class="lead">Choose a route and operating assumptions, then compare Open Sales, EMSR-b, and dynamic programming under an imperfect demand forecast. Every replication creates a different realized booking world with correlated demand shocks, timing variation, multi-seat parties, cancellations, no-shows, and overbooking risk. Only the oracle sees the realized future.</p>
+    <p class="lead">Choose a route and operating assumptions, then compare seat-control policies on the same uncertain booking streams. Start with Open Sales, EMSR-b, and finite-horizon dynamic programming; optional LP, Bayesian, robust, and neural policies provide deeper comparisons. No deployable policy sees the realized future. Only the oracle benchmark does.</p>
+  </section>
+
+  <section class="section compact">
+    <div class="callout"><strong>How to read this page:</strong> the market data provides route context, while Saver/Main/Flex booking classes and individual booking events are modeled assumptions. Every selected policy is tested against identical seeded realizations so revenue differences come from the control rule rather than different random demand.</div>
   </section>
 
   <section class="section compact">
@@ -69,10 +73,11 @@
         <label class="field-label" for="seedInput">Random seed</label>
         <input id="seedInput" type="number" min="1" step="1" value="20260912" />
 
-        <div class="field-label policy-label">Policies to compare</div>
+        <div class="field-label policy-label">Core policies</div>
         <label class="policy-check fixed"><input type="checkbox" data-policy="open" checked disabled /><span><strong>Open Sales</strong><small>Accepts every party that fits under the current booking limit.</small></span></label>
         <label class="policy-check"><input type="checkbox" data-policy="emsr" checked /><span><strong>EMSR-b</strong><small>Protects seats using the baseline higher-fare demand forecast, not the realized future.</small></span></label>
         <label class="policy-check"><input type="checkbox" data-policy="dp" checked /><span><strong>Dynamic Programming</strong><small>Uses baseline period-by-period demand estimates and applies forecast seat values to the realized booking stream.</small></span></label>
+        <p class="fine-print">Start with these three for the clearest comparison. Advanced and learned policies are available below as optional extensions.</p>
         <p class="fine-print"><strong>Oracle upper bound:</strong> sees realized demand, cancellations, and no-shows. It is intentionally unattainable and is used only as a perfect-information benchmark.</p>
 
         <button id="optimizeButton" class="button primary full" type="button">Run revenue experiment</button>
@@ -99,12 +104,12 @@
   </section>
 
   <section class="section">
-    <div class="section-heading"><div><div class="eyebrow">SIMULATION MODEL</div><h2>The forecast is a best guess. The realized flight is noisier.</h2><p class="section-copy">AeroYield deliberately separates the information used to build a policy from the random events that actually occur. The goal is a useful robustness experiment—not a claim that the airline knows the future demand process.</p></div></div>
+    <div class="section-heading"><div><div class="eyebrow">SIMULATION MODEL</div><h2>The forecast is a best guess. The realized flight is noisier.</h2><p class="section-copy">AeroYield separates the information available to a policy from the random events that actually occur. The purpose is to compare decision rules under forecast error, not to assume that the airline knows future demand.</p></div></div>
     <div class="three-col simulation-model-grid">
       <article class="card">
-        <div class="number">01 · FORECAST</div>
-        <h3>What the policy sees</h3>
-        <p>Baseline Saver/Main/Flex demand, generic booking curves, fares, physical capacity, and the selected booking limit. EMSR-b and DP are built once from this forecast.</p>
+        <div class="number">01 · AVAILABLE INFORMATION</div>
+        <h3>What a policy may know</h3>
+        <p>Baseline Saver/Main/Flex fares and demand, generic booking curves, time, capacity, the current request, and—only for adaptive methods—requests observed so far. Future realized arrivals, cancellations, no-shows, and demand shocks stay hidden.</p>
       </article>
       <article class="card">
         <div class="number">02 · REALIZED WORLD</div>
@@ -134,7 +139,7 @@
   </section>
 
   <section class="section">
-    <div class="section-heading"><div><div class="eyebrow">UNCERTAINTY</div><h2>Expected net revenue is a distribution, not one number.</h2><p class="section-copy">Each replication changes market demand, class demand mix, booking timing, day-to-day booking intensity, party sizes, cancellations, and no-shows while the policies continue to use the same baseline forecast.</p></div></div>
+    <div class="section-heading"><div><div class="eyebrow">UNCERTAINTY</div><h2>Expected net revenue is a distribution, not one number.</h2><p class="section-copy">Each replication changes market demand, class demand mix, booking timing, day-to-day booking intensity, party sizes, cancellations, and no-shows while the policies continue to use only their permitted information.</p></div></div>
     <article class="chart-card"><div class="chart-title"><div><strong>Net revenue distribution</strong><br><span>10th–90th percentile range with mean marker</span></div><span>Monte Carlo replications</span></div><div class="trend-wrap"><svg id="optimizerDistribution" class="trend-svg" viewBox="0 0 900 330" role="img" aria-label="Net revenue distribution by policy"></svg></div></article>
   </section>
 
@@ -144,9 +149,9 @@
   </section>
 
   <section class="section">
-    <div class="section-heading"><div><div class="eyebrow">METHODS</div><h2>Math is available when you want it.</h2><p class="section-copy">The controls deliberately separate what the policy forecasts from what actually occurs in the simulation.</p></div></div>
+    <div class="section-heading"><div><div class="eyebrow">METHODS</div><h2>Method details, assumptions, and guarantees.</h2><p class="section-copy">The technical details are collapsed by default. Open them when you want the formulation or information boundary for a specific method.</p></div></div>
     <div class="method-stack">
-      <details class="method-details"><summary>Realized demand: correlated forecast error instead of independent noise</summary><div><p>Each replication draws a market-wide demand shock and class-specific demand error. It also shifts booking timing and applies persistent day-level booking noise, so a strong or weak booking period tends to persist rather than producing unrelated spikes every day. These realized probabilities generate the requests; EMSR-b and DP never receive them.</p><p><strong>Interpretation:</strong> the sliders define scenario uncertainty, not statistically calibrated airline forecast errors.</p></div></details>
+      <details class="method-details"><summary>Realized demand: correlated forecast error instead of independent noise</summary><div><p>Each replication draws a market-wide demand shock and class-specific demand error. It also shifts booking timing and applies persistent day-level booking noise, so a strong or weak booking period tends to persist rather than producing unrelated spikes every day. These realized probabilities generate the requests; deployable policies never receive the future realized process.</p><p><strong>Interpretation:</strong> the sliders define scenario uncertainty, not statistically calibrated airline forecast errors.</p></div></details>
       <details class="method-details"><summary>Customer attrition: cancellations and no-shows</summary><div><p>Earlier bookings have more time to cancel, so their event-level cancellation probability is higher than bookings made close to departure. A cancellation releases its seats when it occurs and subtracts the selected refund fraction from net revenue. A no-show remains an active booking until departure, retains its ticket revenue in the current model, and can leave capacity unused if overbooking was insufficient.</p></div></details>
       <details class="method-details"><summary>EMSR-b: protection levels under an imperfect forecast</summary><div><p>Fare classes are sorted from highest to lowest fare. Higher-fare forecast demand is aggregated and converted into nested protection levels. The realized simulation then perturbs demand level and booking timing and introduces party sizes and attrition, so EMSR-b does not receive the stochastic process that actually generates the requests.</p><p><strong>Guarantee:</strong> EMSR-b remains a heuristic.</p></div></details>
       <details class="method-details"><summary>Dynamic programming: exact forecast model, approximate real-world policy</summary><div><p>The DP state remains booking period and remaining booking capacity. Its Bellman recursion is solved exactly for the baseline one-seat forecast model. In the realized simulation, requests can contain multiple seats, arrival rates and timing differ from forecast, and cancellations/no-shows alter final capacity usage. Multi-seat requests are evaluated against the sum of the relevant forecast seat bid prices.</p><p><strong>Guarantee:</strong> the DP is exact only for its internal forecast model. Its simulation performance is a robustness experiment, not an optimality claim for the richer realized world.</p></div></details>
@@ -156,6 +161,7 @@
 </main>
 <footer><div><strong>AeroYield</strong> · Revenue Optimizer</div><div>Observed market context → imperfect forecast → noisy bookings → policy experiment → net revenue.</div></footer>
 <script src="analytics.js"></script>
+<script src="clarity.js"></script>
 <script src="rm.js"></script>
 <script src="simulation.js"></script>
 <script src="app.js"></script>
